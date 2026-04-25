@@ -1,5 +1,6 @@
 ---
 import "~/styles/global.css";
+import Analytics from "@vercel/analytics/astro";
 import { invitation } from "~/config/invitation";
 import { type Lang, pick } from "~/i18n";
 
@@ -18,7 +19,7 @@ const path = Astro.url.pathname;
 const canonical = site + path;
 const altId = site + (path.startsWith("/en") ? path.replace(/^\/en\/?/, "/") : path);
 const altEn = site + (path.startsWith("/en") ? path : `/en${path === "/" ? "/" : path}`);
-const ogImage = site + "/gallery/gate.jpeg";
+const ogImage = site + "/og-image.jpg";
 
 const ldEvent = {
   "@context": "https://schema.org",
@@ -94,5 +95,6 @@ const ldEvent = {
   </head>
   <body>
     <slot />
+    <Analytics />
   </body>
 </html>
