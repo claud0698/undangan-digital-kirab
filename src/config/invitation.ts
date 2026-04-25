@@ -32,7 +32,7 @@ export const invitation = {
     foundation: "Panitia Kirab Budaya & Ruwat Bumi 2026",
     name: "Tjie Thien Ta Sen Bio",
     location: "Kota Tangerang",
-    chinese: "齊天大聖廟",
+    chinese: "慈天大聖廟",
     logoText: "TTTSB",
   },
 
@@ -41,7 +41,7 @@ export const invitation = {
   anniversary: {
     number: 43,
     label: { id: "Tahun", en: "Anniversary" },
-    tagline: { id: "Semarak Harmony Budaya & Tradisi", en: "Semarak Harmony Budaya & Tradisi" },
+    tagline: { id: "Semarak Harmoni Budaya & Tradisi", en: "A Celebration of Cultural Harmony" },
   },
 
   eventName: {
@@ -49,12 +49,12 @@ export const invitation = {
     en: "Cultural Procession & Earth Blessing 2026",
   },
   eventTagline: {
-    id: "Memperingati Sejit YMS Tjie Thien Ta Sen & HUT Tjie Thien Ta Sen Bio yang ke-43 Tahun",
+    id: "Memperingati Sejit YMS Tjie Thien Ta Sen & HUT Tjie Thien Ta Sen Bio Ke-43 Tahun",
     en: "Commemorating the Birthday of YMS Tjie Thien Ta Sen & the 43rd Anniversary of Tjie Thien Ta Sen Bio",
   },
 
   dateRange: { id: "24–27 September 2026", en: "24–27 September 2026" },
-  imlekRange: "14–17 Pwe Gwee 2577 Imlek",
+  imlekRange: "Pwe Gwee 14 — 17 · Imlek 2577",
   startsAt: "2026-09-24T09:00:00+07:00",
   climaxAt: "2026-09-27T09:00:00+07:00",
   endsAt:   "2026-09-27T18:00:00+07:00",
@@ -72,7 +72,7 @@ export const invitation = {
   greeting: { id: "Salam Kebajikan", en: "Greetings of Virtue" },
   honorific: { id: "Dengan Hormat,", en: "Respectfully," },
   opening: {
-    id: "Dalam rangka menyambut Sejit YMS TJIE THIEN TA SEN & HUT Tjie Thien Ta Sen Bio Ke-43 tahun, kami akan menyelenggarakan Kirab Budaya & Ruwat Bumi 2026. Sebagai penghormatan dan ungkapan rasa terima kasih kami kepada YMS TJIE THIEN TA SEN sebagai dewa pemberi berkah dan pembimbing yang kita yakini selalu memberikan kesehatan, keselamatan, perlindungan, dan kemakmuran bagi kita semua.",
+    id: "Dalam rangka menyambut Sejit YMS Tjie Thien Ta Sen & HUT Tjie Thien Ta Sen Bio Ke-43 Tahun, kami akan menyelenggarakan Kirab Budaya & Ruwat Bumi 2026. Sebagai penghormatan dan ungkapan rasa terima kasih kami kepada YMS Tjie Thien Ta Sen sebagai dewa pemberi berkah dan pembimbing yang kita yakini selalu memberikan kesehatan, keselamatan, perlindungan, dan kemakmuran bagi kita semua.",
     en: "In welcoming the Birthday of YMS TJIE THIEN TA SEN & the 43rd Anniversary of Tjie Thien Ta Sen Bio, we will hold the Cultural Procession & Earth Blessing 2026 — a tribute and expression of gratitude to YMS TJIE THIEN TA SEN, the deity of blessing and guidance who continually grants health, safety, protection, and prosperity to us all.",
   },
   invite: {
@@ -101,10 +101,10 @@ export const invitation = {
     {
       date: "2026-09-24",
       dateLabel: { id: "Kamis, 24 September 2026", en: "Thursday, 24 September 2026" },
-      imlekLabel: "14 Pwe Gwee 2577 Imlek",
-      timeRange: "09:00 WIB — Selesai",
+      imlekLabel: "八月十四 · Pwe Gwee 14 / Imlek 2577",
+      timeRange: "09.00 WIB s.d. selesai",
       items: [
-        { id: "Fangsen 1000 Ekor Ikan",        en: "Fangsen — Release of 1,000 Fish" },
+        { id: "Fangsen 1.000 ekor ikan",       en: "Fangsen — Release of 1,000 Fish" },
         { id: "Cia Peng An",                   en: "Cia Peng An" },
         { id: "Pentas Seni Barongsai & Liong", en: "Barongsai & Liong Performance" },
         { id: "Pendarasan Sutra (Liam Keng)",  en: "Sutra Recitation (Liam Keng)" },
@@ -114,14 +114,14 @@ export const invitation = {
     {
       date: "2026-09-25",
       dateLabel: { id: "Jumat, 25 September 2026", en: "Friday, 25 September 2026" },
-      imlekLabel: "15 Pwe Gwee 2577 Imlek",
-      timeRange: "09:00 WIB — Selesai",
+      imlekLabel: "八月十五 · Pwe Gwee 15 / Imlek 2577",
+      timeRange: "09.00 WIB s.d. selesai",
       items: [
         { id: "San Kung",                          en: "San Kung" },
         { id: "Cia Peng An",                       en: "Cia Peng An" },
-        { id: "Pemasangan 72 Lilin oleh Umat",     en: "Lighting of 72 Candles by Devotees" },
+        { id: "Pemasangan 72 Lilin oleh umat",     en: "Lighting of 72 Candles by Devotees" },
         { id: "Pentas Seni Barongsai",             en: "Barongsai Performance" },
-        { id: "Persembahan 72 Macam Buah oleh Umat", en: "Offering of 72 Fruit Varieties by Devotees" },
+        { id: "Persembahan 72 macam buah oleh umat", en: "Offering of 72 Fruit Varieties by Devotees" },
         { id: "Pendarasan Sutra (Liam Keng)",      en: "Sutra Recitation (Liam Keng)" },
         { id: "Sembahyang Bersama",                en: "Communal Prayer" },
       ],
@@ -129,8 +129,8 @@ export const invitation = {
     {
       date: "2026-09-26",
       dateLabel: { id: "Sabtu, 26 September 2026", en: "Saturday, 26 September 2026" },
-      imlekLabel: "16 Pwe Gwee 2577 Imlek",
-      timeRange: "09:00 WIB — Selesai",
+      imlekLabel: "八月十六 · Pwe Gwee 16 / Imlek 2577",
+      timeRange: "09.00 WIB s.d. selesai",
       items: [
         { id: "San Kung",                                en: "San Kung" },
         { id: "Penerimaan Kiem Sin / Sen Siang & Kio / Joli", en: "Reception of Kiem Sin / Sen Siang & Kio / Joli" },
@@ -140,14 +140,14 @@ export const invitation = {
     {
       date: "2026-09-27",
       dateLabel: { id: "Minggu, 27 September 2026 — Puncak Acara", en: "Sunday, 27 September 2026 — Climax" },
-      imlekLabel: "17 Pwe Gwee 2577 Imlek · 八月十七",
-      timeRange: "09:00 WIB — Selesai",
+      imlekLabel: "八月十七 · Pwe Gwee 17 / Imlek 2577",
+      timeRange: "09.00 WIB s.d. selesai",
       climax: true,
       items: [
         { id: "San Kung",                                          en: "San Kung" },
-        { id: "Ritual Persiapan Kirab",                            en: "Procession Preparation Ritual" },
+        { id: "Ritual persiapan kirab",                            en: "Procession Preparation Ritual" },
         { id: "Cia Peng An",                                       en: "Cia Peng An" },
-        { id: "Penyerahan Kiem Sin / Sen Siang ke Kio / Joli masing-masing", en: "Placement of Kiem Sin / Sen Siang into respective Kio / Joli" },
+        { id: "Penyerahan Kiem Sin / Sen Siang ditempatkan di Kio / Joli masing-masing", en: "Placement of Kiem Sin / Sen Siang into respective Kio / Joli" },
         { id: "Pelepasan Kirab Budaya & Ruwat Bumi 2026",          en: "Procession Send-off — Kirab Budaya & Ruwat Bumi 2026" },
       ],
     },
@@ -170,17 +170,17 @@ export const invitation = {
     ],
     inti: [
       { role: "Ketua Panitia",          name: "Bp. Fiter Lie" },
-      { role: "Wakil 1",                name: "Bp. Andrie" },
-      { role: "Wakil 2",                name: "Bp. Effen Wijaya / Eddy" },
+      { role: "Wakil Ketua 1",          name: "Bp. Andrie" },
+      { role: "Wakil Ketua 2",          name: "Bp. Effen Wijaya / Eddy" },
       { role: "Sekretaris 1",           name: "Bp. Lukas Susanto" },
       { role: "Sekretaris 2",           name: "Bp. Freddy" },
       { role: "Bendahara 1",            name: "Ibu Oeij Ailie" },
       { role: "Bendahara 2",            name: "Sdri. Liliany Candra" },
-      { role: "Kord. Persembahyangan",  name: "Suhu Benny Susanto" },
+      { role: "Koord. Persembahyangan", name: "Suhu Benny Susanto" },
     ],
     coordinators: [
       {
-        title: { id: "Penerimaan Kimsin", en: "Kimsin Reception" },
+        title: { id: "Penerimaan Kiem Sin", en: "Kiem Sin Reception" },
         members: [
           { name: "Ibu Herlie" },     { name: "Bp. Sianto Lim" },
           { name: "Ibu Ayin" },       { name: "Bp. Karnadi" },
@@ -191,7 +191,7 @@ export const invitation = {
         ],
       },
       {
-        title: { id: "Joli / Kiauw", en: "Joli / Kiauw" },
+        title: { id: "Kio / Joli", en: "Kio / Joli" },
         members: [
           { name: "Bp. Arifin" }, { name: "Bp. Sanjaya" }, { name: "Bp. Alvin" },
           { name: "Bp. Charles" }, { name: "Bp. Santoso" }, { name: "Bp. Agus" },
