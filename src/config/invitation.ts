@@ -303,7 +303,7 @@ export const invitation = {
   },
 
   share: {
-    siteUrl: "https://undangan-kirab.pages.dev",
+    siteUrl: "https://undangan-digital-kirab.liefisca.com",
   },
 } as const;
 

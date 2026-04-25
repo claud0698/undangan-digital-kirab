@@ -3,7 +3,7 @@ import tailwindcss from "@tailwindcss/vite";
 import sitemap from "@astrojs/sitemap";
 
 export default defineConfig({
-  site: "https://undangan-kirab.pages.dev",
+  site: "https://undangan-digital-kirab.liefisca.com",
   i18n: {
     defaultLocale: "id",
     locales: ["id", "en"],

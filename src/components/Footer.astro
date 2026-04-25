@@ -71,7 +71,7 @@ const shareText = encodeURIComponent(
   const shareCopy = document.getElementById("shareCopy");
   const copyLabel = document.getElementById("copyLabel");
   function getShareUrl() { return window.location.href.split("#")[0]; }
-  if (shareWA) shareWA.href = "https://wa.me/?text=" + decodeURIComponent(shareText) + encodeURIComponent(getShareUrl());
+  if (shareWA) shareWA.href = "https://wa.me/?text=" + shareText + encodeURIComponent(getShareUrl());
   shareCopy?.addEventListener("click", async () => {
     try {
       await navigator.clipboard.writeText(getShareUrl());
