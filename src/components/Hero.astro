@@ -1,0 +1,62 @@
+---
+import { invitation } from "~/config/invitation";
+import { type Lang, pick } from "~/i18n";
+interface Props { lang: Lang; }
+const { lang } = Astro.props;
+---
+
+<!-- INTRO LETTER -->
+<section class="intro">
+  <div class="eyebrow">{lang === "id" ? "Salam Kebajikan" : "Greetings of Virtue"}</div>
+  <div class="section-han">恭 請 光 臨</div>
+  <div class="section-han-roman">{lang === "id" ? "Mohon Berkenan Hadir" : "Kindly Honour Us"}</div>
+  <div class="divider"><span class="line"></span><span class="dot"></span><span class="line"></span></div>
+
+  <div class="salam-stamp">慈 悲 喜 捨</div>
+
+  <div class="intro-body">
+    <p class="salute">{pick(invitation.greeting, lang)}, {pick(invitation.honorific, lang)}</p>
+    {lang === "id" ? (
+      <>
+        <p>
+          Dalam rangka menyambut <em>Sejit YMS Tjie Thien Ta Sen</em> & <em>HUT Tjie Thien Ta Sen Bio Ke-43 Tahun</em>, kami akan menyelenggarakan <strong>Kirab Budaya & Ruwat Bumi 2026</strong>.
+        </p>
+        <p>
+          Sebagai penghormatan dan ungkapan rasa terima kasih kami kepada YMS Tjie Thien Ta Sen sebagai dewa pemberi berkah dan pembimbing yang kita yakini selalu memberikan kesehatan, keselamatan, perlindungan, dan kemakmuran bagi kita semua.
+        </p>
+        <p>
+          Demi kelancaran dan suksesnya acara ini, kami mengharapkan kehadiran dan partisipasi Bapak — Ibu sekalian.
+        </p>
+      </>
+    ) : (
+      <>
+        <p>
+          In welcoming the <em>Birthday of YMS Tjie Thien Ta Sen</em> & the <em>43rd Anniversary of Tjie Thien Ta Sen Bio</em>, we will hold the <strong>Kirab Budaya & Ruwat Bumi 2026</strong>.
+        </p>
+        <p>
+          As tribute and gratitude to YMS Tjie Thien Ta Sen — the deity of blessing and guidance who continually grants health, safety, protection, and prosperity to us all.
+        </p>
+        <p>
+          For the smooth and joyful conduct of this event, we sincerely hope for your presence and participation.
+        </p>
+      </>
+    )}
+  </div>
+</section>
+
+<!-- HERO QUOTE -->
+<div class="hero-img">
+  <picture>
+    <source srcset="/gallery/altar-2.webp" type="image/webp" />
+    <img src="/gallery/altar-2.jpeg" alt="" loading="lazy" decoding="async" />
+  </picture>
+  <div class="quote">
+    <div class="han">慈天大聖</div>
+    <div class="han-roman bright">Tjie Thien Ta Sen</div>
+    <p>
+      {lang === "id"
+        ? "“Tjie Thien Ta Sen — Sang Pemberi Berkah, pembimbing keselamatan, perlindungan, dan kemakmuran.”"
+        : "“Tjie Thien Ta Sen — Giver of Blessings, guide of safety, protection, and prosperity.”"}
+    </p>
+  </div>
+</div>

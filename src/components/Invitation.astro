@@ -1,0 +1,25 @@
+---
+import Base from "~/layouts/Base.astro";
+import LangToggle from "./LangToggle.astro";
+import CoverGate from "./CoverGate.astro";
+import Hero from "./Hero.astro";
+import Countdown from "./Countdown.astro";
+import About from "./About.astro";
+import Schedule from "./Schedule.astro";
+import Footer from "./Footer.astro";
+import { type Lang } from "~/i18n";
+
+interface Props { lang: Lang; }
+const { lang } = Astro.props;
+---
+<Base lang={lang}>
+  <LangToggle lang={lang} />
+  <div class="shell">
+    <CoverGate lang={lang} />
+    <Hero lang={lang} />
+    <Countdown lang={lang} />
+    <About lang={lang} />
+    <Schedule lang={lang} />
+    <Footer lang={lang} />
+  </div>
+</Base>

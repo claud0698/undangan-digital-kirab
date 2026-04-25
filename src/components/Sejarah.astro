@@ -1,0 +1,97 @@
+---
+import { invitation } from "~/config/invitation";
+import { type Lang, pick } from "~/i18n";
+interface Props { lang: Lang; }
+const { lang } = Astro.props;
+---
+<!-- Latar Belakang & Tujuan — themed like the kartini block from the design -->
+<section class="background-section">
+  <div class="eyebrow">{lang === "id" ? "Latar Belakang" : "Background"}</div>
+  <h2 class="section-title">{lang === "id" ? "Mengapa Kami Berkumpul" : "Why We Gather"}</h2>
+  <div class="section-han">緣 起 與 願 景</div>
+  <div class="divider"><span class="line"></span><span class="dot"></span><span class="line"></span></div>
+
+  <blockquote>{pick(invitation.background, lang)}</blockquote>
+
+  <h3 class="goals-title">{lang === "id" ? "Tujuan Kegiatan" : "Objectives"}</h3>
+  <ol class="goals">
+    {invitation.goals.map((g, i) => (
+      <li>
+        <span class="num">{String(i + 1).padStart(2, "0")}</span>
+        <span class="text">{pick(g, lang)}</span>
+      </li>
+    ))}
+  </ol>
+</section>
+
+<style>
+  .background-section {
+    background:
+      linear-gradient(180deg, rgba(74, 8, 8, 0.95), rgba(26, 5, 5, 0.95)),
+      url("/gallery/altar.jpeg");
+    background-size: cover;
+    background-position: center;
+    background-blend-mode: multiply;
+    color: var(--paper);
+    padding: 80px 30px;
+  }
+  .background-section .eyebrow { color: var(--gold-bright); }
+  .background-section .section-title { color: var(--paper); }
+  .background-section .section-han { color: var(--gold-bright); }
+
+  blockquote {
+    font-family: var(--font-display);
+    font-style: italic;
+    font-size: 16px;
+    line-height: 1.7;
+    color: var(--paper);
+    text-align: justify;
+    padding: 0 6px;
+    position: relative;
+    margin: 1rem 0 2rem;
+  }
+  blockquote::before {
+    content: "\201C";
+    font-family: var(--font-display);
+    font-size: 80px;
+    color: var(--gold);
+    line-height: 1;
+    position: absolute; top: -30px; left: -6px;
+    opacity: 0.5;
+  }
+
+  .goals-title {
+    font-family: var(--font-cap);
+    font-size: 12px; letter-spacing: 0.45em;
+    color: var(--gold-bright);
+    text-transform: uppercase;
+    text-align: center;
+    margin-block: 2.5rem 1.25rem;
+  }
+  .goals { list-style: none; padding: 0; display: flex; flex-direction: column; gap: 0.85rem; }
+  .goals li {
+    display: grid;
+    grid-template-columns: 50px 1fr;
+    align-items: baseline;
+    gap: 1rem;
+    padding-block: 0.85rem;
+    border-top: 1px solid rgba(216, 168, 71, 0.3);
+  }
+  .num {
+    font-family: var(--font-display);
+    font-weight: 600;
+    font-size: 1.8rem;
+    color: var(--gold-bright);
+    line-height: 1;
+  }
+  .text {
+    font-family: var(--font-display);
+    color: var(--paper);
+    font-size: 16px;
+    line-height: 1.55;
+  }
+  @media (min-width: 720px) {
+    blockquote { font-size: 18px; line-height: 1.85; }
+    .text { font-size: 17px; }
+  }
+</style>

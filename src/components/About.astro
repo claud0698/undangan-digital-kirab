@@ -1,0 +1,63 @@
+---
+import { invitation } from "~/config/invitation";
+import { type Lang, pick } from "~/i18n";
+interface Props { lang: Lang; }
+const { lang } = Astro.props;
+
+const kickoff = invitation.schedule[0];
+const climax = invitation.schedule.find((d) => d.climax) ?? invitation.schedule[invitation.schedule.length - 1];
+---
+<section class="details">
+  <div class="eyebrow">{lang === "id" ? "Puncak Acara" : "Main Event"}</div>
+  <h2 class="section-title">{lang === "id" ? "Kirab Budaya & Ruwat Bumi" : "Cultural Procession & Earth Blessing"}</h2>
+  <div class="section-han">巡 遊 大 典</div>
+  <div class="section-han-roman">{lang === "id" ? "Prosesi Agung" : "The Grand Procession"}</div>
+  <div class="divider"><span class="line"></span><span class="dot"></span><span class="line"></span></div>
+
+  <div class="details-grid">
+    <div class="date-card">
+      <span class="pill" style="background:var(--gold);color:var(--red-deep)">{lang === "id" ? "Pembukaan" : "Opening"}</span>
+      <div class="day">{lang === "id" ? "Kamis" : "Thursday"}</div>
+      <div class="big-date">24 <span class="sep">/</span> 09</div>
+      <div class="month">S · E · P · T · 2 0 2 6</div>
+      <div class="lunar">八月十四 · Pwe Gwee 14</div>
+      <div class="vs">— pukul 09.00 WIB —</div>
+      <div class="card-note">
+        {lang === "id"
+          ? "Fangsen 1000 Ekor Ikan & Pendarasan Sutra"
+          : "Fangsen — 1000 fish release & Sutra recitation"}
+      </div>
+    </div>
+
+    <div class="flow-arrow">{lang === "id" ? "menuju puncak ↓" : "toward the climax ↓"}</div>
+
+    <div class="date-card peak-card">
+      <span class="pill">★ {lang === "id" ? "Puncak · Kirab" : "Climax · Procession"}</span>
+      <div class="day">{lang === "id" ? "Minggu" : "Sunday"}</div>
+      <div class="big-date">27 <span class="sep">/</span> 09</div>
+      <div class="month">S · E · P · T · 2 0 2 6</div>
+      <div class="lunar">八月十七 · Pwe Gwee 17</div>
+      <div class="vs">— {lang === "id" ? "pukul 09.00 WIB s.d. selesai" : "09.00 WIB until completion"} —</div>
+      <div class="card-note">
+        {lang === "id"
+          ? "Pelepasan Kirab Budaya & Ruwat Bumi keliling Kota Tangerang"
+          : "Procession send-off across Kota Tangerang"}
+      </div>
+    </div>
+
+    <div class="place">
+      <div class="place-label">◆ {lang === "id" ? "Lokasi Acara" : "Venue"}</div>
+      <div class="han">慈 天 大 聖 廟</div>
+      <div class="name">{invitation.organization.name}</div>
+      <div class="sub">Wihara Dhamma Budhi Bhakti</div>
+      <div class="addr">
+        Jl. Bouraq No. 39, Pintu Air Timur<br />
+        Kp. Sirnagalih RT.002 / RW.002<br />
+        Karangsari, Neglasari · {invitation.organization.location}
+      </div>
+      <a href={invitation.venue.mapsUrl} target="_blank" rel="noopener" class="map-btn">
+        <span>◈</span> {lang === "id" ? "Buka Peta" : "Open Map"}
+      </a>
+    </div>
+  </div>
+</section>

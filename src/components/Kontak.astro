@@ -1,0 +1,171 @@
+---
+import { invitation } from "~/config/invitation";
+import { type Lang, pick } from "~/i18n";
+interface Props { lang: Lang; }
+const { lang } = Astro.props;
+const c = invitation.committee;
+---
+<section class="committee">
+  <div class="eyebrow">{lang === "id" ? "Susunan Panitia" : "Committee"}</div>
+  <h2 class="section-title">{lang === "id" ? "Pengurus & Panitia" : "Organisers & Committee"}</h2>
+  <div class="section-han">籌 委 會</div>
+  <div class="divider"><span class="line"></span><span class="dot"></span><span class="line"></span></div>
+
+  <p class="closing">
+    {lang === "id"
+      ? "Kami menyampaikan terima kasih kepada seluruh dewan kehormatan, pengurus, dan panitia yang berkenan mengabdikan tenaga dan waktu demi kelancaran Kirab Budaya & Ruwat Bumi 2026."
+      : "Our heartfelt thanks to the honorary council, core committee, and all coordinators who devote their time to the Kirab Budaya & Ruwat Bumi 2026."}
+  </p>
+
+  <div class="penanggung pengurus">
+    <div class="role">{lang === "id" ? "Penanggung Jawab" : "Person in Charge"}</div>
+    <div class="name">{c.penanggungJawab}</div>
+  </div>
+
+  <h3 class="sub-h">{lang === "id" ? "Dewan Kehormatan" : "Honorary Council"}</h3>
+  <ul class="honor">
+    {c.dewanKehormatan.map((m) => (
+      <li>
+        <span class="name">{m.name}</span>
+        {m.location && <span class="loc">— {m.location}</span>}
+      </li>
+    ))}
+  </ul>
+
+  <h3 class="sub-h">{lang === "id" ? "Pengurus Inti" : "Core Committee"}</h3>
+  <div class="committee-grid">
+    {c.inti.map((m) => (
+      <div class="pengurus">
+        <div class="role">{m.role}</div>
+        <div class="name">{m.name}</div>
+      </div>
+    ))}
+  </div>
+
+  <h3 class="sub-h">{lang === "id" ? "Koordinator Bidang" : "Coordinators"}</h3>
+  <div class="coords">
+    {c.coordinators.map((g) => (
+      <div class="coord">
+        <h4>{pick(g.title, lang)}</h4>
+        <ul>{g.members.map((m) => <li>{m.name}</li>)}</ul>
+      </div>
+    ))}
+  </div>
+</section>
+
+<style>
+  .committee {
+    background: var(--paper);
+    padding: 60px 30px;
+    text-align: center;
+  }
+  .closing {
+    font-family: var(--font-display);
+    font-style: italic; font-size: 16px;
+    color: var(--ink); line-height: 1.6;
+    margin: 0 auto 2rem;
+    max-width: 460px;
+  }
+
+  .penanggung {
+    background: var(--paper-2);
+    border: 1px solid var(--gold);
+    padding: 18px;
+    max-width: 380px;
+    margin: 0 auto 2.5rem;
+  }
+
+  .pengurus {
+    border-top: 1px solid var(--gold);
+    padding-top: 12px;
+    text-align: center;
+  }
+  .pengurus .role {
+    font-family: var(--font-cap);
+    font-size: 9px; letter-spacing: 0.4em;
+    color: var(--red);
+    margin-bottom: 4px;
+    text-transform: uppercase;
+  }
+  .pengurus .name {
+    font-family: var(--font-display);
+    font-size: 18px; font-weight: 600;
+    color: var(--ink);
+  }
+
+  .sub-h {
+    font-family: var(--font-cap);
+    font-size: 11px; letter-spacing: 0.5em;
+    color: var(--red);
+    text-transform: uppercase;
+    margin: 2.5rem 0 1.25rem;
+    text-align: center;
+  }
+
+  .honor {
+    list-style: none; padding: 0;
+    max-width: 460px; margin: 0 auto;
+    display: flex; flex-direction: column; gap: 0.4rem;
+  }
+  .honor li {
+    border-bottom: 1px dashed rgba(122, 16, 16, 0.2);
+    padding: 8px 6px;
+    font-family: var(--font-display);
+    font-size: 16px;
+    color: var(--ink);
+    text-align: left;
+    display: flex; justify-content: space-between; gap: 1rem;
+    flex-wrap: wrap;
+  }
+  .honor .loc { font-style: italic; color: var(--gold); font-size: 14px; }
+
+  .committee-grid {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 16px;
+    max-width: 320px;
+    margin: 0 auto;
+  }
+
+  .coords {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 14px;
+    max-width: 460px;
+    margin: 0 auto;
+    text-align: left;
+  }
+  .coord {
+    background: var(--paper-2);
+    border: 1px solid var(--gold);
+    padding: 14px 18px;
+  }
+  .coord h4 {
+    font-family: var(--font-cap);
+    font-size: 10px;
+    letter-spacing: 0.4em;
+    text-transform: uppercase;
+    color: var(--red-deep);
+    margin: 0 0 0.6rem;
+  }
+  .coord ul { list-style: none; padding: 0; margin: 0; }
+  .coord li {
+    font-family: var(--font-display);
+    font-size: 15px;
+    color: var(--ink);
+    border-top: 1px dashed rgba(122, 16, 16, 0.2);
+    padding: 4px 0;
+  }
+  .coord li:first-child { border-top: 0; }
+
+  @media (min-width: 720px) {
+    .committee-grid { grid-template-columns: 1fr 1fr 1fr; gap: 24px; max-width: 600px; }
+    .coords { grid-template-columns: 1fr 1fr; max-width: 720px; }
+    .honor { columns: 2; column-gap: 2rem; max-width: 600px; }
+    .honor li { break-inside: avoid; }
+  }
+  @media (min-width: 1080px) {
+    .committee-grid { grid-template-columns: repeat(3, 1fr); max-width: 720px; }
+    .coords { grid-template-columns: repeat(3, 1fr); max-width: 920px; }
+  }
+</style>

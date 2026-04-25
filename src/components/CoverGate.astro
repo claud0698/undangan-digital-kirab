@@ -1,0 +1,120 @@
+---
+import { invitation } from "~/config/invitation";
+import { type Lang } from "~/i18n";
+interface Props { lang: Lang; }
+const { lang } = Astro.props;
+
+const cornerSvg = `<svg viewBox="0 0 90 90"><g fill="none" stroke="#d8a847" stroke-width="1"><path d="M 5 5 L 40 5 M 5 5 L 5 40 M 5 12 L 28 12 L 28 5 M 12 5 L 12 28 L 5 28 M 14 14 L 22 14 L 22 22 L 14 22 Z"/></g></svg>`;
+const overlayCornerSvg = `<svg viewBox="0 0 60 60"><path d="M 1 1 L 25 1 M 1 1 L 1 25 M 1 8 L 18 8 L 18 1 M 8 1 L 8 18 L 1 18"/></svg>`;
+const lanternSvg = `<svg viewBox="0 0 60 100" xmlns="http://www.w3.org/2000/svg"><line x1="30" y1="0" x2="30" y2="14" stroke="rgba(255,220,160,.5)" stroke-width=".8"/><rect x="22" y="13" width="16" height="5" fill="url(#lanternCap)" rx="1"/><ellipse cx="30" cy="42" rx="26" ry="24" fill="url(#lanternBody)"/><path d="M 6 38 Q 30 44 54 38" stroke="rgba(0,0,0,.25)" stroke-width=".6" fill="none"/><path d="M 5 46 Q 30 52 55 46" stroke="rgba(0,0,0,.25)" stroke-width=".6" fill="none"/><rect x="22" y="65" width="16" height="5" fill="url(#lanternCap)" rx="1"/><line x1="30" y1="70" x2="30" y2="78" stroke="#b48536" stroke-width="1.2"/><line x1="26" y1="78" x2="26" y2="96" stroke="#e8b455" stroke-width=".8"/><line x1="30" y1="78" x2="30" y2="98" stroke="#e8b455" stroke-width=".8"/><line x1="34" y1="78" x2="34" y2="96" stroke="#e8b455" stroke-width=".8"/><circle cx="30" cy="42" r="2" fill="#fff3a0" opacity=".7"/></svg>`;
+---
+
+<!-- shared lantern gradients (defined once, reused via <use>) -->
+<svg width="0" height="0" style="position:absolute" aria-hidden="true">
+  <defs>
+    <radialGradient id="lanternBody" cx="35%" cy="40%" r="65%">
+      <stop offset="0%" stop-color="#ff8a4a"/>
+      <stop offset="35%" stop-color="#e02828"/>
+      <stop offset="75%" stop-color="#9a1212"/>
+      <stop offset="100%" stop-color="#5a0606"/>
+    </radialGradient>
+    <linearGradient id="lanternCap" x1="0" x2="0" y1="0" y2="1">
+      <stop offset="0%" stop-color="#f3d068"/>
+      <stop offset="50%" stop-color="#b48536"/>
+      <stop offset="100%" stop-color="#7a5418"/>
+    </linearGradient>
+  </defs>
+</svg>
+
+<!-- INTRO OVERLAY -->
+<div class="intro-overlay" id="introOverlay">
+  <div class="corner c-tl" set:html={overlayCornerSvg} />
+  <div class="corner c-tr" set:html={overlayCornerSvg} />
+  <div class="corner c-bl" set:html={overlayCornerSvg} />
+  <div class="corner c-br" set:html={overlayCornerSvg} />
+
+  <div class="han">慈天大聖</div>
+  <div class="han-roman">Tjie Thien Ta Sen</div>
+  <div class="label">
+    {lang === "id" ? "Kirab Budaya · Pwe Gwee 2577" : "Cultural Procession · Lunar 2577"}
+  </div>
+  <h1>
+    {lang === "id"
+      ? <>Kirab Budaya & Ruwat Bumi 2026<br />Tjie Thien Ta Sen Bio Tangerang</>
+      : <>Cultural Procession & Earth Blessing 2026<br />Tjie Thien Ta Sen Bio Tangerang</>}
+  </h1>
+  <div class="sub">{invitation.dateRange[lang]}</div>
+  <div class="to">{lang === "id" ? "Kepada Yang Terhormat" : "To Our Honoured Guests"}</div>
+  <div class="guest" id="guestName">{lang === "id" ? "Bapak / Ibu Umat" : "Dear Devotees & Friends"}</div>
+  <button class="open-btn" id="openBtn">{lang === "id" ? "Buka Undangan" : "Open Invitation"}</button>
+</div>
+
+<!-- COVER -->
+<div class="cover">
+  <div class="cover-bg"></div>
+
+  <div class="lanterns" aria-hidden="true">
+    <div class="lantern"><div class="lantern-glow"></div><Fragment set:html={lanternSvg} /></div>
+    <div class="lantern"><div class="lantern-glow"></div><Fragment set:html={lanternSvg} /></div>
+    <div class="lantern"><div class="lantern-glow"></div><Fragment set:html={lanternSvg} /></div>
+    <div class="lantern"><div class="lantern-glow"></div><Fragment set:html={lanternSvg} /></div>
+    <div class="lantern"><div class="lantern-glow"></div><Fragment set:html={lanternSvg} /></div>
+  </div>
+
+  <div class="corner c-tl" set:html={cornerSvg} />
+  <div class="corner c-tr" set:html={cornerSvg} />
+  <div class="corner c-bl" set:html={cornerSvg} />
+  <div class="corner c-br" set:html={cornerSvg} />
+
+  <div class="cover-content">
+    <div class="anniv">— {lang === "id" ? "Memperingati HUT ke-43 Tahun" : "Celebrating the 43rd Anniversary"} —</div>
+    <h1>{invitation.organization.name} · {invitation.organization.location}</h1>
+
+    <div class="seal">慈<span class="yr">43</span></div>
+
+    <h2>{lang === "id" ? "Kirab Budaya & Ruwat Bumi 2026" : "Cultural Procession & Earth Blessing 2026"}</h2>
+    <h3>
+      {lang === "id"
+        ? <>Sejit YMS<br />Tjie Thien Ta Sen</>
+        : <>Birthday of YMS<br />Tjie Thien Ta Sen</>}
+    </h3>
+    <div class="subname">— {lang === "id" ? "Semarak Harmoni Budaya & Tradisi" : "A Celebration of Cultural Harmony"} —</div>
+
+    <div class="meta">PWE GWEE 14 — 17 · IMLEK 2577</div>
+    <div class="dates">
+      24 <span style="color:#b48536">·</span> 25 <span style="color:#b48536">·</span> 26 <span style="color:#b48536">·</span> 27
+    </div>
+    <div class="lunar" style="margin-top:6px;font-family:'Cinzel',serif;letter-spacing:.4em;font-size:14px;color:#e9cf86">SEPTEMBER 2026</div>
+
+    <div class="scroll-cue">↓ &nbsp;&nbsp; SCROLL &nbsp;&nbsp; ↓</div>
+  </div>
+</div>
+
+<script>
+  const urlParams = new URLSearchParams(window.location.search);
+  const guest = urlParams.get("to") || urlParams.get("nama");
+  if (guest) {
+    const el = document.getElementById("guestName");
+    if (el) el.textContent = decodeURIComponent(guest);
+  }
+
+  const overlay = document.getElementById("introOverlay") as HTMLElement | null;
+  const openBtn = document.getElementById("openBtn");
+  document.body.style.overflow = "hidden";
+  openBtn?.addEventListener("click", () => {
+    overlay?.classList.add("hidden");
+    document.body.style.overflow = "";
+    setTimeout(() => overlay?.remove(), 900);
+  });
+
+  // Subtle parallax on cover bg (scroll-triggered, passive)
+  const coverBg = document.querySelector<HTMLElement>(".cover-bg");
+  window.addEventListener(
+    "scroll",
+    () => {
+      const y = window.scrollY;
+      if (y < 800 && coverBg) coverBg.style.transform = `translateY(${y * 0.3}px) scale(${1 + y * 0.0003})`;
+    },
+    { passive: true },
+  );
+</script>

@@ -1,0 +1,4 @@
+User-agent: *
+Allow: /
+
+Sitemap: https://undangan-kirab.pages.dev/sitemap-index.xml

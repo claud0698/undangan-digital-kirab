@@ -1,0 +1,80 @@
+---
+import { invitation } from "~/config/invitation";
+import { type Lang, t } from "~/i18n";
+interface Props { lang: Lang; }
+const { lang } = Astro.props;
+---
+<div class="countdown-section">
+  <div class="eyebrow">{lang === "id" ? "Menuju Puncak Acara" : "Until the Main Event"}</div>
+  <div class="section-han" style="margin-bottom:24px">倒 數 計 時</div>
+  <div class="countdown" data-target={invitation.climaxAt}>
+    <div class="cd-cell"><div class="cd-num" data-d>00</div><div class="cd-label">{t.labels.days[lang]}</div></div>
+    <div class="cd-cell"><div class="cd-num" data-h>00</div><div class="cd-label">{t.labels.hours[lang]}</div></div>
+    <div class="cd-cell"><div class="cd-num" data-m>00</div><div class="cd-label">{t.labels.minutes[lang]}</div></div>
+    <div class="cd-cell"><div class="cd-num" data-s>00</div><div class="cd-label">{t.labels.seconds[lang]}</div></div>
+  </div>
+</div>
+
+<style>
+  .countdown-section {
+    background: linear-gradient(180deg, var(--paper) 0%, var(--paper-2) 100%);
+    padding: 50px 30px 70px;
+    position: relative; z-index: 2;
+  }
+  .countdown {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 8px;
+    margin: 0 auto;
+    max-width: 360px;
+  }
+  .cd-cell {
+    background: var(--red-deep);
+    color: var(--gold-pale);
+    padding: 18px 6px 14px;
+    text-align: center;
+    border: 1px solid var(--gold);
+    box-shadow: inset 0 0 0 3px var(--red-deep), inset 0 0 0 4px rgba(184, 133, 54, 0.4);
+    position: relative;
+  }
+  .cd-num {
+    font-family: var(--font-display);
+    font-size: 30px; font-weight: 600; line-height: 1;
+    color: var(--paper);
+    font-variant-numeric: tabular-nums;
+  }
+  .cd-label {
+    font-family: var(--font-cap);
+    font-size: 8px; letter-spacing: 0.3em; color: var(--gold-bright);
+    margin-top: 6px;
+    text-transform: uppercase;
+  }
+  @media (min-width: 720px) {
+    .countdown-section { padding: 60px 60px 90px; }
+    .countdown { max-width: 520px; gap: 12px; }
+    .cd-num { font-size: 42px; }
+    .cd-cell { padding: 26px 8px 20px; }
+  }
+</style>
+
+<script>
+  const root = document.querySelector(".countdown") as HTMLElement | null;
+  if (root) {
+    const target = new Date(root.dataset.target ?? "").getTime();
+    const elD = root.querySelector("[data-d]")!;
+    const elH = root.querySelector("[data-h]")!;
+    const elM = root.querySelector("[data-m]")!;
+    const elS = root.querySelector("[data-s]")!;
+    const pad = (n: number) => String(Math.max(0, n)).padStart(2, "0");
+    const tick = () => {
+      if (isNaN(target)) return;
+      const safe = Math.max(0, target - Date.now());
+      elD.textContent = pad(Math.floor(safe / 86400000));
+      elH.textContent = pad(Math.floor((safe % 86400000) / 3600000));
+      elM.textContent = pad(Math.floor((safe % 3600000) / 60000));
+      elS.textContent = pad(Math.floor((safe % 60000) / 1000));
+    };
+    tick();
+    setInterval(tick, 1000);
+  }
+</script>

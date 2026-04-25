@@ -1,0 +1,60 @@
+---
+import { invitation } from "~/config/invitation";
+import { type Lang, pick } from "~/i18n";
+interface Props { lang: Lang; }
+const { lang } = Astro.props;
+
+const dayNames = {
+  id: ["Minggu","Senin","Selasa","Rabu","Kamis","Jumat","Sabtu"],
+  en: ["Sunday","Monday","Tuesday","Wednesday","Thursday","Friday","Saturday"],
+};
+function dayMeta(date: string, lang: Lang) {
+  const d = new Date(date + "T00:00:00+07:00");
+  return {
+    num: d.getUTCDate(),
+    name: dayNames[lang][d.getDay()],
+  };
+}
+const labels = {
+  id: ["Hari Pertama","Hari Kedua","Hari Ketiga","Puncak Acara"],
+  en: ["Day One","Day Two","Day Three","Climax"],
+};
+---
+<section class="schedule">
+  <div class="eyebrow">{lang === "id" ? "Susunan Acara" : "Schedule"}</div>
+  <h2 class="section-title">{lang === "id" ? "Rangkaian Lengkap" : "Full Programme"}</h2>
+  <div class="section-han">儀 程 表</div>
+  <div class="section-han-roman">{lang === "id" ? "Susunan Tata Acara" : "Order of Ceremony"}</div>
+  <div class="divider"><span class="line"></span><span class="dot"></span><span class="line"></span></div>
+
+  <div class="timeline">
+    {invitation.schedule.map((day, idx) => {
+      const meta = dayMeta(day.date, lang);
+      const peakClass = day.climax ? "is-peak full-width" : "";
+      return (
+        <div class={`timeline-day ${peakClass}`.trim()}>
+          <div class="marker">{meta.num}</div>
+          <div class="day-card">
+            <div class="day-name">{meta.name} · {labels[lang][idx]}</div>
+            <div class="month-yr">
+              {meta.num} {lang === "id" ? "September 2026" : "September 2026"}
+            </div>
+            <div class="lunar">{day.imlekLabel}</div>
+            {day.climax && <div class="peak-badge">★ {lang === "id" ? "Pelepasan Kirab" : "Procession Send-off"}</div>}
+            <div class="time-row" style={day.climax ? "margin-top:14px" : ""}>
+              <span class="t">{day.timeRange.split("WIB")[0].trim()}</span>
+              <span class="te">— {lang === "id" ? "s.d. selesai" : "until completion"} —</span>
+            </div>
+            <ul class="events">
+              {day.items.map((it, i) => (
+                <li class={day.climax && i === day.items.length - 1 ? "highlight" : ""}>
+                  {pick(it, lang)}
+                </li>
+              ))}
+            </ul>
+          </div>
+        </div>
+      );
+    })}
+  </div>
+</section>

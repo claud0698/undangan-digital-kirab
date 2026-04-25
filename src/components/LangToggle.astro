@@ -1,0 +1,40 @@
+---
+import { type Lang } from "~/i18n";
+interface Props { lang: Lang; }
+const { lang } = Astro.props;
+---
+<div class="lang-switch">
+  <a class={lang === "id" ? "active" : ""} href="/">ID</a>
+  <a class={lang === "en" ? "active" : ""} href="/en/">EN</a>
+</div>
+
+<style>
+  .lang-switch {
+    position: fixed;
+    top: 18px; right: 18px;
+    z-index: 99;
+    display: flex;
+    background: rgba(74, 8, 8, 0.85);
+    border: 1px solid var(--gold);
+    backdrop-filter: blur(6px);
+    overflow: hidden;
+  }
+  .lang-switch a {
+    background: transparent;
+    border: none;
+    color: var(--gold-pale);
+    font-family: var(--font-cap);
+    font-size: 10px; letter-spacing: 0.3em;
+    padding: 8px 12px;
+    cursor: pointer;
+    text-transform: uppercase;
+    text-decoration: none;
+  }
+  .lang-switch a.active {
+    background: var(--gold);
+    color: var(--red-deep);
+  }
+  @media (min-width: 1080px) {
+    .lang-switch { top: 60px; right: 60px; }
+  }
+</style>
