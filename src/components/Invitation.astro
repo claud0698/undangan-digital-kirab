@@ -14,7 +14,8 @@ interface Props { lang: Lang; }
 const { lang } = Astro.props;
 ---
 <Base lang={lang}>
-  <LangToggle lang={lang} />
+  {/* Language toggle hidden for now — site stays in ID. Re-enable to restore EN switch. */}
+  {/* <LangToggle lang={lang} /> */}
   <div class="shell">
     <CoverGate lang={lang} />
     <Hero lang={lang} />

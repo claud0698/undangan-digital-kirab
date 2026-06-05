@@ -98,6 +98,16 @@ const lanternSvg = `<svg viewBox="0 0 60 100" xmlns="http://www.w3.org/2000/svg"
     if (el) el.textContent = decodeURIComponent(guest);
   }
 
+  const reduce = matchMedia("(prefers-reduced-motion: reduce)").matches;
+
+  // Gently scroll from the cover into the content below it (one-time, on demand).
+  const scrollToContent = () => {
+    const behavior = reduce ? "auto" : "smooth";
+    const target = document.querySelector(".intro") as HTMLElement | null; // Hero section
+    if (target) target.scrollIntoView({ behavior, block: "start" });
+    else window.scrollTo({ top: window.innerHeight, behavior });
+  };
+
   const overlay = document.getElementById("introOverlay") as HTMLElement | null;
   const openBtn = document.getElementById("openBtn");
   document.body.style.overflow = "hidden";
@@ -105,6 +115,21 @@ const lanternSvg = `<svg viewBox="0 0 60 100" xmlns="http://www.w3.org/2000/svg"
     overlay?.classList.add("hidden");
     document.body.style.overflow = "";
     setTimeout(() => overlay?.remove(), 900);
+    // After the visitor takes in the cover, glide into the content once.
+    if (!reduce) setTimeout(scrollToContent, 1500);
+  });
+
+  // The "↓ SCROLL ↓" cue is tappable to jump into the content.
+  document.querySelector(".scroll-cue")?.addEventListener("click", scrollToContent);
+
+  // Fun: tap a lantern to give it a swing.
+  document.querySelectorAll<HTMLElement>(".lantern").forEach((l) => {
+    l.addEventListener("click", () => {
+      l.classList.remove("swinging");
+      void l.offsetWidth; // reflow so the animation restarts on rapid taps
+      l.classList.add("swinging");
+    });
+    l.addEventListener("animationend", () => l.classList.remove("swinging"));
   });
 
   // Subtle parallax on cover bg (scroll-triggered, passive)
