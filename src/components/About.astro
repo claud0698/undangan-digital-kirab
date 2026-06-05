@@ -7,7 +7,7 @@ const { lang } = Astro.props;
 const kickoff = invitation.schedule[0];
 const climax = invitation.schedule.find((d) => d.climax) ?? invitation.schedule[invitation.schedule.length - 1];
 ---
-<section class="details">
+<section class="details" data-reveal>
   <div class="eyebrow">{lang === "id" ? "Puncak Acara" : "Main Event"}</div>
   <h2 class="section-title">{lang === "id" ? "Kirab Budaya & Ruwat Bumi" : "Cultural Procession & Earth Blessing"}</h2>
   <div class="section-han">巡 遊 大 典</div>

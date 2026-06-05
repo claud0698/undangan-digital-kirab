@@ -578,6 +578,18 @@ section { position: relative; z-index: 2; padding: 72px 30px; }
 .intro-overlay .corner { position: absolute; width: 60px; height: 60px; }
 .intro-overlay .corner svg path { stroke: var(--gold); stroke-width: 1; fill: none; }
 
+/* SCROLL REVEAL — staggered fade-up as each block enters the viewport.
+   Gated on .anim-ready (added only when IntersectionObserver is available) so
+   content is never hidden if JS is off; reduced-motion users skip it entirely. */
+@media (prefers-reduced-motion: no-preference) {
+  .anim-ready [data-reveal] {
+    opacity: 0;
+    transform: translateY(28px);
+    transition: opacity .7s ease, transform .8s cubic-bezier(.2, .7, .2, 1);
+  }
+  .anim-ready [data-reveal].in-view { opacity: 1; transform: none; }
+}
+
 @media (prefers-reduced-motion: reduce) {
   *, *::before, *::after { animation: none !important; transition: none !important; }
 }

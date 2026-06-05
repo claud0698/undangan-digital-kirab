@@ -4,7 +4,7 @@ import { type Lang, t } from "~/i18n";
 interface Props { lang: Lang; }
 const { lang } = Astro.props;
 ---
-<div class="countdown-section">
+<div class="countdown-section" data-reveal>
   <div class="eyebrow">{lang === "id" ? "Menuju Puncak Acara" : "Until the Main Event"}</div>
   <div class="section-han" style="margin-bottom:24px">倒 數 計 時</div>
   <div class="countdown" data-target={invitation.climaxAt}>
