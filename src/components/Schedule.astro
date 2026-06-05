@@ -9,9 +9,12 @@ const dayNames = {
   en: ["Sunday","Monday","Tuesday","Wednesday","Thursday","Friday","Saturday"],
 };
 function dayMeta(date: string, lang: Lang) {
-  const d = new Date(date + "T00:00:00+07:00");
+  // Parse from parts to avoid any timezone shift (a UTC parse of a +07:00
+  // midnight lands on the previous calendar day).
+  const [y, m, dd] = date.split("-").map(Number);
+  const d = new Date(y, m - 1, dd);
   return {
-    num: d.getUTCDate(),
+    num: dd,
     name: dayNames[lang][d.getDay()],
   };
 }

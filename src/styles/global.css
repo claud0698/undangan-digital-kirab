@@ -570,7 +570,7 @@ section { position: relative; z-index: 2; padding: 72px 30px; }
 .lang-switch a.active { background: var(--gold); color: var(--red-deep); }
 
 /* INTRO OVERLAY */
-.intro-overlay { position: fixed; inset: 0; background: linear-gradient(180deg, rgba(40,8,8,.92), rgba(20,3,3,.95)), url("/gallery/gate.webp"); background-size: cover; background-position: center; z-index: 200; display: flex; flex-direction: column; align-items: center; justify-content: center; color: var(--paper); text-align: center; padding: 30px; transition: opacity .8s ease; }
+.intro-overlay { position: fixed; inset: 0; background-color: #1a0303; background-image: linear-gradient(180deg, rgba(40,8,8,.92), rgba(20,3,3,.95)), url("/gallery/gate.webp"); background-size: cover; background-position: center; z-index: 200; display: flex; flex-direction: column; align-items: center; justify-content: center; color: var(--paper); text-align: center; padding: 30px; transition: opacity .8s ease; }
 .intro-overlay.hidden { opacity: 0; pointer-events: none; }
 .intro-overlay .han { font-family: 'Noto Serif SC', serif; font-size: 56px; color: var(--gold-bright); margin-bottom: 8px; }
 .intro-overlay .han-roman { font-family: 'Cormorant Garamond', serif; font-size: 28px; font-weight: 600; color: var(--paper); margin-bottom: 26px; letter-spacing: .04em; opacity: 1; }
