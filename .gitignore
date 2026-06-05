@@ -8,3 +8,4 @@ dist
 .vscode
 assets/
 *.pdf
+.qa
