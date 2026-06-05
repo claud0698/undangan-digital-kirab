@@ -100,13 +100,33 @@ const lanternSvg = `<svg viewBox="0 0 60 100" xmlns="http://www.w3.org/2000/svg"
 
   const reduce = matchMedia("(prefers-reduced-motion: reduce)").matches;
 
-  // Gently scroll from the cover into the content below it (one-time, on demand).
-  const scrollToContent = () => {
-    const behavior = reduce ? "auto" : "smooth";
-    const target = document.querySelector(".intro") as HTMLElement | null; // Hero section
-    if (target) target.scrollIntoView({ behavior, block: "start" });
-    else window.scrollTo({ top: window.innerHeight, behavior });
+  // Gentle auto-scroll: drifts the page down slowly, pauses the moment the
+  // visitor scrolls themselves, and resumes after 5s of no interaction.
+  const RESUME_MS = 5000;  // delay before (re)starting the drift
+  const SPEED = 0.3;       // px per frame (~18px/s) — very slow, calm drift
+  let rafId = 0, idleTimer = 0, active = false, pos = 0;
+  const maxScroll = () => document.documentElement.scrollHeight - window.innerHeight;
+
+  const stopAuto = () => { active = false; cancelAnimationFrame(rafId); };
+  const startAuto = () => {
+    if (active || reduce || window.scrollY >= maxScroll() - 1) return;
+    active = true;
+    pos = window.scrollY;
+    const step = () => {
+      if (!active) return;
+      pos = Math.min(maxScroll(), pos + SPEED);
+      window.scrollTo(0, pos);
+      if (pos >= maxScroll()) { active = false; return; }
+      rafId = requestAnimationFrame(step);
+    };
+    rafId = requestAnimationFrame(step);
   };
+  const scheduleResume = () => { clearTimeout(idleTimer); idleTimer = window.setTimeout(startAuto, RESUME_MS); };
+
+  // A real scroll gesture (wheel / touch drag / nav keys) pauses the drift,
+  // then it resumes 5s later. Taps and our own scrollTo don't count.
+  const onUserScroll = () => { stopAuto(); scheduleResume(); };
+  ["wheel", "touchmove", "keydown"].forEach((e) => window.addEventListener(e, onUserScroll, { passive: true }));
 
   const overlay = document.getElementById("introOverlay") as HTMLElement | null;
   const openBtn = document.getElementById("openBtn");
@@ -115,22 +135,76 @@ const lanternSvg = `<svg viewBox="0 0 60 100" xmlns="http://www.w3.org/2000/svg"
     overlay?.classList.add("hidden");
     document.body.style.overflow = "";
     setTimeout(() => overlay?.remove(), 900);
-    // After the visitor takes in the cover, glide into the content once.
-    if (!reduce) setTimeout(scrollToContent, 1500);
+    // Begin the gentle drift a few seconds after the cover is revealed.
+    scheduleResume();
   });
 
-  // The "↓ SCROLL ↓" cue is tappable to jump into the content.
-  document.querySelector(".scroll-cue")?.addEventListener("click", scrollToContent);
+  // Fun: tap or tap-and-hold-drag a lantern. Motion is a damped-spring pendulum
+  // (damped harmonic oscillator, like Apple CASpringAnimation / wobble /
+  // react-spring): angle eases toward a target with momentum and natural decay.
+  if (!reduce) {
+    const STIFFNESS = 150; // restoring force toward rest
+    const DAMPING = 9;     // friction (lower = more sway before settling)
+    const MAX_DEG = 26;    // clamp how far a drag can pull it
 
-  // Fun: tap a lantern to give it a swing.
-  document.querySelectorAll<HTMLElement>(".lantern").forEach((l) => {
-    l.addEventListener("click", () => {
-      l.classList.remove("swinging");
-      void l.offsetWidth; // reflow so the animation restarts on rapid taps
-      l.classList.add("swinging");
+    document.querySelectorAll<HTMLElement>(".lantern").forEach((l) => {
+      let angle = 0, vel = 0, target = 0, raf = 0, last = 0;
+      let grabbing = false, startX = 0, startAngle = 0, moved = 0;
+
+      const frame = (now: number) => {
+        let dt = (now - last) / 1000;
+        last = now;
+        if (dt > 0.04) dt = 0.04; // clamp after tab-switch / jank
+        // semi-implicit Euler integration of a damped spring
+        const accel = -STIFFNESS * (angle - target) - DAMPING * vel;
+        vel += accel * dt;
+        angle += vel * dt;
+        l.style.transform = `rotate(${angle}deg)`;
+        if (!grabbing && Math.abs(angle - target) < 0.05 && Math.abs(vel) < 0.05) {
+          // settled — hand control back to the idle CSS sway
+          l.style.transform = "";
+          l.classList.remove("springing");
+          raf = 0;
+          return;
+        }
+        raf = requestAnimationFrame(frame);
+      };
+      const run = () => {
+        if (raf) return;
+        l.classList.add("springing");
+        last = performance.now();
+        raf = requestAnimationFrame(frame);
+      };
+
+      l.addEventListener("pointerdown", (e) => {
+        grabbing = true;
+        moved = 0;
+        startX = e.clientX;
+        startAngle = angle;
+        l.classList.add("grabbing");
+        try { l.setPointerCapture(e.pointerId); } catch {}
+        run();
+      });
+      l.addEventListener("pointermove", (e) => {
+        if (!grabbing) return;
+        const dx = e.clientX - startX;
+        moved = Math.max(moved, Math.abs(dx));
+        // pivot is top-center: +angle swings the body LEFT, so negate dx
+        // to make the lantern body follow the pointer/finger.
+        target = Math.max(-MAX_DEG, Math.min(MAX_DEG, startAngle - dx * 0.35));
+      });
+      const release = () => {
+        if (!grabbing) return;
+        grabbing = false;
+        l.classList.remove("grabbing");
+        target = 0; // swing back to rest
+        if (moved < 4) vel += (Math.random() < 0.5 ? -1 : 1) * 170; // a tap: random-direction impulse
+        run();
+      };
+      l.addEventListener("pointerup", release);
+      l.addEventListener("pointercancel", release);
     });
-    l.addEventListener("animationend", () => l.classList.remove("swinging"));
-  });
+  }
 
   // Subtle parallax on cover bg (scroll-triggered, passive)
   const coverBg = document.querySelector<HTMLElement>(".cover-bg");

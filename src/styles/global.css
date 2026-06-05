@@ -139,19 +139,13 @@ a { color: inherit; }
 @keyframes sway { 0%,100% { transform: rotate(-2deg); } 50% { transform: rotate(2deg); } }
 .lantern svg { width: 100%; height: auto; display: block; }
 
-/* tap a lantern to give it a push (parent .lanterns is pointer-events:none) */
-.lantern { pointer-events: auto; cursor: pointer; }
-.lantern.swinging { animation: lantern-swing 1.6s cubic-bezier(.36, .07, .19, .97) both; }
-@keyframes lantern-swing {
-  0%   { transform: rotate(0deg); }
-  18%  { transform: rotate(14deg); }
-  38%  { transform: rotate(-10deg); }
-  56%  { transform: rotate(6deg); }
-  73%  { transform: rotate(-4deg); }
-  88%  { transform: rotate(2deg); }
-  100% { transform: rotate(0deg); }
-}
-.scroll-cue { cursor: pointer; }
+/* Tap or tap-and-hold-drag a lantern to swing it. Motion is driven by a JS
+   damped-spring (a la Apple CASpringAnimation / wobble) in the CoverGate script;
+   while grabbed, the idle sway is paused and the transform is set per-frame. */
+.lantern { pointer-events: auto; cursor: grab; touch-action: none; }
+.lantern.grabbing { cursor: grabbing; }
+.lantern.grabbing .lantern-glow { opacity: 1; }
+.lantern.springing { animation: none; } /* let JS own the transform */
 .lantern-glow {
   position: absolute; inset: -8px;
   background: radial-gradient(circle at 50% 50%, rgba(255,160,80,.35), transparent 60%);
@@ -163,6 +157,7 @@ a { color: inherit; }
   position: relative; z-index: 4;
   padding: 170px 32px 60px; text-align: center;
   height: 100%; display: flex; flex-direction: column;
+  pointer-events: none; /* all text — let taps fall through to the lanterns behind */
 }
 .cover .anniv {
   font-family: 'Cinzel', serif; font-size: 11px; letter-spacing: .4em;
