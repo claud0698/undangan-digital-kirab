@@ -31,9 +31,9 @@ const overlay = `<svg xmlns="http://www.w3.org/2000/svg" width="${W}" height="${
     <path d="M ${W - 30} ${H - 30} L ${W - 110} ${H - 30} M ${W - 30} ${H - 30} L ${W - 30} ${H - 110} M ${W - 30} ${H - 50} L ${W - 90} ${H - 50} L ${W - 90} ${H - 30} M ${W - 50} ${H - 30} L ${W - 50} ${H - 90} L ${W - 30} ${H - 90}"/>
   </g>
 
-  <!-- 慈 seal -->
+  <!-- 齊 seal -->
   <circle cx="${W / 2}" cy="135" r="55" fill="rgba(74,8,8,0.7)" stroke="#d8a847" stroke-width="1.5"/>
-  <text x="${W / 2}" y="158" text-anchor="middle" font-family="Noto Serif SC, serif" font-size="58" font-weight="700" fill="url(#goldText)">慈</text>
+  <text x="${W / 2}" y="158" text-anchor="middle" font-family="Noto Serif SC, serif" font-size="58" font-weight="700" fill="url(#goldText)">齊</text>
 
   <!-- eyebrow -->
   <text x="${W / 2}" y="240" text-anchor="middle" font-family="Cinzel, serif" font-size="18" letter-spacing="6" fill="#e9cf86" opacity="0.85">— MEMPERINGATI HUT KE-43 TAHUN —</text>

@@ -1,6 +1,6 @@
 /**
  * Single source of truth for invitation content.
- * Source: PROPOSAL DANA KIRAB 2026.pdf (Tjie Thien Ta Sen Bio, Tangerang).
+ * Source: PROPOSAL DANA KIRAB 2026 v2.pdf (Tjie Thien Ta Sen Bio / 齊天大聖廟, Tangerang).
  */
 
 export type Bilingual = { id: string; en: string };
@@ -32,7 +32,7 @@ export const invitation = {
     foundation: "Panitia Kirab Budaya & Ruwat Bumi 2026",
     name: "Tjie Thien Ta Sen Bio",
     location: "Kota Tangerang",
-    chinese: "慈天大聖廟",
+    chinese: "齊天大聖廟",
     logoText: "TTTSB",
   },
 
