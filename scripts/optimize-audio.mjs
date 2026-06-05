@@ -17,7 +17,6 @@ import { join, resolve } from "node:path";
 
 const AUDIO_DIR = resolve("public/audio");
 const OUT_MP3 = join(AUDIO_DIR, "song.mp3");
-const OUT_OGG = join(AUDIO_DIR, "song.ogg");
 
 function haveFfmpeg() {
   try { execFileSync("ffmpeg", ["-version"], { stdio: "ignore" }); return true; }
@@ -65,27 +64,12 @@ const trim =
 
 console.log(`\n▶ Optimizing ${input}`);
 
+// MP3 alone covers every modern browser, including iOS/Safari.
 execFileSync("ffmpeg", [
   "-y", "-i", input,
   "-ac", "1", "-ar", "44100", "-b:a", BITRATE, "-af", trim,
   OUT_MP3,
 ], { stdio: "inherit" });
 
-// OGG is a nice-to-have; some ffmpeg builds lack libvorbis. Don't fail on it —
-// MP3 alone already covers every modern browser, including iOS/Safari.
-let oggOk = false;
-try {
-  execFileSync("ffmpeg", [
-    "-y", "-i", input,
-    "-ac", "1", "-ar", "44100", "-c:a", "libvorbis", "-q:a", "2", "-af", trim,
-    OUT_OGG,
-  ], { stdio: "inherit" });
-  oggOk = true;
-} catch {
-  console.warn("\n⚠ Skipped song.ogg (this ffmpeg build has no libvorbis). MP3 is enough.");
-}
-
-console.log(`\n✓ Wrote:`);
-console.log(`   ${OUT_MP3}  (${kb(OUT_MP3)})`);
-if (oggOk) console.log(`   ${OUT_OGG}  (${kb(OUT_OGG)})`);
-console.log(`\nCommit the output(s) so Vercel serves them, then the player goes live.\n`);
+console.log(`\n✓ Wrote ${OUT_MP3}  (${kb(OUT_MP3)})`);
+console.log(`\nCommit it so Vercel serves it, then the player goes live.\n`);

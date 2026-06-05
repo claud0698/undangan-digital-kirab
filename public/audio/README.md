@@ -7,9 +7,8 @@ valid audio file exists here, so nothing breaks while this folder is empty.
 ## To enable music
 
 1. Obtain the track **legally** (see legal note below).
-2. Drop the file(s) into this folder using these exact names:
-   - `song.mp3`  ← required (broad browser support)
-   - `song.ogg`  ← optional, improves Safari/iOS reliability
+2. Drop the file into this folder as `song.mp3` (MP3 plays in every modern
+   browser, including iOS/Safari).
 3. That's it. The floating music toggle will appear and the track will start
    when the visitor taps **"Buka Undangan"**.
 
@@ -25,9 +24,9 @@ brew install ffmpeg        # one-time, if not installed
 npm run audio:optimize     # or: npm run audio:optimize -- path/to/track.wav
 ```
 
-This writes `song.mp3` + `song.ogg` — **mono, ~96 kbps, loudness-normalized,
-with start/end silence trimmed** so the loop is gapless and the file stays
-small (typically a few hundred kB for a short loop). Commit both outputs.
+This writes `song.mp3` — **mono, ~64 kbps, loudness-normalized, with start/end
+silence trimmed** so the loop is gapless and the file stays small (override the
+bitrate with `BITRATE=56k npm run audio:optimize`). Commit the output.
 
 Manual encoding target if you prefer: MP3 ~96–128 kbps, mono, trimmed.
 

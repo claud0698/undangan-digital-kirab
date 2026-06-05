@@ -557,13 +557,6 @@ section { position: relative; z-index: 2; padding: 72px 30px; }
 .bless-han { display: block; font-family: 'Noto Serif SC', serif; font-size: 24px; font-weight: 500; letter-spacing: .3em; color: var(--gold-bright); margin-bottom: 6px; }
 .bless-id { display: block; font-family: 'Cormorant Garamond', serif; font-style: italic; font-size: 16px; letter-spacing: .05em; color: var(--paper); opacity: .9; }
 
-/* MUSIC */
-.music-toggle { position: fixed; bottom: 22px; right: 22px; width: 48px; height: 48px; border-radius: 50%; background: var(--red-deep); color: var(--gold-pale); border: 1px solid var(--gold); display: flex; align-items: center; justify-content: center; cursor: pointer; z-index: 100; box-shadow: 0 4px 14px rgba(0,0,0,.4); transition: transform .2s ease; }
-.music-toggle:hover { transform: scale(1.06); }
-.music-toggle svg { width: 22px; height: 22px; fill: currentColor; }
-.music-toggle.playing svg { animation: spin 4s linear infinite; }
-@keyframes spin { to { transform: rotate(360deg); } }
-
 /* LANG */
 .lang-switch { position: fixed; top: 18px; right: 18px; z-index: 99; display: flex; background: rgba(74,8,8,.85); border: 1px solid var(--gold); backdrop-filter: blur(6px); overflow: hidden; }
 .lang-switch a { background: transparent; border: none; color: var(--gold-pale); font-family: 'Cinzel', serif; font-size: 10px; letter-spacing: .3em; padding: 8px 12px; cursor: pointer; text-transform: uppercase; text-decoration: none; }

@@ -4,10 +4,7 @@ interface Props { lang: Lang; src?: string; }
 const { lang, src = "/audio/song" } = Astro.props;
 const label = lang === "id" ? "Putar / hentikan musik" : "Play / pause music";
 ---
-<audio id="bgm" loop preload="auto" playsinline>
-  <source src={`${src}.mp3`} type="audio/mpeg" />
-  <source src={`${src}.ogg`} type="audio/ogg" />
-</audio>
+<audio id="bgm" loop preload="metadata" playsinline src={`${src}.mp3`}></audio>
 
 <button id="bgmToggle" class="bgm-toggle" type="button" aria-label={label} aria-pressed="false" hidden>
   <span class="bgm-eq" aria-hidden="true"><i></i><i></i><i></i><i></i></span>
@@ -44,8 +41,9 @@ const label = lang === "id" ? "Putar / hentikan musik" : "Play / pause music";
   .bgm-note {
     width: 22px; height: 22px; color: var(--gold-bright);
     opacity: 1;
-    animation: bgm-bob 4.8s ease-in-out infinite;
   }
+  /* only animate the note while it's the visible (paused) state */
+  .bgm-toggle:not(.playing) .bgm-note { animation: bgm-bob 4.8s ease-in-out infinite; }
   @keyframes bgm-bob {
     0%, 100% { transform: translateY(0) rotate(0deg); }
     50%      { transform: translateY(-2px) rotate(-4deg); }
@@ -57,11 +55,12 @@ const label = lang === "id" ? "Putar / hentikan musik" : "Play / pause music";
     width: 3px; height: 100%;
     background: var(--gold-bright);
     transform-origin: bottom;
-    animation: bgm-bounce 1.8s ease-in-out infinite;
   }
-  .bgm-eq i:nth-child(2) { animation-delay: 0.3s; }
-  .bgm-eq i:nth-child(3) { animation-delay: 0.6s; }
-  .bgm-eq i:nth-child(4) { animation-delay: 0.9s; }
+  /* only animate the bars while they're shown (playing) — no wasted frames */
+  .bgm-toggle.playing .bgm-eq i { animation: bgm-bounce 1.8s ease-in-out infinite; }
+  .bgm-toggle.playing .bgm-eq i:nth-child(2) { animation-delay: 0.3s; }
+  .bgm-toggle.playing .bgm-eq i:nth-child(3) { animation-delay: 0.6s; }
+  .bgm-toggle.playing .bgm-eq i:nth-child(4) { animation-delay: 0.9s; }
 
   .bgm-toggle.playing .bgm-note { opacity: 0; }
   .bgm-toggle.playing .bgm-eq { opacity: 1; }
@@ -114,7 +113,7 @@ const label = lang === "id" ? "Putar / hentikan musik" : "Play / pause music";
       clearTimeout(startTimer);
       if (fromStart) audio.currentTime = 0;
       try {
-        if (fade) audio.volume = 0;
+        audio.volume = fade ? 0 : 1; // always restore full volume on a plain resume
         await audio.play();
         setUI(true);
         localStorage.removeItem(STORE_KEY);
@@ -148,14 +147,22 @@ const label = lang === "id" ? "Putar / hentikan musik" : "Play / pause music";
     const remove = () => evs.forEach((e) => window.removeEventListener(e, firstGesture));
     evs.forEach((e) => window.addEventListener(e, firstGesture, { passive: true }));
 
-    // Reveal the control once a real audio file has loaded; try to autostart.
-    audio.addEventListener("loadeddata", () => {
+    // Reveal the control once metadata is available, then try to autostart.
+    const onReady = () => {
+      if (ready) return;
       ready = true;
       btn.hidden = false;
       playSoon();
-    });
-    // No file / failed source: keep everything hidden, log once.
+    };
+    audio.addEventListener("loadedmetadata", onReady);
+    // Metadata may already be loaded before this script ran (the event would
+    // have fired with no listener attached) — reveal right away in that case.
+    if (audio.readyState >= 1) onReady();
+    // No file / failed source: keep the control hidden. Ignore late errors once
+    // the track has already loaded, so a transient buffering error can't yank
+    // away a player that's visible and playing.
     audio.addEventListener("error", () => {
+      if (ready) return;
       btn.hidden = true;
       remove();
       console.warn("[bgm] no playable audio at /audio/song.mp3 — drop a file in public/audio/ to enable music.");
@@ -179,7 +186,7 @@ const label = lang === "id" ? "Putar / hentikan musik" : "Play / pause music";
         resumeOnReturn = !audio.paused;
         if (resumeOnReturn) audio.pause();
       } else if (resumeOnReturn && !muted()) {
-        audio.play().catch(() => {});
+        play(false, false); // resume via the helper: restores volume + UI state
       }
     });
   }
