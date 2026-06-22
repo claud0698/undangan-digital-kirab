@@ -1,0 +1,333 @@
+---
+import { type Lang } from "~/i18n";
+interface Props { lang: Lang; }
+const { lang } = Astro.props;
+
+// Placeholder logos — fake companies for layout preview. Swap with real ones later.
+const slots = [
+  { name: "Naga Mas", tag: "GROUP", mark: "龍" },
+  { name: "Sentosa Jaya", tag: "FOOD CO.", mark: "福" },
+  { name: "Lotus Bakti", tag: "FOUNDATION", mark: "蓮" },
+  { name: "Mega Sakti", tag: "FINANCE", mark: "金" },
+  { name: "Harmoni Abadi", tag: "PROPERTI", mark: "和" },
+  { name: "Surya Kencana", tag: "MEDIA", mark: "日" },
+];
+---
+<section class="sponsors" data-reveal>
+  <div class="eyebrow">{lang === "id" ? "Dukungan" : "Supported By"}</div>
+  <h2 class="section-title">{lang === "id" ? "Para Donatur & Sponsor" : "Donors & Sponsors"}</h2>
+  <div class="section-han">護 持 緣 主</div>
+  <div class="section-han-roman">{lang === "id" ? "Penyangga Berkah" : "Pillars of Blessing"}</div>
+  <div class="divider"><span class="line"></span><span class="dot"></span><span class="line"></span></div>
+
+  <p class="lead">
+    {lang === "id"
+      ? "Ruang ini didedikasikan bagi para donatur & sponsor yang berkenan mendukung Kirab Budaya & Ruwat Bumi 2026."
+      : "This space is dedicated to the donors & sponsors who graciously support Kirab Budaya & Ruwat Bumi 2026."}
+  </p>
+
+  <div class="logo-grid">
+    {slots.map((s) => (
+      <div class="logo-slot">
+        <span class="mark">{s.mark}</span>
+        <span class="wordmark">{s.name}</span>
+        <span class="tag">{s.tag}</span>
+      </div>
+    ))}
+  </div>
+
+  <p class="footnote">
+    <em>
+      {lang === "id"
+        ? "Tertarik menjadi bagian dari acara ini? Bagi Bapak/Ibu/Saudara/i, Umat, dan para Donatur yang ingin berpartisipasi, dana dapat disalurkan melalui:"
+        : "Interested in supporting this event? Donors who wish to participate may channel their contributions through:"}
+    </em>
+  </p>
+
+  <div class="donasi">
+    <div class="bank-card">
+      <span class="bank-label">{lang === "id" ? "Rekening Donasi" : "Donation Account"}</span>
+      <span class="bank-name">Bank BCA</span>
+      <span class="bank-no">10 888 666 72</span>
+      <span class="bank-holder">a/n. Yayasan Wihara Dhamma Budhi Bhakti</span>
+    </div>
+
+    <div class="contact-group">
+      <span class="contact-heading">{lang === "id" ? "Informasi & Konfirmasi Dana" : "Donation Info & Confirmation"}</span>
+      <ul class="contact-list">
+        <li>
+          <span class="c-name">Liliany Candra <em>· {lang === "id" ? "Wk. Bendahara" : "Vice Treasurer"}</em></span>
+          <a href="https://wa.me/6281369757888" target="_blank" rel="noopener">+62 813-6975-7888</a>
+        </li>
+        <li>
+          <span class="c-name">Bella Safira <em>· {lang === "id" ? "Dana & Sponsorship" : "Funds & Sponsorship"}</em></span>
+          <a href="https://wa.me/6281288921023" target="_blank" rel="noopener">+62 812-8892-1023</a>
+          <a class="c-email" href="mailto:bellassafiraa@gmail.com">bellassafiraa@gmail.com</a>
+        </li>
+      </ul>
+    </div>
+
+    <div class="contact-group">
+      <span class="contact-heading">{lang === "id" ? "PIC Pengiriman Data / Gambar Sponsor" : "PIC for Sponsor Data / Artwork"}</span>
+      <ul class="contact-list">
+        <li>
+          <span class="c-name">Lukas Susanto</span>
+          <a href="https://wa.me/6285692413938" target="_blank" rel="noopener">+62 856 9241 3938</a>
+          <a class="c-email" href="mailto:lian0901lucas@gmail.com">lian0901lucas@gmail.com</a>
+        </li>
+      </ul>
+    </div>
+  </div>
+
+  <div class="paramita">
+    <div class="paramita-han">檀 波 羅 蜜</div>
+    <div class="paramita-title">Dana Paramita</div>
+    <p>
+      {lang === "id"
+        ? "Sekecil apapun dana, sumbangsih dan dukungan yang diberikan oleh para donatur akan sangat bermanfaat bagi kami semua di hari Sejit Tjie Thien Ta Sen Bio yang ke-43 tahun."
+        : "No matter how small, every contribution and support given by our donors will be deeply meaningful for us all on the 43rd anniversary of Tjie Thien Ta Sen Bio."}
+    </p>
+    <p>
+      {lang === "id"
+        ? "Tujuan mulia ini akan terselenggara berkat kebajikan para donatur dan simpatisan."
+        : "This noble purpose is made possible through the virtue of our donors and well-wishers."}
+    </p>
+    <blockquote>
+      {lang === "id"
+        ? "“ Partisipasi Bapak/Ibu/Sdr/i sangat berguna untuk melestarikan Budaya Tionghoa dan Tjie Thien Ta Sen Bio Tangerang ”"
+        : "“ Your participation is invaluable in preserving Chinese culture and Tjie Thien Ta Sen Bio Tangerang ”"}
+    </blockquote>
+  </div>
+</section>
+
+<style>
+  .sponsors {
+    background: var(--paper-2);
+    padding: 70px 30px;
+  }
+  .sponsors .eyebrow { color: var(--red); }
+
+  .lead {
+    font-family: var(--font-display, 'Cormorant Garamond', serif);
+    font-style: italic;
+    text-align: center;
+    color: var(--ink);
+    opacity: 0.85;
+    max-width: 460px;
+    margin: 0 auto 2.2rem;
+    font-size: 16px;
+    line-height: 1.6;
+  }
+
+  .logo-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 14px;
+    max-width: 460px;
+    margin: 0 auto;
+  }
+
+  .logo-slot {
+    aspect-ratio: 3 / 2;
+    border: 1px solid var(--gold);
+    background: var(--paper);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 4px;
+    text-align: center;
+    padding: 10px;
+    transition: border-color 0.25s ease, background 0.25s ease, transform 0.25s ease;
+  }
+  .logo-slot:hover {
+    border-color: var(--red);
+    background: var(--paper-3);
+    transform: translateY(-2px);
+  }
+  .logo-slot .mark {
+    font-family: 'Noto Serif SC', serif;
+    font-size: 26px;
+    color: var(--red);
+    opacity: 0.7;
+    line-height: 1;
+    margin-bottom: 2px;
+  }
+  .logo-slot .wordmark {
+    font-family: 'Cormorant Garamond', serif;
+    font-weight: 600;
+    font-size: 18px;
+    letter-spacing: 0.02em;
+    color: var(--red-deep);
+    line-height: 1.1;
+  }
+  .logo-slot .tag {
+    font-family: 'Cinzel', serif;
+    font-size: 8px;
+    letter-spacing: 0.3em;
+    text-transform: uppercase;
+    color: var(--gold);
+  }
+
+  .donasi {
+    max-width: 460px;
+    margin: 1.6rem auto 0;
+    display: flex;
+    flex-direction: column;
+    gap: 18px;
+  }
+
+  .bank-card {
+    background: var(--red-deep);
+    border: 1px solid var(--gold);
+    padding: 20px 22px;
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+    text-align: center;
+  }
+  .bank-label {
+    font-family: 'Cinzel', serif;
+    font-size: 9px;
+    letter-spacing: 0.4em;
+    text-transform: uppercase;
+    color: var(--gold-bright);
+    margin-bottom: 4px;
+  }
+  .bank-name {
+    font-family: 'Cormorant Garamond', serif;
+    font-weight: 600;
+    font-size: 22px;
+    color: var(--paper);
+    line-height: 1;
+  }
+  .bank-no {
+    font-family: 'Cinzel', serif;
+    font-size: 22px;
+    letter-spacing: 0.12em;
+    color: var(--gold-pale);
+    margin: 2px 0;
+  }
+  .bank-holder {
+    font-family: 'Cormorant Garamond', serif;
+    font-style: italic;
+    font-size: 13px;
+    color: var(--paper);
+    opacity: 0.85;
+    line-height: 1.4;
+  }
+
+  .contact-group {
+    border-top: 1px dashed rgba(122, 16, 16, 0.3);
+    padding-top: 16px;
+    text-align: center;
+  }
+  .contact-heading {
+    display: block;
+    font-family: 'Cinzel', serif;
+    font-size: 9px;
+    letter-spacing: 0.35em;
+    text-transform: uppercase;
+    color: var(--red);
+    opacity: 0.8;
+    margin-bottom: 12px;
+  }
+  .contact-list {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 14px;
+  }
+  .contact-list li {
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+  }
+  .contact-list .c-name {
+    font-family: 'Cormorant Garamond', serif;
+    font-weight: 600;
+    font-size: 17px;
+    color: var(--red-deep);
+  }
+  .contact-list .c-name em {
+    font-weight: 400;
+    font-style: italic;
+    font-size: 13px;
+    color: var(--ink);
+    opacity: 0.65;
+  }
+  .contact-list a {
+    font-family: 'Cinzel', serif;
+    font-size: 14px;
+    letter-spacing: 0.06em;
+    color: var(--gold);
+    text-decoration: none;
+  }
+  .contact-list a:hover { color: var(--red-bright); }
+  .contact-list a.c-email {
+    font-family: 'Cormorant Garamond', serif;
+    font-style: italic;
+    font-size: 13px;
+    letter-spacing: 0;
+    color: var(--red);
+    opacity: 0.85;
+  }
+
+  .paramita {
+    max-width: 460px;
+    margin: 2.6rem auto 0;
+    padding-top: 2rem;
+    border-top: 1px solid var(--gold);
+    text-align: center;
+  }
+  .paramita-han {
+    font-family: 'Noto Serif SC', serif;
+    font-size: 16px;
+    letter-spacing: 0.3em;
+    color: var(--gold);
+    margin-bottom: 6px;
+  }
+  .paramita-title {
+    font-family: 'Cormorant Garamond', serif;
+    font-weight: 600;
+    font-size: 28px;
+    color: var(--red-deep);
+    line-height: 1;
+    margin-bottom: 1.2rem;
+  }
+  .paramita p {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 16px;
+    line-height: 1.6;
+    color: var(--ink);
+    opacity: 0.88;
+    margin: 0 auto 1rem;
+  }
+  .paramita blockquote {
+    font-family: 'Cormorant Garamond', serif;
+    font-style: italic;
+    font-size: 16px;
+    line-height: 1.6;
+    color: var(--red);
+    margin: 1.4rem 0 0;
+    padding: 0;
+  }
+
+  .footnote {
+    margin: 2.4rem auto 0;
+    text-align: center;
+    font-family: var(--font-display, 'Cormorant Garamond', serif);
+    color: var(--ink);
+    opacity: 0.8;
+    font-size: 14px;
+    line-height: 1.6;
+    max-width: 460px;
+  }
+  .footnote em { color: var(--red); }
+
+  @media (min-width: 720px) {
+    .logo-grid { grid-template-columns: repeat(3, 1fr); max-width: 620px; }
+  }
+</style>

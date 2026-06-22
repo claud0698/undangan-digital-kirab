@@ -103,7 +103,7 @@ const lanternSvg = `<svg viewBox="0 0 60 100" xmlns="http://www.w3.org/2000/svg"
   // Gentle auto-scroll: drifts the page down slowly, pauses the moment the
   // visitor scrolls themselves, and resumes after 5s of no interaction.
   const RESUME_MS = 5000;  // delay before (re)starting the drift
-  const SPEED = 0.3;       // px per frame (~18px/s) — very slow, calm drift
+  const SPEED = 0.6;       // px per frame (~36px/s) — calm but noticeable drift
   let rafId = 0, idleTimer = 0, active = false, pos = 0;
   const maxScroll = () => document.documentElement.scrollHeight - window.innerHeight;
 

@@ -6,6 +6,7 @@ import Hero from "./Hero.astro";
 import Countdown from "./Countdown.astro";
 import About from "./About.astro";
 import Schedule from "./Schedule.astro";
+import Sponsors from "./Sponsors.astro";
 import Footer from "./Footer.astro";
 import Audio from "./Audio.astro";
 import { type Lang } from "~/i18n";
@@ -22,6 +23,7 @@ const { lang } = Astro.props;
     <Countdown lang={lang} />
     <About lang={lang} />
     <Schedule lang={lang} />
+    <Sponsors lang={lang} />
     <Footer lang={lang} />
   </div>
   <Audio lang={lang} />
