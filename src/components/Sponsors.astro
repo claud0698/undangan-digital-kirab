@@ -38,9 +38,17 @@ const slots = [
 
   <p class="footnote">
     <em>
-      {lang === "id"
-        ? "Tertarik menjadi bagian dari acara ini? Bagi Bapak/Ibu/Saudara/i, Umat, dan para Donatur yang ingin berpartisipasi, dana dapat disalurkan melalui:"
-        : "Interested in supporting this event? Donors who wish to participate may channel their contributions through:"}
+      {lang === "id" ? (
+        <Fragment>
+          Tertarik menjadi bagian dari acara ini?<br />
+          Bagi Bapak/Ibu/Saudara/i, Umat, dan para Donatur yang ingin berpartisipasi, dana dapat disalurkan melalui:
+        </Fragment>
+      ) : (
+        <Fragment>
+          Interested in supporting this event?<br />
+          Donors who wish to participate may channel their contributions through:
+        </Fragment>
+      )}
     </em>
   </p>
 

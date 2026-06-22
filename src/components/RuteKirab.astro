@@ -1,0 +1,145 @@
+---
+import { invitation } from "~/config/invitation";
+import { type Lang } from "~/i18n";
+interface Props { lang: Lang; }
+const { lang } = Astro.props;
+---
+<section class="rute" data-reveal>
+  <div class="eyebrow">{lang === "id" ? "Jalur Arak-arakan" : "Procession Route"}</div>
+  <h2 class="section-title">{lang === "id" ? "Rute Kirab" : "The Route"}</h2>
+  <div class="section-han">遶 境 路 線</div>
+  <div class="section-han-roman">{lang === "id" ? "Mengelilingi Kota Tangerang" : "Around Kota Tangerang"}</div>
+  <div class="divider"><span class="line"></span><span class="dot"></span><span class="line"></span></div>
+
+  <p class="lead">
+    {lang === "id"
+      ? "Rute Kirab Budaya & Ruwat Bumi 2026 Tjie Thien Ta Sen Bio, mengelilingi Kota Tangerang."
+      : "The route of the Kirab Budaya & Ruwat Bumi 2026 of Tjie Thien Ta Sen Bio, circling Kota Tangerang."}
+  </p>
+
+  <div class="dist">
+    <span class="dist-num">5,8</span>
+    <span class="dist-unit">KM</span>
+    <span class="dist-note">{lang === "id" ? "satu putaran penuh" : "one full loop"}</span>
+  </div>
+
+  <a class="map-frame" href="/images/rute-kirab.jpg" target="_blank" rel="noopener"
+     aria-label={lang === "id" ? "Buka peta rute ukuran penuh" : "Open full-size route map"}>
+    <img
+      src="/images/rute-kirab.webp"
+      width="1500" height="2009"
+      alt={lang === "id"
+        ? "Peta rute Kirab Budaya & Ruwat Bumi 2026 keliling Kota Tangerang"
+        : "Map of the Kirab Budaya & Ruwat Bumi 2026 route around Kota Tangerang"}
+      loading="lazy" decoding="async"
+    />
+    <span class="zoom-hint">{lang === "id" ? "Ketuk untuk perbesar" : "Tap to enlarge"}</span>
+  </a>
+
+  <a href={invitation.venue.mapsUrl} target="_blank" rel="noopener" class="map-btn">
+    <span>◈</span> {lang === "id" ? "Titik Awal · Buka Peta" : "Start Point · Open Map"}
+  </a>
+</section>
+
+<style>
+  .rute {
+    background: var(--paper);
+    padding: 70px 30px;
+  }
+  .rute .eyebrow { color: var(--red); }
+
+  .lead {
+    font-family: 'Cormorant Garamond', serif;
+    font-style: italic;
+    text-align: center;
+    color: var(--ink);
+    opacity: 0.85;
+    max-width: 460px;
+    margin: 0 auto 1.6rem;
+    font-size: 16px;
+    line-height: 1.6;
+  }
+
+  .dist {
+    display: flex;
+    align-items: baseline;
+    justify-content: center;
+    gap: 8px;
+    margin-bottom: 1.6rem;
+  }
+  .dist-num {
+    font-family: 'Cormorant Garamond', serif;
+    font-weight: 600;
+    font-size: 52px;
+    line-height: 1;
+    color: var(--red-deep);
+  }
+  .dist-unit {
+    font-family: 'Cinzel', serif;
+    font-size: 18px;
+    letter-spacing: 0.15em;
+    color: var(--gold);
+  }
+  .dist-note {
+    font-family: 'Cormorant Garamond', serif;
+    font-style: italic;
+    font-size: 14px;
+    color: var(--ink);
+    opacity: 0.7;
+    margin-left: 6px;
+  }
+
+  .map-frame {
+    display: block;
+    max-width: 460px;
+    margin: 0 auto;
+    border: 1px solid var(--gold);
+    padding: 8px;
+    background: var(--paper-2);
+    position: relative;
+    line-height: 0;
+    transition: box-shadow 0.25s ease, transform 0.25s ease;
+  }
+  .map-frame:hover { box-shadow: 0 8px 24px rgba(74, 8, 8, 0.18); transform: translateY(-2px); }
+  .map-frame:focus-visible { outline: 2px solid var(--gold-bright); outline-offset: 3px; }
+  .map-frame img { width: 100%; height: auto; display: block; }
+  .zoom-hint {
+    position: absolute;
+    right: 16px; bottom: 16px;
+    font-family: 'Cinzel', serif;
+    font-size: 9px;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: var(--gold-pale);
+    background: rgba(74, 8, 8, 0.82);
+    padding: 5px 10px;
+    line-height: 1;
+  }
+
+  .map-btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    margin: 1.8rem auto 0;
+    text-align: center;
+    font-family: 'Cinzel', serif;
+    font-size: 11px;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: var(--gold-pale);
+    background: var(--red-deep);
+    border: 1px solid var(--gold);
+    padding: 12px 22px;
+    text-decoration: none;
+    transition: background 0.2s ease;
+  }
+  .map-btn:hover { background: var(--red); }
+  .map-btn span { color: var(--gold-bright); }
+
+  /* center the inline button */
+  .rute > .map-btn { display: flex; width: max-content; }
+
+  @media (min-width: 720px) {
+    .map-frame, .lead { max-width: 560px; }
+  }
+</style>
