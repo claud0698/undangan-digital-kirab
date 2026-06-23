@@ -60,13 +60,13 @@ Signed: **Fiter Lie** (Ketua Panitia), **Lukas Susanto** (Sekretaris)
 
 ### Hari 1 — Rabu, 23 September 2026 (13 Pwe Gwee 2577) · 08:00 WIB s/d Selesai
 - Fangsen 1000 Ekor Ikan
-- San Kung
 - Cia Peng An
 - Pentas Seni Barongsai & Liong
 
 ### Hari 2 — Kamis, 24 September 2026 (14 Pwe Gwee 2577) · 09:00 WIB s/d Selesai
 - 梁皇寶懺 Liang Huang Bao Chan — Ritual Pertobatan Kaisar Liang (Lt. 3)
 - Cia Peng An
+- Pendarasan Sutra (Liam Keng)
 - Sembahyang Bersama
 
 ### Hari 3 — Jumat, 25 September 2026 (15 Pwe Gwee 2577) · 09:00 WIB s/d Selesai

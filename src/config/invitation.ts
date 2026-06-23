@@ -105,7 +105,6 @@ export const invitation = {
       timeRange: "08.00 WIB s.d. selesai",
       items: [
         { id: "Fangsen 1.000 ekor ikan",       en: "Fangsen — Release of 1,000 Fish" },
-        { id: "San Kung",                      en: "San Kung" },
         { id: "Cia Peng An",                   en: "Cia Peng An" },
         { id: "Pentas Seni Barongsai & Liong", en: "Barongsai & Liong Performance" },
       ],
@@ -117,8 +116,9 @@ export const invitation = {
       timeRange: "09.00 WIB s.d. selesai",
       items: [
         { id: "梁皇寶懺 Liang Huang Bao Chan — Ritual Pertobatan Kaisar Liang (Lt. 3)", en: "梁皇寶懺 Liang Huang Bao Chan — Emperor Liang Repentance Ritual (3rd Floor)" },
-        { id: "Cia Peng An",        en: "Cia Peng An" },
-        { id: "Sembahyang Bersama", en: "Communal Prayer" },
+        { id: "Cia Peng An",                  en: "Cia Peng An" },
+        { id: "Pendarasan Sutra (Liam Keng)", en: "Sutra Recitation (Liam Keng)" },
+        { id: "Sembahyang Bersama",           en: "Communal Prayer" },
       ],
     },
     {
