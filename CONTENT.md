@@ -71,6 +71,7 @@ Signed: **Fiter Lie** (Ketua Panitia), **Lukas Susanto** (Sekretaris)
 
 ### Hari 3 — Jumat, 25 September 2026 (15 Pwe Gwee 2577) · 09:00 WIB s/d Selesai
 - 梁皇寶懺 Liang Huang Bao Chan — Ritual Pertobatan Kaisar Liang (Lt. 3)
+- San Kung
 - Cia Peng An
 - Pentas Seni Barongsai (Tuan Rumah)
 - Pemasangan 72 Lilin & Persembahan 72 Macam Buah oleh Umat

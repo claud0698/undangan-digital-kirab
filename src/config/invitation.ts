@@ -128,6 +128,7 @@ export const invitation = {
       timeRange: "09.00 WIB s.d. selesai",
       items: [
         { id: "梁皇寶懺 Liang Huang Bao Chan — Ritual Pertobatan Kaisar Liang (Lt. 3)", en: "梁皇寶懺 Liang Huang Bao Chan — Emperor Liang Repentance Ritual (3rd Floor)" },
+        { id: "San Kung",                             en: "San Kung" },
         { id: "Cia Peng An",                          en: "Cia Peng An" },
         { id: "Pentas Seni Barongsai (Tuan Rumah)",   en: "Barongsai Performance (Host)" },
         { id: "Pemasangan 72 Lilin & Persembahan 72 macam buah oleh umat", en: "Lighting of 72 Candles & Offering of 72 Fruit Varieties by Devotees" },
