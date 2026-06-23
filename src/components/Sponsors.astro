@@ -3,14 +3,14 @@ import { type Lang } from "~/i18n";
 interface Props { lang: Lang; }
 const { lang } = Astro.props;
 
-// Placeholder logos — fake companies for layout preview. Swap with real ones later.
+// Placeholder slots — generic labels for layout preview. Swap with real donor logos later.
 const slots = [
-  { name: "Naga Mas", tag: "GROUP", mark: "龍" },
-  { name: "Sentosa Jaya", tag: "FOOD CO.", mark: "福" },
-  { name: "Lotus Bakti", tag: "FOUNDATION", mark: "蓮" },
-  { name: "Mega Sakti", tag: "FINANCE", mark: "金" },
-  { name: "Harmoni Abadi", tag: "PROPERTI", mark: "和" },
-  { name: "Surya Kencana", tag: "MEDIA", mark: "日" },
+  { name: "PT", tag: "PERSEROAN", mark: "商" },
+  { name: "Badan Usaha", tag: "CV / UD", mark: "業" },
+  { name: "Perorangan", tag: "PRIBADI", mark: "人" },
+  { name: "PT", tag: "PERSEROAN", mark: "商" },
+  { name: "Badan Usaha", tag: "CV / UD", mark: "業" },
+  { name: "Perorangan", tag: "PRIBADI", mark: "人" },
 ];
 ---
 <section class="sponsors" data-reveal>
@@ -36,6 +36,12 @@ const slots = [
     ))}
   </div>
 
+  <p class="grid-caption">
+    {lang === "id"
+      ? "Contoh penempatan logo badan usaha / perorangan."
+      : "Example placement of company / individual logos."}
+  </p>
+
   <p class="footnote">
     <em>
       {lang === "id" ? (
@@ -58,6 +64,13 @@ const slots = [
       <span class="bank-name">Bank BCA</span>
       <span class="bank-no">10 888 666 72</span>
       <span class="bank-holder">a/n. Yayasan Wihara Dhamma Budhi Bhakti</span>
+      <span class="bank-note">
+        {lang === "id" ? (
+          <Fragment>Mohon tambahkan <strong>72</strong> di akhir nominal transfer (cth: Rp&nbsp;500.072) — kode khusus dana Kirab.</Fragment>
+        ) : (
+          <Fragment>Please add <strong>72</strong> to the end of your transfer amount (e.g. Rp&nbsp;500,072) — the unique code for Kirab funds.</Fragment>
+        )}
+      </span>
     </div>
 
     <div class="contact-group">
@@ -177,6 +190,17 @@ const slots = [
     color: var(--gold);
   }
 
+  .grid-caption {
+    max-width: 460px;
+    margin: 0.9rem auto 0;
+    text-align: center;
+    font-family: 'Cormorant Garamond', serif;
+    font-style: italic;
+    font-size: 13px;
+    color: var(--ink);
+    opacity: 0.6;
+  }
+
   .donasi {
     max-width: 460px;
     margin: 1.6rem auto 0;
@@ -223,6 +247,21 @@ const slots = [
     color: var(--paper);
     opacity: 0.85;
     line-height: 1.4;
+  }
+  .bank-note {
+    margin-top: 12px;
+    padding-top: 12px;
+    border-top: 1px dashed rgba(212, 175, 96, 0.4);
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 13.5px;
+    line-height: 1.5;
+    color: var(--gold-pale);
+  }
+  .bank-note strong {
+    color: var(--gold-bright);
+    font-weight: 700;
+    font-size: 1.15em;
+    letter-spacing: 0.05em;
   }
 
   .contact-group {
