@@ -156,7 +156,6 @@ export const invitation = {
         { id: "Ritual persiapan kirab",                            en: "Procession Preparation Ritual" },
         { id: "Penyerahan Kiem Sin / Sen Siang ditempatkan di Kio / Joli masing-masing", en: "Placement of Kiem Sin / Sen Siang into respective Kio / Joli" },
         { id: "Cia Peng An",                                       en: "Cia Peng An" },
-        { id: "San Kung",                                          en: "San Kung" },
         { id: "Pelepasan Kirab Budaya & Ruwat Bumi 2026",          en: "Procession Send-off — Kirab Budaya & Ruwat Bumi 2026" },
       ],
     },

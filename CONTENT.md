@@ -86,7 +86,6 @@ Signed: **Fiter Lie** (Ketua Panitia), **Lukas Susanto** (Sekretaris)
 - Ritual Persiapan Kirab
 - Penyerahan Kiem Sin / Sen Siang ditempatkan di Kio / Joli masing-masing
 - Cia Peng An
-- San Kung
 - **Pelepasan Kirab Budaya & Ruwat Bumi 2026**
 - Selesai
 
