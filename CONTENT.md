@@ -21,10 +21,10 @@ Use this file to cross-reference what's in `src/config/invitation.ts`.
 
 ## 2 · Date
 
-- **24 – 27 September 2026**
-- Imlek: **14 – 17 Pwe Gwee 2577**
+- **23 – 27 September 2026**
+- Imlek: **13 – 17 Pwe Gwee 2577**
 - **Puncak Acara:** Minggu, 27 September 2026 (17 Pwe Gwee 2577 / 八月十七 Bā yuè shíqī)
-- All days start: 09.00 WIB s/d Selesai
+- Days start: 08.00 WIB (23, 26, 27) / 09.00 WIB (24, 25) s/d Selesai
 
 ## 3 · Pengantar (Salam Pembuka)
 
@@ -58,32 +58,34 @@ Signed: **Fiter Lie** (Ketua Panitia), **Lukas Susanto** (Sekretaris)
 
 ## 7 · Susunan Acara
 
-### Hari 1 — Kamis, 24 September 2026 (14 Pwe Gwee 2577) · 09:00 WIB s/d Selesai
+### Hari 1 — Rabu, 23 September 2026 (13 Pwe Gwee 2577) · 08:00 WIB s/d Selesai
 - Fangsen 1000 Ekor Ikan
+- San Kung
 - Cia Peng An
 - Pentas Seni Barongsai & Liong
-- Pendarasan Sutra (Liam Keng)
+
+### Hari 2 — Kamis, 24 September 2026 (14 Pwe Gwee 2577) · 09:00 WIB s/d Selesai
+- 梁皇寶懺 Liang Huang Bao Chan — Ritual Pertobatan Kaisar Liang (Lt. 3)
+- Cia Peng An
 - Sembahyang Bersama
 
-### Hari 2 — Jumat, 25 September 2026 (15 Pwe Gwee 2577) · 09:00 WIB s/d Selesai
-- San Kung
+### Hari 3 — Jumat, 25 September 2026 (15 Pwe Gwee 2577) · 09:00 WIB s/d Selesai
+- 梁皇寶懺 Liang Huang Bao Chan — Ritual Pertobatan Kaisar Liang (Lt. 3)
 - Cia Peng An
-- Pemasangan 72 Lilin oleh Umat
-- Pentas Seni Barongsai
-- Persembahan 72 Macam Buah oleh Umat
-- Pendarasan Sutra (Liam Keng)
-- Sembahyang Bersama
+- Pentas Seni Barongsai (Tuan Rumah)
+- Pemasangan 72 Lilin & Persembahan 72 Macam Buah oleh Umat
+- Sembahyang Bersama & Pembagian Wisit + Minyak Obat
 
-### Hari 3 — Sabtu, 26 September 2026 (16 Pwe Gwee 2577) · 09:00 WIB s/d Selesai
-- San Kung
-- Penerimaan Kiem Sin / Sen Siang & Kio / Joli
+### Hari 4 — Sabtu, 26 September 2026 (16 Pwe Gwee 2577) · 08:00 WIB s/d Selesai
+- Penerimaan Kiem Sin / Sen Siang & Kio / Joli (Lt. 2)
+- 梁皇寶懺 Liang Huang Bao Chan — Ritual Pertobatan Kaisar Liang (Lt. 3)
 - Cia Peng An
 
-### Hari 4 — Minggu, 27 September 2026 — **PUNCAK ACARA** (17 Pwe Gwee 2577) · 09:00 WIB s/d Selesai
-- San Kung
+### Hari 5 — Minggu, 27 September 2026 — **PUNCAK ACARA** (17 Pwe Gwee 2577) · 08:00 WIB s/d Selesai
 - Ritual Persiapan Kirab
-- Cia Peng An
 - Penyerahan Kiem Sin / Sen Siang ditempatkan di Kio / Joli masing-masing
+- Cia Peng An
+- San Kung
 - **Pelepasan Kirab Budaya & Ruwat Bumi 2026**
 - Selesai
 
