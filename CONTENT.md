@@ -78,8 +78,8 @@ Signed: **Fiter Lie** (Ketua Panitia), **Lukas Susanto** (Sekretaris)
 - Sembahyang Bersama & Pembagian Wisit + Minyak Obat
 
 ### Hari 4 — Sabtu, 26 September 2026 (16 Pwe Gwee 2577) · 08:00 WIB s/d Selesai
-- Penerimaan Kiem Sin / Sen Siang & Kio / Joli (Lt. 2)
 - 梁皇寶懺 Liang Huang Bao Chan — Ritual Pertobatan Kaisar Liang (Lt. 3)
+- Penerimaan Kiem Sin / Sen Siang & Kio / Joli (Lt. 2)
 - Cia Peng An
 
 ### Hari 5 — Minggu, 27 September 2026 — **PUNCAK ACARA** (17 Pwe Gwee 2577) · 08:00 WIB s/d Selesai

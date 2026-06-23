@@ -141,8 +141,8 @@ export const invitation = {
       imlekLabel: "八月十六 · Pwe Gwee 16 / Imlek 2577",
       timeRange: "08.00 WIB s.d. selesai",
       items: [
-        { id: "Penerimaan Kiem Sin / Sen Siang & Kio / Joli (Lt. 2)", en: "Reception of Kiem Sin / Sen Siang & Kio / Joli (2nd Floor)" },
         { id: "梁皇寶懺 Liang Huang Bao Chan — Ritual Pertobatan Kaisar Liang (Lt. 3)", en: "梁皇寶懺 Liang Huang Bao Chan — Emperor Liang Repentance Ritual (3rd Floor)" },
+        { id: "Penerimaan Kiem Sin / Sen Siang & Kio / Joli (Lt. 2)", en: "Reception of Kiem Sin / Sen Siang & Kio / Joli (2nd Floor)" },
         { id: "Cia Peng An",                             en: "Cia Peng An" },
       ],
     },
