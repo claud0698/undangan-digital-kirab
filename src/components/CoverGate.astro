@@ -104,7 +104,7 @@ const lanternSvg = `<svg viewBox="0 0 60 100" xmlns="http://www.w3.org/2000/svg"
   // visitor scrolls themselves, and resumes after 5s of no interaction.
   const RESUME_MS = 5000;  // delay before (re)starting the drift
   // Drift speed in px/second. Override via PUBLIC_SCROLL_SPEED env var (.env).
-  const SPEED = Number(import.meta.env.PUBLIC_SCROLL_SPEED) || 38;
+  const SPEED = Number(import.meta.env.PUBLIC_SCROLL_SPEED) || 40;
   let rafId = 0, idleTimer = 0, active = false, pos = 0, lastT = 0;
   const maxScroll = () => document.documentElement.scrollHeight - window.innerHeight;
 
