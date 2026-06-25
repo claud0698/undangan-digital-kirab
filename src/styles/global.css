@@ -398,6 +398,13 @@ section { position: relative; z-index: 2; padding: 72px 30px; }
 .timeline-day.is-peak .events li { color: var(--paper); border-color: rgba(216,168,71,.2); }
 .timeline-day.is-peak .events li::before { color: var(--gold-bright); }
 .timeline-day.is-peak .events li.highlight { color: var(--gold-pale); font-weight: 600; font-size: 16px; }
+.timeline-day .events .ev-time { display: block; font-family: 'Cinzel', serif; font-size: 9.5px; letter-spacing: .12em; color: var(--gold); opacity: .85; margin-bottom: 1px; }
+.timeline-day .events .ev-name { display: block; }
+.timeline-day.is-peak .events .ev-time { color: var(--gold-bright); }
+.timeline-day .events .sub-events { list-style: none; margin: 6px 0 2px; padding: 0 0 0 16px; border-left: 1px solid rgba(122,16,16,.18); }
+.timeline-day .events .sub-events li { border-bottom: none; padding: 4px 0 4px 16px; font-size: 13.5px; }
+.timeline-day .events .sub-events li::before { content: "·"; top: 2px; font-size: 14px; }
+.timeline-day.is-peak .events .sub-events { border-left-color: rgba(216,168,71,.28); }
 .peak-badge { display: inline-block; margin-top: 8px; font-family: 'Cinzel', serif; font-size: 9px; letter-spacing: .35em; padding: 4px 10px; background: var(--gold-bright); color: var(--red-deep); text-transform: uppercase; }
 
 @media (min-width: 720px) {
@@ -417,6 +424,9 @@ section { position: relative; z-index: 2; padding: 72px 30px; }
   .timeline-day:nth-child(odd) { padding-right: 30px; text-align: right; }
   .timeline-day:nth-child(odd) .events li { padding-left: 0; padding-right: 20px; text-align: right; }
   .timeline-day:nth-child(odd) .events li::before { left: auto; right: 0; }
+  .timeline-day:nth-child(odd) .events .sub-events { padding: 0 16px 0 0; border-left: none; border-right: 1px solid rgba(122,16,16,.18); }
+  .timeline-day:nth-child(odd) .events .sub-events li { padding: 4px 16px 4px 0; }
+  .timeline-day:nth-child(odd) .events .sub-events li::before { left: auto; right: 0; }
   .timeline-day:nth-child(odd) .time-row { justify-content: flex-end; }
   .timeline-day.is-peak.full-width { width: 100%; margin-left: 0; padding-right: 0; padding-left: 0; text-align: center; }
   .timeline-day.is-peak.full-width .marker { left: 50%; right: auto; transform: translateX(-50%); top: -28px; }

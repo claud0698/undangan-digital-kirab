@@ -5,12 +5,14 @@
 
 export type Bilingual = { id: string; en: string };
 
+export type ScheduleItem = Bilingual & { time?: string; children?: ScheduleItem[] };
+
 export type ScheduleDay = {
   date: string;
   dateLabel: Bilingual;
   imlekLabel: string;
   timeRange: string;
-  items: Bilingual[];
+  items: ScheduleItem[];
   climax?: boolean;
 };
 
@@ -104,9 +106,12 @@ export const invitation = {
       imlekLabel: "八月十三 · Pwe Gwee 13 / Imlek 2577",
       timeRange: "08.00 WIB s.d. selesai",
       items: [
-        { id: "Fangsen 1.000 ekor ikan",       en: "Fangsen — Release of 1,000 Fish" },
-        { id: "Cia Peng An",                   en: "Cia Peng An" },
-        { id: "Pentas Seni Barongsai & Liong", en: "Barongsai & Liong Performance" },
+        { time: "08.00 – 10.00", id: "Fangsen 1.000 ekor ikan",       en: "Fangsen — Release of 1,000 Fish" },
+        { time: "11.00 – 12.00", id: "San Kung",                      en: "San Kung" },
+        { time: "12.00 – 20.00", id: "Cia Peng An",                   en: "Cia Peng An", children: [
+          { time: "15.00 – 18.00", id: "Pentas Seni Barongsai & Liong", en: "Barongsai & Liong Performance" },
+        ] },
+        { time: "22.00 – 24.00", id: "Sembahyang Bersama",            en: "Communal Prayer" },
       ],
     },
     {
@@ -115,10 +120,9 @@ export const invitation = {
       imlekLabel: "八月十四 · Pwe Gwee 14 / Imlek 2577",
       timeRange: "09.00 WIB s.d. selesai",
       items: [
-        { id: "梁皇寶懺 Liang Huang Bao Chan — Ritual Pertobatan Kaisar Liang (Lt. 3)", en: "梁皇寶懺 Liang Huang Bao Chan — Emperor Liang Repentance Ritual (3rd Floor)" },
-        { id: "Cia Peng An",                  en: "Cia Peng An" },
-        { id: "Pendarasan Sutra (Liam Keng)", en: "Sutra Recitation (Liam Keng)" },
-        { id: "Sembahyang Bersama",           en: "Communal Prayer" },
+        { time: "09.00 – 17.00", id: "梁皇寶懺 Liang Huang Bao Chan — Ritual Pertobatan Kaisar Liang (Lt. 3)", en: "梁皇寶懺 Liang Huang Bao Chan — Emperor Liang Repentance Ritual (3rd Floor)" },
+        { time: "12.00 – 20.00", id: "Cia Peng An",                  en: "Cia Peng An" },
+        { time: "22.00 – 24.00", id: "Sembahyang Bersama",           en: "Communal Prayer" },
       ],
     },
     {
@@ -127,12 +131,12 @@ export const invitation = {
       imlekLabel: "八月十五 · Pwe Gwee 15 / Imlek 2577",
       timeRange: "09.00 WIB s.d. selesai",
       items: [
-        { id: "梁皇寶懺 Liang Huang Bao Chan — Ritual Pertobatan Kaisar Liang (Lt. 3)", en: "梁皇寶懺 Liang Huang Bao Chan — Emperor Liang Repentance Ritual (3rd Floor)" },
-        { id: "San Kung",                             en: "San Kung" },
-        { id: "Cia Peng An",                          en: "Cia Peng An" },
-        { id: "Pentas Seni Barongsai (Tuan Rumah)",   en: "Barongsai Performance (Host)" },
-        { id: "Pemasangan 72 Lilin & Persembahan 72 macam buah oleh umat", en: "Lighting of 72 Candles & Offering of 72 Fruit Varieties by Devotees" },
-        { id: "Sembahyang Bersama & Pembagian Wisit + Minyak Obat", en: "Communal Prayer & Distribution of Wisit + Medicinal Oil" },
+        { time: "09.00 – 17.00", id: "梁皇寶懺 Liang Huang Bao Chan — Ritual Pertobatan Kaisar Liang (Lt. 3)", en: "梁皇寶懺 Liang Huang Bao Chan — Emperor Liang Repentance Ritual (3rd Floor)" },
+        { time: "12.00 – 20.00", id: "Cia Peng An",                          en: "Cia Peng An", children: [
+          { time: "18.00 – 20.00", id: "Pentas Seni Barongsai (Tuan Rumah)",   en: "Barongsai Performance (Host)" },
+          { time: "19.00 – 20.00", id: "Pemasangan 72 Lilin & Persembahan 72 macam buah oleh umat", en: "Lighting of 72 Candles & Offering of 72 Fruit Varieties by Devotees" },
+        ] },
+        { time: "22.00 – 24.00", id: "Sembahyang Bersama & Pembagian Wisit + Minyak Obat", en: "Communal Prayer & Distribution of Wisit + Medicinal Oil" },
       ],
     },
     {
@@ -141,9 +145,9 @@ export const invitation = {
       imlekLabel: "八月十六 · Pwe Gwee 16 / Imlek 2577",
       timeRange: "08.00 WIB s.d. selesai",
       items: [
-        { id: "梁皇寶懺 Liang Huang Bao Chan — Ritual Pertobatan Kaisar Liang (Lt. 3)", en: "梁皇寶懺 Liang Huang Bao Chan — Emperor Liang Repentance Ritual (3rd Floor)" },
-        { id: "Penerimaan Kiem Sin / Sen Siang & Kio / Joli (Lt. 2)", en: "Reception of Kiem Sin / Sen Siang & Kio / Joli (2nd Floor)" },
-        { id: "Cia Peng An",                             en: "Cia Peng An" },
+        { time: "09.00 – 17.00", id: "梁皇寶懺 Liang Huang Bao Chan — Ritual Pertobatan Kaisar Liang (Lt. 3)", en: "梁皇寶懺 Liang Huang Bao Chan — Emperor Liang Repentance Ritual (3rd Floor)" },
+        { time: "12.00 – 20.00", id: "Cia Peng An",                             en: "Cia Peng An" },
+        { time: "08.00 – 20.00", id: "Penerimaan Kiem Sin / Sen Siang & Kio / Joli (Lt. 2)", en: "Reception of Kiem Sin / Sen Siang & Kio / Joli (2nd Floor)" },
       ],
     },
     {
@@ -153,10 +157,11 @@ export const invitation = {
       timeRange: "08.00 WIB s.d. selesai",
       climax: true,
       items: [
-        { id: "Ritual persiapan kirab",                            en: "Procession Preparation Ritual" },
-        { id: "Penyerahan Kiem Sin / Sen Siang ditempatkan di Kio / Joli masing-masing", en: "Placement of Kiem Sin / Sen Siang into respective Kio / Joli" },
-        { id: "Cia Peng An",                                       en: "Cia Peng An" },
-        { id: "Pelepasan Kirab Budaya & Ruwat Bumi 2026",          en: "Procession Send-off — Kirab Budaya & Ruwat Bumi 2026" },
+        { time: "11.00 – 12.00", id: "San Kung",                                          en: "San Kung" },
+        { time: "08.00 – 10.00", id: "Ritual persiapan kirab",                            en: "Procession Preparation Ritual" },
+        { time: "08.00 – 20.00", id: "Cia Peng An",                                       en: "Cia Peng An" },
+        { time: "08.00 – 12.00", id: "Penyerahan Kiem Sin / Sen Siang ditempatkan di Kio / Joli masing-masing", en: "Placement of Kiem Sin / Sen Siang into respective Kio / Joli" },
+        { time: "14.00 – 18.00", id: "Pelepasan Kirab Budaya & Ruwat Bumi 2026",          en: "Procession Send-off — Kirab Budaya & Ruwat Bumi 2026" },
       ],
     },
   ] satisfies ScheduleDay[],

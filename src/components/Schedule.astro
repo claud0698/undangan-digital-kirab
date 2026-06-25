@@ -51,7 +51,18 @@ const labels = {
             <ul class="events">
               {day.items.map((it, i) => (
                 <li class={day.climax && i === day.items.length - 1 ? "highlight" : ""}>
-                  {pick(it, lang)}
+                  {it.time && <span class="ev-time">{it.time}</span>}
+                  <span class="ev-name">{pick(it, lang)}</span>
+                  {it.children && (
+                    <ul class="sub-events">
+                      {it.children.map((sub) => (
+                        <li>
+                          {sub.time && <span class="ev-time">{sub.time}</span>}
+                          <span class="ev-name">{pick(sub, lang)}</span>
+                        </li>
+                      ))}
+                    </ul>
+                  )}
                 </li>
               ))}
             </ul>
