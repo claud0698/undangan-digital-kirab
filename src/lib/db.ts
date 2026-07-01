@@ -95,3 +95,31 @@ export async function findAdminByUsername(username: string): Promise<Admin | nul
   `) as Admin[];
   return rows[0] ?? null;
 }
+
+// ─── login throttle ────────────────────────────────────────────────
+const LOGIN_MAX_FAILS = 8;
+const LOGIN_LOCK_MINUTES = 15;
+
+export async function getLoginLock(ip: string): Promise<{ locked_until: string | null } | null> {
+  const rows = (await sql`select locked_until from login_attempts where ip = ${ip}`) as {
+    locked_until: string | null;
+  }[];
+  return rows[0] ?? null;
+}
+
+/** Record a failed attempt; lock the IP once it crosses the threshold (resetting the counter). */
+export async function recordLoginFail(ip: string): Promise<void> {
+  await sql`
+    insert into login_attempts (ip, fails, updated_at) values (${ip}, 1, now())
+    on conflict (ip) do update set
+      fails = case when login_attempts.fails + 1 >= ${LOGIN_MAX_FAILS} then 0 else login_attempts.fails + 1 end,
+      locked_until = case when login_attempts.fails + 1 >= ${LOGIN_MAX_FAILS}
+                          then now() + (${LOGIN_LOCK_MINUTES} || ' minutes')::interval
+                          else login_attempts.locked_until end,
+      updated_at = now()
+  `;
+}
+
+export async function resetLoginAttempts(ip: string): Promise<void> {
+  await sql`delete from login_attempts where ip = ${ip}`;
+}

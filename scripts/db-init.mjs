@@ -46,6 +46,16 @@ async function main() {
   // Audit: who last modified the row (created_by already exists).
   await sql`alter table users add column if not exists updated_by bigint references admins(id) on delete set null`;
 
+  // Login throttle: per-IP failed-attempt counter + temporary lockout.
+  await sql`
+    create table if not exists login_attempts (
+      ip           text        primary key,
+      fails        int         not null default 0,
+      locked_until timestamptz,
+      updated_at   timestamptz not null default now()
+    )
+  `;
+
   const tables = await sql`
     select table_name from information_schema.tables
     where table_schema = 'public' and table_name in ('admins', 'users')

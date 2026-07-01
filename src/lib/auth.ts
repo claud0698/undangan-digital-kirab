@@ -26,6 +26,13 @@ export function verifyPassword(password: string, stored: string): boolean {
   return actual.length === expected.length && timingSafeEqual(actual, expected);
 }
 
+// Run a scrypt of equal cost when the username doesn't exist, so response time
+// can't be used to enumerate valid admin usernames.
+const DUMMY_HASH = hashPassword("timing-equalizer-please-ignore");
+export function dummyVerify(password: string): void {
+  verifyPassword(password, DUMMY_HASH);
+}
+
 // ─── signed session token ──────────────────────────────────────────
 export type Session = { id: number; username: string; exp: number };
 

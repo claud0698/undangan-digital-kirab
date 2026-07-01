@@ -8,9 +8,10 @@ export default defineConfig({
   // Invitation pages stay prerendered/static (CDN-cached on Vercel).
   // Only /admin + /api/* opt into on-demand rendering via `export const prerender = false`.
   adapter: vercel(),
-  // Astro's default origin check rejects form POSTs behind Vercel's proxy (the
-  // perceived host differs from the request Origin). CSRF is instead handled by
-  // our SameSite=Lax httpOnly session cookie + CORS on the JSON API.
+  // Astro's default origin check rejects form POSTs behind Vercel's proxy (its
+  // perceived host differs from the request Origin). We disable it and instead
+  // enforce our own Origin-vs-(x-forwarded-)host check in every state-changing
+  // API handler (see src/lib/csrf.ts), backed by a SameSite=Lax httpOnly cookie.
   security: { checkOrigin: false },
   i18n: {
     defaultLocale: "id",

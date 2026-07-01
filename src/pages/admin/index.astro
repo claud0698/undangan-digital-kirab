@@ -192,7 +192,13 @@ const fmtDate = (iso: string) =>
       <div class="login">
         <h1>Panel Admin</h1>
         <div class="sub">Undangan Kirab Budaya 2026</div>
-        {loginError && <div class="err">Username atau password salah.</div>}
+        {loginError && (
+          <div class="err">
+            {loginError === "locked"
+              ? "Terlalu banyak percobaan gagal. Coba lagi dalam beberapa menit."
+              : "Username atau password salah."}
+          </div>
+        )}
         <form method="POST" action="/api/auth/login">
           <div class="field">
             <label for="u">Username</label>
@@ -346,7 +352,7 @@ const fmtDate = (iso: string) =>
         const addForm = document.getElementById("addForm");
 
         const escapeHtml = (s) =>
-          String(s ?? "").replace(/[&<>"]/g, (c) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;" }[c]));
+          String(s ?? "").replace(/[&<>"']/g, (c) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[c]));
         const slugify = (s) =>
           String(s ?? "").toLowerCase().normalize("NFKD").replace(/[^a-z0-9]+/g, "");
         const displayName = (sal, name) => `${sal ? sal + " " : ""}${name}`.trim();
@@ -401,10 +407,15 @@ const fmtDate = (iso: string) =>
             `<button class="btn btn-ghost btn-sm" data-page="next"${page >= totalPages ? " disabled" : ""}>Berikutnya ›</button>`;
         };
 
+        // Search only the real guest data — NOT tr.textContent (which includes the
+        // category <select>'s full option list, both URLs, and button labels).
+        const haystack = (tr) =>
+          `${tr.dataset.salutation} ${tr.dataset.name} ${tr.dataset.address} ${tr.querySelector(".cat-select")?.value ?? ""} ${tr.dataset.slug}`.toLowerCase();
+
         const applyView = () => {
           const all = Array.from(rows.children);
           const visible = sortRows(all.filter((tr) =>
-            tr.textContent.toLowerCase().includes(query) &&
+            haystack(tr).includes(query) &&
             (!catFilter || (tr.querySelector(".cat-select")?.value === catFilter))
           ));
           const hidden = all.filter((tr) => !visible.includes(tr));
@@ -461,7 +472,7 @@ const fmtDate = (iso: string) =>
             `<td data-label="Kategori"><select class="cat-select" data-field="category">${catOptions(g.category)}</select></td>` +
             editCell("slug", g.slug, "Tautan Kustom", "slug") +
             `<td data-label="Tautan"><div class="link-col">` +
-              `<div class="link-row" data-pretty-row${pretty ? "" : ' style="display:none"'}><span class="tag">Custom</span><a href="${pretty}" target="_blank" rel="noopener" data-link-pretty>${escapeHtml(pretty)}</a><button class="btn btn-ghost btn-sm" data-copy>Salin</button></div>` +
+              `<div class="link-row" data-pretty-row${pretty ? "" : ' style="display:none"'}><span class="tag">Custom</span><a href="${escapeHtml(pretty)}" target="_blank" rel="noopener" data-link-pretty>${escapeHtml(pretty)}</a><button class="btn btn-ghost btn-sm" data-copy>Salin</button></div>` +
               `<div class="link-row"><span class="tag">Lengkap</span><a href="${escapeHtml(full)}" target="_blank" rel="noopener" data-link-full>${escapeHtml(full)}</a><button class="btn btn-ghost btn-sm" data-copy>Salin</button></div>` +
             `</div></td>` +
             `<td data-label="Ditambah" class="date-cell">${escapeHtml(fmtDate(g.created_at))}</td>` +
@@ -516,7 +527,7 @@ const fmtDate = (iso: string) =>
           const baseline = cell.dataset.baseline ?? "";
           if (value === baseline) return;
 
-          if (field === "slug") value = slugify(value.replace(/[^a-z0-9-]/g, ""));
+          if (field === "slug") value = value.toLowerCase().replace(/[^a-z0-9-]+/g, ""); // keep dashes (match API)
           if ((field === "salutation" || field === "name" || field === "address") && !value) {
             toast(field + " tidak boleh kosong", true);
             cell.textContent = baseline;
