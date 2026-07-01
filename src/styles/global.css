@@ -296,7 +296,7 @@ section { position: relative; z-index: 2; padding: 72px 30px; }
 .hero-img::after { content: ""; position: absolute; inset: 0; background: radial-gradient(ellipse at center, rgba(0,0,0,.35) 0%, rgba(0,0,0,.7) 80%); pointer-events: none; }
 .hero-img .quote { position: absolute; inset: 0; display: flex; align-items: center; justify-content: center; flex-direction: column; color: var(--paper); text-align: center; padding: 0 36px; z-index: 2; }
 .hero-img .quote .han { font-family: 'Noto Serif SC', serif; font-size: 48px; color: var(--gold-bright); margin-bottom: 14px; text-shadow: 0 0 24px rgba(0,0,0,.9), 0 2px 8px rgba(0,0,0,.8); }
-.hero-img .quote .han-roman.bright { color: #fff5d8; opacity: 1; font-size: 18px; font-weight: 600; text-shadow: 0 2px 12px rgba(0,0,0,.85), 0 0 20px rgba(0,0,0,.6); margin-bottom: 14px; }
+.hero-img .quote .han-roman.bright { color: #fff5d8; opacity: 1; font-size: 18px; font-weight: 600; text-shadow: 0 2px 12px rgba(0,0,0,.85), 0 0 20px rgba(0,0,0,.6); margin: 0 0 14px; }
 .hero-img .quote p { font-family: 'Cormorant Garamond', serif; font-style: italic; font-size: 18px; line-height: 1.5; color: var(--paper); max-width: 320px; text-shadow: 0 2px 16px rgba(0,0,0,.95), 0 0 6px rgba(0,0,0,.8); font-weight: 500; }
 
 /* DETAILS */
@@ -591,7 +591,7 @@ section { position: relative; z-index: 2; padding: 72px 30px; }
 .intro-overlay { position: fixed; inset: 0; background-color: #1a0303; background-image: radial-gradient(ellipse 88% 56% at 50% 54%, rgba(0,0,0,.55), rgba(0,0,0,0) 72%), linear-gradient(180deg, rgba(34,7,7,.9), rgba(13,3,3,.96)), url("/gallery/gate.webp"); background-size: cover; background-position: center; z-index: 200; display: flex; flex-direction: column; align-items: center; justify-content: safe center; overflow-y: auto; color: var(--paper); text-align: center; padding: 34px 30px; transition: opacity .8s ease; }
 .intro-overlay.hidden { opacity: 0; pointer-events: none; }
 .intro-overlay .han { font-family: 'Noto Serif SC', serif; font-size: 58px; color: var(--gold-bright); margin-bottom: 6px; text-shadow: 0 2px 18px rgba(0,0,0,.6); }
-.intro-overlay .han-roman { font-family: 'Cormorant Garamond', serif; font-style: normal; font-size: 25px; font-weight: 600; color: var(--paper); margin-bottom: 12px; letter-spacing: .04em; opacity: 1; text-shadow: 0 2px 12px rgba(0,0,0,.55); }
+.intro-overlay .han-roman { font-family: 'Cormorant Garamond', serif; font-style: normal; font-size: 25px; font-weight: 600; color: var(--paper); margin: 0 0 12px; letter-spacing: .04em; opacity: 1; text-shadow: 0 2px 12px rgba(0,0,0,.55); }
 .intro-overlay .label { font-family: 'Cinzel', serif; font-size: 11px; letter-spacing: .38em; color: var(--gold-pale); margin-bottom: 12px; text-transform: uppercase; }
 .intro-overlay h1 { font-family: 'Cormorant Garamond', serif; font-size: 25px; font-weight: 600; color: var(--paper); line-height: 1.24; margin-bottom: 5px; max-width: 420px; text-shadow: 0 2px 12px rgba(0,0,0,.6); }
 .intro-overlay .sub { font-family: 'Cormorant Garamond', serif; font-style: normal; font-size: 17px; color: var(--gold-pale); margin-bottom: 18px; text-shadow: 0 1px 8px rgba(0,0,0,.5); }
