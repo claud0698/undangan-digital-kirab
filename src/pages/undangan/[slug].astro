@@ -1,8 +1,8 @@
 ---
-// Pretty personalized links, e.g. /andriwijaya → redirects to the invitation
-// with the guest's name (and address) prefilled. Unknown/deleted slug → plain
-// invitation with no name. This is a catch-all: static routes (/admin, /en, /api,
-// real files) take precedence, so only unmatched single-segment paths land here.
+// Pretty personalized links, e.g. /undangan/andriwijaya → redirects to the
+// invitation with the guest's name (and address) prefilled. Unknown/deleted
+// slug → plain invitation with no name. Namespacing under /undangan/ keeps guest
+// slugs from ever colliding with real top-level routes (/admin, /en, /api, files).
 export const prerender = false;
 
 import { getGuestBySlug } from "~/lib/db";

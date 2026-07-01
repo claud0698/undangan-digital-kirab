@@ -40,9 +40,9 @@ export const POST: APIRoute = async ({ request, cookies }) => {
   const address = String(body.address ?? "").trim();
   const category = String(body.category ?? "").trim();
 
-  // Everything is required.
-  if (!salutation || !name || !address || !category)
-    return json({ error: "Semua kolom wajib diisi (sebutan, nama, alamat, kategori)." }, 400);
+  // Sebutan (salutation) is optional; the rest are required.
+  if (!name || !address || !category)
+    return json({ error: "Kolom wajib belum lengkap (nama, alamat, kategori)." }, 400);
   if (!isValidCategory(category)) return json({ error: "Kategori tidak valid." }, 400);
 
   const requested = String(body.slug ?? "").trim();
@@ -51,7 +51,7 @@ export const POST: APIRoute = async ({ request, cookies }) => {
   for (let attempt = 0; attempt < 5; attempt++) {
     const slug = await uniqueSlug(requested, name);
     try {
-      const guest = await createGuest({ salutation, name, address, category, slug, createdBy: session.id });
+      const guest = await createGuest({ salutation: salutation || null, name, address, category, slug, createdBy: session.id });
       return json({ guest: { ...guest, audited_by: session.username } }, 201);
     } catch (e) {
       if (isUniqueViolation(e) && attempt < 4) continue;

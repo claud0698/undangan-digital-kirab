@@ -33,10 +33,11 @@ const lanternSvg = `<svg viewBox="0 0 60 100" xmlns="http://www.w3.org/2000/svg"
   <div class="corner c-bl" set:html={overlayCornerSvg} />
   <div class="corner c-br" set:html={overlayCornerSvg} />
 
+  <!-- EVENT IDENTITY — the hero masthead -->
   <div class="han">齊天大聖</div>
   <div class="han-roman">Tjie Thien Ta Sen</div>
   <div class="label">
-    {lang === "id" ? "Kirab Budaya · Imlek 2577" : "Cultural Procession · Lunar 2577"}
+    {lang === "id" ? "Perayaan HUT ke-43 · Imlek 2577" : "43rd Anniversary · Lunar 2577"}
   </div>
   <h1>
     {lang === "id"
@@ -44,9 +45,22 @@ const lanternSvg = `<svg viewBox="0 0 60 100" xmlns="http://www.w3.org/2000/svg"
       : <>Cultural Procession & Earth Blessing 2026<br />Tjie Thien Ta Sen Bio Tangerang</>}
   </h1>
   <div class="sub">{invitation.dateRange[lang]}</div>
-  <div class="to">{lang === "id" ? "Kepada Yang Terhormat" : "To Our Honoured Guests"}</div>
-  <div class="guest" id="guestName">{lang === "id" ? "Bapak / Ibu Umat" : "Dear Devotees & Friends"}</div>
-  <div class="guest-address" id="guestAddress" hidden></div>
+
+  <div class="divider" aria-hidden="true"><span>❖</span></div>
+
+  <!-- CONNECTIVE PHRASE + GUEST DEDICATION — only shown when a guest name is
+       passed via ?to=/?nama=; hidden by default and revealed by the script. -->
+  <div class="invite-line" id="inviteLine" hidden>
+    {lang === "id"
+      ? "Dengan penuh sukacita, kami mengundang"
+      : "With great joy, we cordially invite"}
+  </div>
+
+  <div class="guest-card" id="guestCard" hidden>
+    <div class="guest" id="guestName"></div>
+    <div class="guest-address" id="guestAddress" hidden></div>
+  </div>
+
   <button class="open-btn" id="openBtn">{lang === "id" ? "Buka Undangan" : "Open Invitation"}</button>
 </div>
 
@@ -96,14 +110,20 @@ const lanternSvg = `<svg viewBox="0 0 60 100" xmlns="http://www.w3.org/2000/svg"
   // URLSearchParams.get() already percent-decodes — do NOT decode again
   // (double-decoding throws on names containing a literal "%").
   const guest = (urlParams.get("to") || urlParams.get("nama") || "").trim();
+  // The personal dedication only exists for personalized links — reveal the
+  // connective phrase + name card when a name is present, otherwise it stays
+  // hidden so generic links show a clean, un-personalized cover.
   if (guest) {
     const el = document.getElementById("guestName");
     if (el) el.textContent = guest; // textContent → XSS-safe
-  }
-  const alamat = (urlParams.get("alamat") || urlParams.get("address") || "").trim();
-  if (alamat) {
-    const el = document.getElementById("guestAddress");
-    if (el) { el.textContent = alamat; el.hidden = false; } // textContent → XSS-safe
+    document.getElementById("inviteLine")?.removeAttribute("hidden");
+    document.getElementById("guestCard")?.removeAttribute("hidden");
+
+    const alamat = (urlParams.get("alamat") || urlParams.get("address") || "").trim();
+    if (alamat) {
+      const addr = document.getElementById("guestAddress");
+      if (addr) { addr.textContent = alamat; addr.hidden = false; } // textContent → XSS-safe
+    }
   }
 
   const reduce = matchMedia("(prefers-reduced-motion: reduce)").matches;

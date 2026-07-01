@@ -10,7 +10,9 @@ export const prerender = false;
 const json = (data: unknown, status = 200) =>
   new Response(JSON.stringify(data), { status, headers: { "content-type": "application/json" } });
 
-const REQUIRED = ["salutation", "name", "address", "category"] as const;
+// Sebutan (salutation) is optional and may be blanked; the rest cannot be empty.
+const EDITABLE = ["salutation", "name", "address", "category"] as const;
+const REQUIRED = ["name", "address", "category"] as const;
 
 export const PATCH: APIRoute = async ({ params, request, cookies }) => {
   const session = getSession(cookies);
@@ -20,8 +22,8 @@ export const PATCH: APIRoute = async ({ params, request, cookies }) => {
   if (!Number.isInteger(id)) return json({ error: "bad id" }, 400);
 
   const body = await request.json().catch(() => ({}));
-  const patch: { salutation?: string; name?: string; address?: string; category?: string; slug?: string | null } = {};
-  for (const key of [...REQUIRED, "slug"] as const) {
+  const patch: { salutation?: string | null; name?: string; address?: string; category?: string; slug?: string | null } = {};
+  for (const key of [...EDITABLE, "slug"] as const) {
     if (key in body) patch[key] = String(body[key] ?? "").trim();
   }
 
@@ -29,6 +31,8 @@ export const PATCH: APIRoute = async ({ params, request, cookies }) => {
   for (const key of REQUIRED) {
     if (key in patch && !patch[key]) return json({ error: `${key} tidak boleh kosong` }, 400);
   }
+  // Sebutan is optional — an empty value clears it.
+  if ("salutation" in patch && !patch.salutation) patch.salutation = null;
   if ("category" in patch && !isValidCategory(String(patch.category))) return json({ error: "Kategori tidak valid." }, 400);
 
   if ("slug" in patch) {

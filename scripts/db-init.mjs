@@ -48,6 +48,17 @@ async function main() {
   // Audit: who last modified the row (created_by already exists).
   await sql`alter table users add column if not exists updated_by bigint references admins(id) on delete set null`;
 
+  // Open-tracking: counters + timestamps per guest. A "visit" is landing on the
+  // invitation via the guest's slug link; an "open" is pressing "Buka Undangan".
+  // Both are recorded client-side (see /api/track), so bots/link-previews that
+  // don't run JS mostly don't inflate them.
+  await sql`alter table users add column if not exists visit_count int not null default 0`;
+  await sql`alter table users add column if not exists open_count  int not null default 0`;
+  await sql`alter table users add column if not exists first_visited_at timestamptz`;
+  await sql`alter table users add column if not exists last_visited_at  timestamptz`;
+  await sql`alter table users add column if not exists first_opened_at  timestamptz`;
+  await sql`alter table users add column if not exists last_opened_at   timestamptz`;
+
   // Login throttle: per-IP failed-attempt counter + temporary lockout.
   await sql`
     create table if not exists login_attempts (

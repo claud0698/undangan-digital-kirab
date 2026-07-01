@@ -12,7 +12,7 @@ const loginError = Astro.url.searchParams.get("error");
 
 const displayName = (g: Pick<Guest, "salutation" | "name">) =>
   `${g.salutation ? g.salutation + " " : ""}${g.name}`.trim();
-const prettyLink = (g: Pick<Guest, "slug">) => (g.slug ? `${site}/${g.slug}` : "");
+const prettyLink = (g: Pick<Guest, "slug">) => (g.slug ? `${site}/undangan/${g.slug}` : "");
 const fullLink = (g: Pick<Guest, "salutation" | "name" | "address">) => {
   const p = new URLSearchParams({ to: displayName(g) });
   if (g.address) p.set("alamat", g.address);
@@ -114,8 +114,12 @@ const fmtDate = (iso: string) =>
       .cat-select, .search input, .cell[contenteditable] { font-size: 15px; }
       .add input:focus, .add select:focus { border-color: var(--gold); }
       .add select:invalid { color: var(--muted); }
+      .add .field-title { font-size: 12px; font-weight: 600; letter-spacing: .02em; color: var(--gold-pale, #e9cf86); }
+      .add .field-title .req { color: #e0894a; }
+      .add .field-title .opt { font-weight: 400; color: var(--muted); }
       .add .hint { font-size: 11px; line-height: 1.35; color: #8a7c6a; }
       .add .btn { align-self: start; margin-top: 1px; }
+      .add .btn-field .field-title { visibility: hidden; }
 
       /* ── grid (table on desktop) ── */
       .grid { width: 100%; table-layout: fixed; border-collapse: collapse; background: var(--panel);
@@ -226,36 +230,44 @@ const fmtDate = (iso: string) =>
           </div>
         </div>
 
-        <!-- add guest — all fields required -->
+        <!-- add guest — Sebutan opsional, sisanya wajib -->
         <form class="add" id="addForm">
           <label class="add-field">
-            <input name="salutation" list="salutations" placeholder="Sebutan *" required autocomplete="off" />
+            <span class="field-title">Sebutan <span class="opt">(opsional)</span></span>
+            <input name="salutation" list="salutations" placeholder="mis. Bapak" autocomplete="off" />
             <datalist id="salutations">
               {SALUTATIONS.map((s) => <option value={s} />)}
             </datalist>
             <span class="hint">Panggilan, mis. <em>Bapak</em>, <em>Ibu</em>, <em>Prof.</em> — pilih atau ketik sendiri.</span>
           </label>
           <label class="add-field">
-            <input name="name" placeholder="Nama tamu *" required autocomplete="off" />
+            <span class="field-title">Nama tamu <span class="req">*</span></span>
+            <input name="name" placeholder="mis. Andri Wijaya" required autocomplete="off" />
             <span class="hint">Nama lengkap tamu, mis. <em>Andri Wijaya</em>.</span>
           </label>
           <label class="add-field">
-            <input name="address" placeholder="Alamat *" required autocomplete="off" />
+            <span class="field-title">Alamat <span class="req">*</span></span>
+            <input name="address" placeholder="mis. Jl. Melati 12, Tangerang" required autocomplete="off" />
             <span class="hint">Alamat / kota, mis. <em>Jl. Melati 12, Tangerang</em>.</span>
           </label>
           <label class="add-field">
+            <span class="field-title">Kategori <span class="req">*</span></span>
             <select name="category" required>
-              <option value="" disabled selected>Kategori *</option>
+              <option value="" disabled selected>Pilih kategori…</option>
               {CATEGORIES.map((c) => <option value={c}>{c}</option>)}
             </select>
             <span class="hint">Golongan tamu untuk pengelompokan.</span>
           </label>
           <label class="add-field">
+            <span class="field-title">Tautan Kustom <span class="opt">(opsional)</span></span>
             <input name="slug" placeholder="tautan-kustom" autocomplete="off"
               pattern="[a-z0-9-]+" title="huruf kecil, angka, tanda hubung" />
-            <span class="hint">Tautan pendek, mis. <em>andriwijaya</em> → <code>{site.replace(/^https?:\/\//, "")}/andriwijaya</code>. Terisi otomatis dari nama.</span>
+            <span class="hint">Tautan pendek, mis. <em>andriwijaya</em> → <code>{site.replace(/^https?:\/\//, "")}/undangan/andriwijaya</code>. Terisi otomatis dari nama.</span>
           </label>
-          <button class="btn" type="submit">+ Tambah</button>
+          <div class="add-field btn-field">
+            <span class="field-title" aria-hidden="true">.</span>
+            <button class="btn" type="submit">+ Tambah</button>
+          </div>
         </form>
 
         <div class="toolbar">
@@ -364,7 +376,7 @@ const fmtDate = (iso: string) =>
             }).format(new Date(iso));
           } catch { return ""; }
         };
-        const prettyLink = (g) => (g.slug ? `${site}/${g.slug}` : "");
+        const prettyLink = (g) => (g.slug ? `${site}/undangan/${g.slug}` : "");
         const fullLink = (g) => {
           const p = new URLSearchParams({ to: displayName(g.salutation, g.name) });
           if (g.address) p.set("alamat", g.address);
@@ -490,8 +502,8 @@ const fmtDate = (iso: string) =>
         addForm.addEventListener("submit", async (e) => {
           e.preventDefault();
           const data = Object.fromEntries(new FormData(addForm));
-          if (!data.salutation?.trim() || !data.name?.trim() || !data.address?.trim() || !data.category) {
-            return toast("Semua kolom wajib diisi.", true);
+          if (!data.name?.trim() || !data.address?.trim() || !data.category) {
+            return toast("Nama, alamat, dan kategori wajib diisi.", true);
           }
           const btn = addForm.querySelector("button");
           btn.disabled = true;
@@ -528,7 +540,7 @@ const fmtDate = (iso: string) =>
           if (value === baseline) return;
 
           if (field === "slug") value = value.toLowerCase().replace(/[^a-z0-9-]+/g, ""); // keep dashes (match API)
-          if ((field === "salutation" || field === "name" || field === "address") && !value) {
+          if ((field === "name" || field === "address") && !value) {
             toast(field + " tidak boleh kosong", true);
             cell.textContent = baseline;
             return;
