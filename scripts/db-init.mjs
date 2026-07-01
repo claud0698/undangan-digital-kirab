@@ -24,6 +24,8 @@ async function main() {
       created_at    timestamptz not null default now()
     )
   `;
+  // Usernames are case-insensitive: "Yanny" and "yanny" are the same account.
+  await sql`create unique index if not exists admins_username_lower_key on admins (lower(username))`;
 
   // Guests / invitation recipients. One row per personalized link.
   await sql`

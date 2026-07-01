@@ -5,7 +5,8 @@
 import { neon } from "@neondatabase/serverless";
 import { randomBytes, scryptSync } from "node:crypto";
 
-const [, , username, password] = process.argv;
+const [, , usernameArg, password] = process.argv;
+const username = String(usernameArg ?? "").trim().toLowerCase(); // usernames are case-insensitive → store lowercased
 if (!username || !password) {
   console.error("Usage: node --env-file=.env scripts/create-admin.mjs <username> <password>");
   process.exit(1);

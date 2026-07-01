@@ -90,8 +90,10 @@ export async function deleteGuest(id: number): Promise<void> {
 
 // ─── admins ────────────────────────────────────────────────────────
 export async function findAdminByUsername(username: string): Promise<Admin | null> {
+  // Username match is case-insensitive; a case-insensitive unique index keeps
+  // this from matching more than one row.
   const rows = (await sql`
-    select id, username, password_hash from admins where username = ${username}
+    select id, username, password_hash from admins where lower(username) = lower(${username})
   `) as Admin[];
   return rows[0] ?? null;
 }
