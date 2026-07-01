@@ -10,19 +10,26 @@ const guests: Guest[] = session ? await listGuests() : [];
 const site = Astro.site?.toString().replace(/\/$/, "") ?? "";
 const loginError = Astro.url.searchParams.get("error");
 
-const displayName = (g: Pick<Guest, "salutation" | "name">) =>
-  `${g.salutation ? g.salutation + " " : ""}${g.name}`.trim();
 const prettyLink = (g: Pick<Guest, "slug">) => (g.slug ? `${site}/undangan/${g.slug}` : "");
-const fullLink = (g: Pick<Guest, "salutation" | "name" | "address">) => {
-  const p = new URLSearchParams({ to: displayName(g) });
-  if (g.address) p.set("alamat", g.address);
-  return `${site}/?${p.toString()}`;
-};
 const fmtDate = (iso: string) =>
   new Intl.DateTimeFormat("id-ID", {
     day: "numeric", month: "short", year: "numeric",
     hour: "2-digit", minute: "2-digit", timeZone: "Asia/Jakarta",
   }).format(new Date(iso));
+
+// Open-tracking status: opened (pressed "Buka Undangan") > visited (landed via
+// the link) > belum (neither). See /api/track + CoverGate.
+type OpenState = "opened" | "visited" | "none";
+const openState = (g: Guest): OpenState =>
+  (g.open_count ?? 0) > 0 ? "opened" : (g.visit_count ?? 0) > 0 ? "visited" : "none";
+const STATE_LABEL: Record<OpenState, string> = { opened: "Dibuka", visited: "Dikunjungi", none: "Belum dibuka" };
+const lastSeen = (g: Guest) => g.last_opened_at ?? g.last_visited_at ?? null;
+const seenTitle = (g: Guest) => {
+  const t = lastSeen(g);
+  return t ? `Terakhir: ${fmtDate(t)}` : "Belum ada kunjungan";
+};
+const openedTotal = guests.filter((g) => (g.open_count ?? 0) > 0).length;
+const visitedTotal = guests.filter((g) => (g.visit_count ?? 0) > 0).length;
 ---
 
 <!doctype html>
@@ -115,7 +122,9 @@ const fmtDate = (iso: string) =>
       .cat-select, .search input, .cell[contenteditable] { font-size: 15px; }
       .add input:focus, .add select:focus { border-color: var(--gold); }
       .add select:invalid { color: var(--muted); }
-      .add .field-title { font-size: 12px; font-weight: 600; letter-spacing: .02em; color: var(--gold-pale, #e9cf86); }
+      /* Reserve 2 lines and bottom-align the label so inputs stay on one row even
+         when a title wraps (e.g. "Tautan Kustom (opsional)" in its narrow column). */
+      .add .field-title { display: flex; flex-direction: column; justify-content: flex-end; min-height: 2.5em; line-height: 1.25; font-size: 12px; font-weight: 600; letter-spacing: .02em; color: var(--gold-pale, #e9cf86); }
       .add .field-title .req { color: #e0894a; }
       .add .field-title .opt { font-weight: 400; color: var(--muted); }
       .add .hint { font-size: 11px; line-height: 1.35; color: #8a7c6a; }
@@ -149,6 +158,15 @@ const fmtDate = (iso: string) =>
       .link-row a { flex: 1; min-width: 0; font-size: 12px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
       .row-actions { display: flex; gap: 6px; justify-content: flex-end; }
       .date-cell { color: var(--muted); font-size: 12.5px; white-space: nowrap; }
+      /* ── open-tracking status ── */
+      .stat { display: flex; align-items: center; gap: 8px; white-space: nowrap; }
+      .stat .dot { width: 9px; height: 9px; border-radius: 50%; flex: 0 0 auto; background: #5a4a3c; }
+      .stat.opened .dot { background: var(--ok); box-shadow: 0 0 6px #2f7d4faa; }
+      .stat.visited .dot { background: var(--gold); }
+      .stat .lbl { font-size: 12.5px; }
+      .stat .nums { color: var(--muted); font-size: 12px; font-variant-numeric: tabular-nums; }
+      .summary { color: var(--muted); font-size: 13px; }
+      .summary strong { color: var(--gold-bright); font-weight: 600; }
       .saving { opacity: .5; }
       .empty-state { text-align: center; color: var(--muted); padding: 40px 12px; }
 
@@ -159,8 +177,14 @@ const fmtDate = (iso: string) =>
       .toast.err { background: var(--red); }
 
       /* ── mobile: everything stacks one per line ── */
+      /* medium widths: the 6-column row gets too cramped (titles wrap to 3 lines
+         and inputs drop) → fall back to a 2-column grid */
+      @media (max-width: 1080px) {
+        .add { grid-template-columns: 1fr 1fr; }
+      }
       @media (max-width: 720px) {
         .add { grid-template-columns: 1fr; }
+        .add .field-title { min-height: 0; }  /* stacked fields don't need the 2-line reserve */
         .cat-select, .cell[contenteditable], .search input { font-size: 16px; }
         /* toolbar: search full width on its own row; filter + sort share the next row */
         .toolbar { gap: 8px; }
@@ -285,6 +309,7 @@ const fmtDate = (iso: string) =>
             <option value="kategori">Urut: Kategori</option>
           </select>
           <div class="count"><span id="count">{guests.length}</span> tamu</div>
+          <div class="summary" id="summary"><strong>{openedTotal}</strong> dibuka · <strong>{visitedTotal}</strong> dikunjungi</div>
         </div>
 
         <table class="grid">
@@ -293,10 +318,11 @@ const fmtDate = (iso: string) =>
               <th style="width:9%;">Sebutan</th>
               <th style="width:10%;">Nama</th>
               <th style="width:10%;">Alamat</th>
-              <th style="width:12%;">Kategori</th>
+              <th style="width:11%;">Kategori</th>
               <th style="width:9%;">Tautan Kustom</th>
-              <th style="width:20%;">Tautan Undangan</th>
-              <th style="width:11%;">Ditambah</th>
+              <th style="width:17%;">Tautan Undangan</th>
+              <th style="width:11%;">Dibuka</th>
+              <th style="width:9%;">Ditambah</th>
               <th style="width:8%;">Diaudit oleh</th>
               <th style="width:6%;"></th>
             </tr>
@@ -325,15 +351,17 @@ const fmtDate = (iso: string) =>
                 <td data-label="Tautan">
                   <div class="link-col">
                     <div class="link-row" data-pretty-row style={g.slug ? "" : "display:none"}>
-                      <span class="tag">Custom</span>
+                      <span class="tag">Undangan</span>
                       <a href={prettyLink(g)} target="_blank" rel="noopener" data-link-pretty>{prettyLink(g)}</a>
                       <button class="btn btn-ghost btn-sm" data-copy>Salin</button>
                     </div>
-                    <div class="link-row">
-                      <span class="tag">Lengkap</span>
-                      <a href={fullLink(g)} target="_blank" rel="noopener" data-link-full>{fullLink(g)}</a>
-                      <button class="btn btn-ghost btn-sm" data-copy>Salin</button>
-                    </div>
+                  </div>
+                </td>
+                <td data-label="Dibuka">
+                  <div class={`stat ${openState(g)}`} data-stat data-visits={g.visit_count ?? 0} data-opens={g.open_count ?? 0} title={seenTitle(g)}>
+                    <span class="dot"></span>
+                    <span class="lbl">{STATE_LABEL[openState(g)]}</span>
+                    <span class="nums">👁 {g.visit_count ?? 0} · 📂 {g.open_count ?? 0}</span>
                   </div>
                 </td>
                 <td data-label="Ditambah" class="date-cell">{fmtDate(g.created_at)}</td>
@@ -368,7 +396,6 @@ const fmtDate = (iso: string) =>
           String(s ?? "").replace(/[&<>"']/g, (c) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[c]));
         const slugify = (s) =>
           String(s ?? "").toLowerCase().normalize("NFKD").replace(/[^a-z0-9]+/g, "");
-        const displayName = (sal, name) => `${sal ? sal + " " : ""}${name}`.trim();
         const fmtDate = (iso) => {
           try {
             return new Intl.DateTimeFormat("id-ID", {
@@ -378,11 +405,6 @@ const fmtDate = (iso: string) =>
           } catch { return ""; }
         };
         const prettyLink = (g) => (g.slug ? `${site}/undangan/${g.slug}` : "");
-        const fullLink = (g) => {
-          const p = new URLSearchParams({ to: displayName(g.salutation, g.name) });
-          if (g.address) p.set("alamat", g.address);
-          return `${site}/?${p.toString()}`;
-        };
 
         let toastTimer;
         const toast = (msg, isErr) => {
@@ -460,9 +482,17 @@ const fmtDate = (iso: string) =>
           } else {
             prettyRow.style.display = "none";
           }
-          const full = tr.querySelector("[data-link-full]");
-          const fu = fullLink(g);
-          full.href = fu; full.textContent = fu;
+        };
+
+        // Recompute the "X dibuka · Y dikunjungi" summary from the current rows.
+        const summaryEl = document.getElementById("summary");
+        const refreshSummary = () => {
+          let opened = 0, visited = 0;
+          rows.querySelectorAll(".stat").forEach((s) => {
+            if (s.classList.contains("opened")) { opened++; visited++; }
+            else if (s.classList.contains("visited")) visited++;
+          });
+          if (summaryEl) summaryEl.innerHTML = `<strong>${opened}</strong> dibuka · <strong>${visited}</strong> dikunjungi`;
         };
 
         const catOptions = (selected) =>
@@ -477,7 +507,10 @@ const fmtDate = (iso: string) =>
           tr.dataset.slug = g.slug || "";
           const editCell = (field, val, label, cls) =>
             `<td data-label="${label}"><div class="cell ${cls || ""}" contenteditable="plaintext-only" data-field="${field}">${escapeHtml(val)}</div></td>`;
-          const pretty = prettyLink(g), full = fullLink(g);
+          const pretty = prettyLink(g);
+          const visits = g.visit_count ?? 0, opens = g.open_count ?? 0;
+          const state = opens > 0 ? "opened" : visits > 0 ? "visited" : "none";
+          const stateLabel = state === "opened" ? "Dibuka" : state === "visited" ? "Dikunjungi" : "Belum dibuka";
           tr.innerHTML =
             editCell("salutation", g.salutation, "Sebutan") +
             editCell("name", g.name, "Nama") +
@@ -485,9 +518,9 @@ const fmtDate = (iso: string) =>
             `<td data-label="Kategori"><select class="cat-select" data-field="category">${catOptions(g.category)}</select></td>` +
             editCell("slug", g.slug, "Tautan Kustom", "slug") +
             `<td data-label="Tautan"><div class="link-col">` +
-              `<div class="link-row" data-pretty-row${pretty ? "" : ' style="display:none"'}><span class="tag">Custom</span><a href="${escapeHtml(pretty)}" target="_blank" rel="noopener" data-link-pretty>${escapeHtml(pretty)}</a><button class="btn btn-ghost btn-sm" data-copy>Salin</button></div>` +
-              `<div class="link-row"><span class="tag">Lengkap</span><a href="${escapeHtml(full)}" target="_blank" rel="noopener" data-link-full>${escapeHtml(full)}</a><button class="btn btn-ghost btn-sm" data-copy>Salin</button></div>` +
+              `<div class="link-row" data-pretty-row${pretty ? "" : ' style="display:none"'}><span class="tag">Undangan</span><a href="${escapeHtml(pretty)}" target="_blank" rel="noopener" data-link-pretty>${escapeHtml(pretty)}</a><button class="btn btn-ghost btn-sm" data-copy>Salin</button></div>` +
             `</div></td>` +
+            `<td data-label="Dibuka"><div class="stat ${state}" data-stat data-visits="${visits}" data-opens="${opens}"><span class="dot"></span><span class="lbl">${stateLabel}</span><span class="nums">👁 ${visits} · 📂 ${opens}</span></div></td>` +
             `<td data-label="Ditambah" class="date-cell">${escapeHtml(fmtDate(g.created_at))}</td>` +
             `<td data-label="Diaudit oleh" class="date-cell" data-audit>${escapeHtml(g.audited_by || "—")}</td>` +
             `<td data-label="Aksi"><div class="row-actions"><button class="btn btn-ghost btn-sm btn-danger" data-del>Hapus</button></div></td>`;
@@ -518,6 +551,7 @@ const fmtDate = (iso: string) =>
             addForm.reset();
             slugTouched = false;
             updateCount();
+            refreshSummary();
             toast("Tamu ditambahkan");
           } catch (err) {
             toast("Gagal: " + err.message, true);
@@ -601,6 +635,7 @@ const fmtDate = (iso: string) =>
               if (!res.ok) throw new Error("gagal");
               tr.remove();
               updateCount();
+              refreshSummary();
               toast("Tamu dihapus");
             } catch { tr.classList.remove("saving"); toast("Gagal menghapus", true); }
           }
@@ -628,12 +663,15 @@ const fmtDate = (iso: string) =>
         // ── CSV export
         document.getElementById("csvBtn").addEventListener("click", () => {
           const esc = (v) => `"${String(v || "").replace(/"/g, '""')}"`;
-          const lines = [["Sebutan", "Nama", "Alamat", "Kategori", "Tautan Kustom", "Tautan Custom", "Tautan Lengkap"].join(",")];
+          const lines = [["Sebutan", "Nama", "Alamat", "Kategori", "Tautan Kustom", "Tautan Undangan", "Status", "Kunjungan", "Dibuka"].join(",")];
           rows.querySelectorAll("tr").forEach((tr) => {
             const c = (f) => (tr.querySelector(`[data-field="${f}"]`)?.value ?? tr.querySelector(`[data-field="${f}"]`)?.textContent ?? "").trim();
             const pretty = tr.querySelector("[data-link-pretty]")?.getAttribute("href") || "";
-            const full = tr.querySelector("[data-link-full]")?.getAttribute("href") || "";
-            lines.push([esc(c("salutation")), esc(c("name")), esc(c("address")), esc(c("category")), esc(c("slug")), esc(pretty), esc(full)].join(","));
+            const stat = tr.querySelector("[data-stat]");
+            const status = stat?.querySelector(".lbl")?.textContent?.trim() || "";
+            const visits = stat?.getAttribute("data-visits") || "0";
+            const opens = stat?.getAttribute("data-opens") || "0";
+            lines.push([esc(c("salutation")), esc(c("name")), esc(c("address")), esc(c("category")), esc(c("slug")), esc(pretty), esc(status), esc(visits), esc(opens)].join(","));
           });
           const blob = new Blob(["﻿" + lines.join("\r\n")], { type: "text/csv;charset=utf-8" });
           const a = document.createElement("a");

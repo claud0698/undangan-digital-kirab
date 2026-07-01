@@ -18,6 +18,9 @@ if (!guest) {
 const name = `${guest.salutation ? guest.salutation + " " : ""}${guest.name}`.trim();
 const params = new URLSearchParams({ to: name });
 if (guest.address) params.set("alamat", guest.address);
+// The redirect drops the slug from the URL; `via` carries it so the landing page
+// can attribute the visit/open back to this guest (see CoverGate → /api/track).
+if (guest.slug) params.set("via", guest.slug);
 
 return Astro.redirect(`/?${params.toString()}`, 302);
 ---

@@ -3,6 +3,7 @@
  * Server-side only — never import from client/component frontmatter that ships to the browser.
  */
 import { neon } from "@neondatabase/serverless";
+import { slugify, isValidSlug } from "./slug";
 
 const url = import.meta.env.DATABASE_URL ?? process.env.DATABASE_URL;
 if (!url) throw new Error("DATABASE_URL is not set");
@@ -19,6 +20,13 @@ export type Guest = {
   created_at: string;
   updated_at: string;
   audited_by?: string | null; // username of the admin who last created/edited (display only)
+  // Open-tracking (see /api/track). Present on listGuests(); absent elsewhere.
+  visit_count?: number;
+  open_count?: number;
+  first_visited_at?: string | null;
+  last_visited_at?: string | null;
+  first_opened_at?: string | null;
+  last_opened_at?: string | null;
 };
 
 export type Admin = {
@@ -31,12 +39,55 @@ export type Admin = {
 export async function listGuests(): Promise<Guest[]> {
   return (await sql`
     select u.id, u.salutation, u.name, u.address, u.category, u.slug, u.created_at, u.updated_at,
+           u.visit_count, u.open_count,
+           u.first_visited_at, u.last_visited_at, u.first_opened_at, u.last_opened_at,
            coalesce(ua.username, ca.username) as audited_by
     from users u
     left join admins ua on ua.id = u.updated_by
     left join admins ca on ca.id = u.created_by
     order by u.created_at desc, u.id desc
   `) as Guest[];
+}
+
+/**
+ * Derive a unique slug from a requested value (or the guest's name), appending
+ * an incrementing number on collision: `andriwijaya`, `andriwijaya1`, … Pass
+ * `excludeId` when re-slugging an existing guest so it doesn't collide with itself.
+ */
+export async function uniqueSlug(requested: string, name: string, excludeId?: number): Promise<string> {
+  let base = requested ? requested.toLowerCase().replace(/[^a-z0-9-]+/g, "") : "";
+  if (!isValidSlug(base)) base = slugify(name); // requested empty/invalid/reserved → derive from name
+  if (!isValidSlug(base)) base = "tamu"; // name also empty/reserved → safe default
+  let slug = base;
+  let n = 1;
+  for (;;) {
+    const existing = await getGuestBySlug(slug);
+    if (!existing || (excludeId != null && existing.id === excludeId)) return slug;
+    slug = `${base}${n++}`;
+  }
+}
+
+/** Record a visit (landed via slug link) or open ("Buka Undangan" pressed). Returns false if no such slug. */
+export async function recordEvent(slug: string, type: "visit" | "open"): Promise<boolean> {
+  const rows =
+    type === "open"
+      ? await sql`
+          update users set open_count = open_count + 1,
+            first_opened_at = coalesce(first_opened_at, now()), last_opened_at = now()
+          where slug = ${slug} returning id`
+      : await sql`
+          update users set visit_count = visit_count + 1,
+            first_visited_at = coalesce(first_visited_at, now()), last_visited_at = now()
+          where slug = ${slug} returning id`;
+  return (rows as unknown[]).length > 0;
+}
+
+export async function getGuestById(id: number): Promise<Guest | null> {
+  const rows = (await sql`
+    select id, salutation, name, address, category, slug, created_at, updated_at
+    from users where id = ${id}
+  `) as Guest[];
+  return rows[0] ?? null;
 }
 
 export async function getGuestBySlug(slug: string): Promise<Guest | null> {

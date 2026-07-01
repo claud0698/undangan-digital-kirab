@@ -1,9 +1,8 @@
 import type { APIRoute } from "astro";
-import { listGuests, createGuest, getGuestBySlug } from "~/lib/db";
+import { listGuests, createGuest, uniqueSlug } from "~/lib/db";
 import { getSession } from "~/lib/auth";
 import { sameOrigin } from "~/lib/csrf";
 import { isValidCategory } from "~/lib/categories";
-import { slugify, isValidSlug } from "~/lib/slug";
 
 export const prerender = false;
 
@@ -12,17 +11,6 @@ const json = (data: unknown, status = 200) =>
 
 const isUniqueViolation = (e: unknown): boolean =>
   !!e && (((e as { code?: string }).code === "23505") || /duplicate key|unique/i.test(String((e as Error).message ?? "")));
-
-/** Derive a unique slug from a requested value (or the name), suffixing on collision. */
-async function uniqueSlug(requested: string, name: string): Promise<string> {
-  let base = requested ? requested.toLowerCase().replace(/[^a-z0-9-]+/g, "") : "";
-  if (!isValidSlug(base)) base = slugify(name); // requested empty/invalid/reserved → derive from name
-  if (!isValidSlug(base)) base = "tamu"; // name also empty/reserved → safe default
-  let slug = base;
-  let n = 2;
-  while (await getGuestBySlug(slug)) slug = `${base}-${n++}`;
-  return slug;
-}
 
 export const GET: APIRoute = async ({ cookies }) => {
   if (!getSession(cookies)) return json({ error: "unauthorized" }, 401);

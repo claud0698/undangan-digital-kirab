@@ -1,5 +1,5 @@
 import type { APIRoute } from "astro";
-import { updateGuest, deleteGuest, getGuestBySlug } from "~/lib/db";
+import { updateGuest, deleteGuest, getGuestById, uniqueSlug } from "~/lib/db";
 import { getSession } from "~/lib/auth";
 import { sameOrigin } from "~/lib/csrf";
 import { isValidCategory } from "~/lib/categories";
@@ -36,16 +36,15 @@ export const PATCH: APIRoute = async ({ params, request, cookies }) => {
   if ("category" in patch && !isValidCategory(String(patch.category))) return json({ error: "Kategori tidak valid." }, 400);
 
   if ("slug" in patch) {
+    // Every guest always keeps exactly one link. A typed slug is normalized and,
+    // on collision, gets an incrementing suffix (andriwijaya, andriwijaya1, …);
+    // an emptied slug is regenerated from the guest's name — it never becomes null.
     const raw = String(patch.slug ?? "");
-    if (!raw) {
-      patch.slug = null; // empty → clear the custom link
-    } else {
-      const s = raw.toLowerCase().replace(/[^a-z0-9-]+/g, "");
-      if (!isValidSlug(s)) return json({ error: "Tautan kustom tidak valid (huruf kecil, angka, tanda hubung)." }, 400);
-      const existing = await getGuestBySlug(s);
-      if (existing && String(existing.id) !== String(id)) return json({ error: "Tautan kustom sudah dipakai tamu lain." }, 409);
-      patch.slug = s;
-    }
+    const cleaned = raw.toLowerCase().replace(/[^a-z0-9-]+/g, "");
+    if (raw && !isValidSlug(cleaned))
+      return json({ error: "Tautan kustom tidak valid (huruf kecil, angka, tanda hubung)." }, 400);
+    const nameForSlug = patch.name ?? (await getGuestById(id))?.name ?? "";
+    patch.slug = await uniqueSlug(cleaned, nameForSlug, id);
   }
 
   const guest = await updateGuest(id, patch, session.id);

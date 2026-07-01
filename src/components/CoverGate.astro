@@ -126,6 +126,28 @@ const lanternSvg = `<svg viewBox="0 0 60 100" xmlns="http://www.w3.org/2000/svg"
     }
   }
 
+  // ── open-tracking beacon ──
+  // The /undangan/<slug> redirect carries the guest's slug as ?via=. We ping
+  // /api/track on load ("visit") and when "Buka Undangan" is pressed ("open").
+  // A per-tab sessionStorage guard keeps a refresh from inflating the counts.
+  const via = (urlParams.get("via") || "").trim();
+  const track = (type: "visit" | "open") => {
+    if (!via) return;
+    const key = `kirab-tracked-${type}-${via}`;
+    try {
+      if (sessionStorage.getItem(key)) return;
+      sessionStorage.setItem(key, "1");
+    } catch {}
+    const payload = JSON.stringify({ via, type });
+    try {
+      const blob = new Blob([payload], { type: "application/json" });
+      if (!navigator.sendBeacon?.("/api/track", blob)) {
+        fetch("/api/track", { method: "POST", body: payload, keepalive: true }).catch(() => {});
+      }
+    } catch {}
+  };
+  track("visit");
+
   const reduce = matchMedia("(prefers-reduced-motion: reduce)").matches;
 
   // Gentle auto-scroll: drifts the page down slowly, pauses the moment the
@@ -164,6 +186,7 @@ const lanternSvg = `<svg viewBox="0 0 60 100" xmlns="http://www.w3.org/2000/svg"
   const openBtn = document.getElementById("openBtn");
   document.body.style.overflow = "hidden";
   openBtn?.addEventListener("click", () => {
+    track("open"); // guest actually opened the invitation
     overlay?.classList.add("hidden");
     document.body.style.overflow = "";
     setTimeout(() => overlay?.remove(), 900);
