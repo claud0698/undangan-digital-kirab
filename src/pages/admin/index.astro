@@ -110,11 +110,14 @@ const visitedTotal = guests.filter((g) => (g.visit_count ?? 0) > 0).length;
       /* ── add form ── */
       .add {
         display: grid;
-        grid-template-columns: 140px 1fr 1.3fr 150px 150px auto;
-        gap: 10px 12px; background: var(--panel); border: 1px solid var(--line);
+        /* Fluid: each field claims a min of 190px and shares leftover space; when a
+           column can no longer fit 190px, the grid drops it to a new line on its
+           own — no hard breakpoints, graceful from phone to wide desktop. */
+        grid-template-columns: repeat(auto-fit, minmax(190px, 1fr));
+        gap: 16px 14px; background: var(--panel); border: 1px solid var(--line);
         border-radius: 12px; padding: 16px; margin-bottom: 18px; align-items: start;
       }
-      .add-field { display: flex; flex-direction: column; gap: 5px; }
+      .add-field { display: flex; flex-direction: column; gap: 6px; min-width: 0; }
       .add input, .add select {
         width: 100%; padding: 10px 11px; background: #100c0a; border: 1px solid var(--line2);
         border-radius: 8px; outline: none; font-size: 16px; /* 16px: readable + avoids iOS focus-zoom */
@@ -122,13 +125,16 @@ const visitedTotal = guests.filter((g) => (g.visit_count ?? 0) > 0).length;
       .cat-select, .search input, .cell[contenteditable] { font-size: 15px; }
       .add input:focus, .add select:focus { border-color: var(--gold); }
       .add select:invalid { color: var(--muted); }
-      /* Reserve 2 lines and bottom-align the label so inputs stay on one row even
-         when a title wraps (e.g. "Tautan Kustom (opsional)" in its narrow column). */
-      .add .field-title { display: flex; flex-direction: column; justify-content: flex-end; min-height: 2.5em; line-height: 1.25; font-size: 12px; font-weight: 600; letter-spacing: .02em; color: var(--gold-pale, #e9cf86); }
+      /* One-line label (the "*"/"(opsional)" stay inline); nowrap keeps every
+         title a single line so all inputs align across the row. Titles fit the
+         190px min column, so this never overflows. */
+      .add .field-title { white-space: nowrap; font-size: 12px; font-weight: 600; letter-spacing: .02em; color: var(--gold-pale, #e9cf86); }
       .add .field-title .req { color: #e0894a; }
       .add .field-title .opt { font-weight: 400; color: var(--muted); }
       .add .hint { font-size: 11px; line-height: 1.35; color: #8a7c6a; }
-      .add .btn { align-self: start; margin-top: 1px; }
+      /* button fills its own cell and bottom-aligns with the inputs via the
+         hidden spacer label above it */
+      .add .btn { width: 100%; }
       .add .btn-field .field-title { visibility: hidden; }
 
       /* ── grid (table on desktop) ── */
@@ -176,15 +182,8 @@ const visitedTotal = guests.filter((g) => (g.visit_count ?? 0) > 0).length;
       .toast.show { opacity: 1; }
       .toast.err { background: var(--red); }
 
-      /* ── mobile: everything stacks one per line ── */
-      /* medium widths: the 6-column row gets too cramped (titles wrap to 3 lines
-         and inputs drop) → fall back to a 2-column grid */
-      @media (max-width: 1080px) {
-        .add { grid-template-columns: 1fr 1fr; }
-      }
+      /* ── mobile ── (the add form reflows on its own via auto-fit) */
       @media (max-width: 720px) {
-        .add { grid-template-columns: 1fr; }
-        .add .field-title { min-height: 0; }  /* stacked fields don't need the 2-line reserve */
         .cat-select, .cell[contenteditable], .search input { font-size: 16px; }
         /* toolbar: search full width on its own row; filter + sort share the next row */
         .toolbar { gap: 8px; }
