@@ -46,6 +46,7 @@ const lanternSvg = `<svg viewBox="0 0 60 100" xmlns="http://www.w3.org/2000/svg"
   <div class="sub">{invitation.dateRange[lang]}</div>
   <div class="to">{lang === "id" ? "Kepada Yang Terhormat" : "To Our Honoured Guests"}</div>
   <div class="guest" id="guestName">{lang === "id" ? "Bapak / Ibu Umat" : "Dear Devotees & Friends"}</div>
+  <div class="guest-address" id="guestAddress" hidden></div>
   <button class="open-btn" id="openBtn">{lang === "id" ? "Buka Undangan" : "Open Invitation"}</button>
 </div>
 
@@ -92,10 +93,17 @@ const lanternSvg = `<svg viewBox="0 0 60 100" xmlns="http://www.w3.org/2000/svg"
 
 <script>
   const urlParams = new URLSearchParams(window.location.search);
-  const guest = urlParams.get("to") || urlParams.get("nama");
+  // URLSearchParams.get() already percent-decodes — do NOT decode again
+  // (double-decoding throws on names containing a literal "%").
+  const guest = (urlParams.get("to") || urlParams.get("nama") || "").trim();
   if (guest) {
     const el = document.getElementById("guestName");
-    if (el) el.textContent = decodeURIComponent(guest);
+    if (el) el.textContent = guest; // textContent → XSS-safe
+  }
+  const alamat = (urlParams.get("alamat") || urlParams.get("address") || "").trim();
+  if (alamat) {
+    const el = document.getElementById("guestAddress");
+    if (el) { el.textContent = alamat; el.hidden = false; } // textContent → XSS-safe
   }
 
   const reduce = matchMedia("(prefers-reduced-motion: reduce)").matches;

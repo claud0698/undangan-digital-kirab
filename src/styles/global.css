@@ -590,7 +590,8 @@ section { position: relative; z-index: 2; padding: 72px 30px; }
 .intro-overlay h1 { font-family: 'Cormorant Garamond', serif; font-size: 24px; font-weight: 600; color: var(--paper); line-height: 1.25; margin-bottom: 6px; max-width: 360px; }
 .intro-overlay .sub { font-family: 'Cormorant Garamond', serif; font-style: italic; font-size: 16px; color: var(--gold-pale); margin-bottom: 34px; }
 .intro-overlay .to { font-family: 'Cinzel', serif; font-size: 9px; letter-spacing: .4em; color: var(--gold-bright); margin-bottom: 8px; text-transform: uppercase; }
-.intro-overlay .guest { font-family: 'Cormorant Garamond', serif; font-style: italic; font-size: 18px; color: var(--paper); margin-bottom: 36px; }
+.intro-overlay .guest { font-family: 'Cormorant Garamond', serif; font-style: italic; font-size: 18px; color: var(--paper); margin-bottom: 8px; }
+.intro-overlay .guest-address { font-family: 'Cormorant Garamond', serif; font-size: 13px; line-height: 1.45; color: var(--gold-pale); opacity: .8; margin-bottom: 4px; max-width: 300px; }
 .open-btn { background: transparent; border: 1px solid var(--gold); color: var(--gold-pale); font-family: 'Cinzel', serif; font-size: 11px; letter-spacing: .4em; padding: 14px 30px; cursor: pointer; text-transform: uppercase; transition: all .3s ease; }
 .open-btn:hover { background: var(--gold); color: var(--red-deep); }
 .open-btn::before, .open-btn::after { content: "❖"; color: var(--gold); margin: 0 12px; opacity: .6; }

@@ -1,0 +1,23 @@
+---
+// Pretty personalized links, e.g. /andriwijaya → redirects to the invitation
+// with the guest's name (and address) prefilled. Unknown/deleted slug → plain
+// invitation with no name. This is a catch-all: static routes (/admin, /en, /api,
+// real files) take precedence, so only unmatched single-segment paths land here.
+export const prerender = false;
+
+import { getGuestBySlug } from "~/lib/db";
+
+const { slug } = Astro.params;
+const guest = slug ? await getGuestBySlug(slug).catch(() => null) : null;
+
+if (!guest) {
+  // No such guest (never existed or deleted) → generic invitation, no name.
+  return Astro.redirect("/", 302);
+}
+
+const name = `${guest.salutation ? guest.salutation + " " : ""}${guest.name}`.trim();
+const params = new URLSearchParams({ to: name });
+if (guest.address) params.set("alamat", guest.address);
+
+return Astro.redirect(`/?${params.toString()}`, 302);
+---
