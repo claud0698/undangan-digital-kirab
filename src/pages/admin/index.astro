@@ -77,6 +77,10 @@ const visitedTotal = guests.filter((g) => (g.visit_count ?? 0) > 0).length;
       /* copy buttons: filled gold + dark text so "Salin" is clearly readable */
       .btn[data-copy] { background: var(--gold); color: #1a1209; border: 0; font-weight: 700; }
       .btn[data-copy]:hover { background: var(--gold-bright); color: #1a1209; }
+      /* WhatsApp share button */
+      .btn-wa { background: #25d366; color: #08351c; border: 0; }
+      .btn-wa:hover { background: #20bd5a; color: #052a15; }
+      .btn-wa svg { width: 16px; height: 16px; display: block; }
 
       /* ── login ── */
       .login { max-width: 360px; margin: 12vh auto 0; padding: 28px 24px;
@@ -428,9 +432,11 @@ const visitedTotal = guests.filter((g) => (g.visit_count ?? 0) > 0).length;
                 <td data-label="Tautan">
                   <div class="link-col">
                     <div class="link-row" data-pretty-row style={g.slug ? "" : "display:none"}>
-                      <span class="tag">Undangan</span>
                       <a href={prettyLink(g)} target="_blank" rel="noopener" data-link-pretty>{prettyLink(g)}</a>
                       <button class="btn btn-ghost btn-sm" data-copy>Salin</button>
+                      <button class="btn btn-icon btn-wa" data-wa aria-label="Bagikan via WhatsApp" title="Bagikan via WhatsApp">
+                        <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M17.47 14.38c-.29-.15-1.72-.85-1.99-.94-.27-.1-.46-.15-.66.15-.19.29-.75.94-.92 1.13-.17.19-.34.22-.63.07-.29-.15-1.23-.45-2.34-1.44-.87-.77-1.45-1.72-1.62-2.01-.17-.29-.02-.45.13-.6.13-.13.29-.34.44-.51.15-.17.19-.29.29-.48.1-.19.05-.36-.02-.51-.07-.15-.66-1.58-.9-2.16-.24-.57-.48-.49-.66-.5h-.56c-.19 0-.51.07-.77.36-.27.29-1.01.99-1.01 2.41 0 1.42 1.04 2.79 1.18 2.98.15.19 2.04 3.12 4.95 4.38.69.3 1.23.48 1.65.61.69.22 1.32.19 1.82.12.56-.09 1.72-.7 1.96-1.38.24-.68.24-1.26.17-1.38-.07-.12-.26-.19-.55-.34zM12.04 21.5h-.01a9.4 9.4 0 01-4.8-1.32l-.34-.2-3.57.94.95-3.48-.22-.36a9.38 9.38 0 01-1.44-5.02c0-5.2 4.24-9.43 9.45-9.43 2.52 0 4.89.98 6.67 2.77a9.36 9.36 0 012.76 6.67c0 5.2-4.24 9.43-9.44 9.43zm8.04-17.47A11.32 11.32 0 0012.04 1C5.79 1 .7 6.08.7 12.33c0 1.99.52 3.94 1.51 5.66L.6 23.4l5.55-1.46a11.3 11.3 0 005.89 1.62h.01c6.25 0 11.34-5.08 11.34-11.33 0-3.03-1.18-5.87-3.31-8.01z"/></svg>
+                      </button>
                     </div>
                   </div>
                 </td>
@@ -600,7 +606,7 @@ const visitedTotal = guests.filter((g) => (g.visit_count ?? 0) > 0).length;
             `<td data-label="Kategori"><select class="cat-select" data-field="category">${catOptions(g.category)}</select></td>` +
             editCell("slug", g.slug, "Tautan Kustom", "slug") +
             `<td data-label="Tautan"><div class="link-col">` +
-              `<div class="link-row" data-pretty-row${pretty ? "" : ' style="display:none"'}><span class="tag">Undangan</span><a href="${escapeHtml(pretty)}" target="_blank" rel="noopener" data-link-pretty>${escapeHtml(pretty)}</a><button class="btn btn-ghost btn-sm" data-copy>Salin</button></div>` +
+              `<div class="link-row" data-pretty-row${pretty ? "" : ' style="display:none"'}><a href="${escapeHtml(pretty)}" target="_blank" rel="noopener" data-link-pretty>${escapeHtml(pretty)}</a><button class="btn btn-ghost btn-sm" data-copy>Salin</button><button class="btn btn-icon btn-wa" data-wa aria-label="Bagikan via WhatsApp" title="Bagikan via WhatsApp"><svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M17.47 14.38c-.29-.15-1.72-.85-1.99-.94-.27-.1-.46-.15-.66.15-.19.29-.75.94-.92 1.13-.17.19-.34.22-.63.07-.29-.15-1.23-.45-2.34-1.44-.87-.77-1.45-1.72-1.62-2.01-.17-.29-.02-.45.13-.6.13-.13.29-.34.44-.51.15-.17.19-.29.29-.48.1-.19.05-.36-.02-.51-.07-.15-.66-1.58-.9-2.16-.24-.57-.48-.49-.66-.5h-.56c-.19 0-.51.07-.77.36-.27.29-1.01.99-1.01 2.41 0 1.42 1.04 2.79 1.18 2.98.15.19 2.04 3.12 4.95 4.38.69.3 1.23.48 1.65.61.69.22 1.32.19 1.82.12.56-.09 1.72-.7 1.96-1.38.24-.68.24-1.26.17-1.38-.07-.12-.26-.19-.55-.34zM12.04 21.5h-.01a9.4 9.4 0 01-4.8-1.32l-.34-.2-3.57.94.95-3.48-.22-.36a9.38 9.38 0 01-1.44-5.02c0-5.2 4.24-9.43 9.45-9.43 2.52 0 4.89.98 6.67 2.77a9.36 9.36 0 012.76 6.67c0 5.2-4.24 9.43-9.44 9.43zm8.04-17.47A11.32 11.32 0 0012.04 1C5.79 1 .7 6.08.7 12.33c0 1.99.52 3.94 1.51 5.66L.6 23.4l5.55-1.46a11.3 11.3 0 005.89 1.62h.01c6.25 0 11.34-5.08 11.34-11.33 0-3.03-1.18-5.87-3.31-8.01z"/></svg></button></div>` +
             `</div></td>` +
             `<td data-label="Dibuka"><div class="stat ${state}" data-stat data-visits="${visits}" data-opens="${opens}"><span class="dot"></span><span class="lbl">${stateLabel}</span><span class="nums">👁 ${visits} · 📂 ${opens}</span></div></td>` +
             `<td data-label="Ditambah" class="date-cell">${escapeHtml(fmtDate(g.created_at))}</td>` +
@@ -708,6 +714,19 @@ const visitedTotal = guests.filter((g) => (g.visit_count ?? 0) > 0).length;
             const url = e.target.closest(".link-row").querySelector("a").href;
             try { await navigator.clipboard.writeText(url); toast("Tautan disalin"); }
             catch { toast("Tidak bisa menyalin", true); }
+          }
+          if (e.target.closest("[data-wa]")) {
+            // Share via WhatsApp: open with a personalized invitation message +
+            // the guest's link prefilled. wa.me/?text lets the sender pick who to
+            // send it to (no phone number stored per guest).
+            const url = e.target.closest(".link-row").querySelector("a").href;
+            const greet = [tr.dataset.salutation, tr.dataset.name].map((s) => (s || "").trim()).filter(Boolean).join(" ") || "Bapak/Ibu";
+            const msg =
+              `Yth. ${greet} 🙏\n\n` +
+              `Dengan penuh sukacita, kami mengundang Anda ke *Kirab Budaya & Ruwat Bumi 2026* — Tjie Thien Ta Sen Bio, Tangerang.\n\n` +
+              `Silakan buka undangan digital Anda di:\n${url}\n\n` +
+              `Suatu kehormatan atas kehadiran Anda. Terima kasih. 🏮`;
+            window.open(`https://wa.me/?text=${encodeURIComponent(msg)}`, "_blank", "noopener");
           }
           if (e.target.closest("[data-del]")) {
             if (!confirm(`Hapus tamu "${tr.dataset.name}"?`)) return;
