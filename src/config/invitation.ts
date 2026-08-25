@@ -29,10 +29,19 @@ export type SponsorTier = {
   badge?: Bilingual;
 };
 
+/**
+ * Tiers are the four in the proposal's Formulir Partisipasi:
+ *   utama     — cover slot, Rp 20jt++      (max 3: depan dalam, belakang luar, belakang dalam)
+ *   madya     — 1 full inside page, Rp 20jt
+ *   pendukung — ½ hal Rp 10jt / ¼ hal Rp 5jt / ⅛ hal Rp 2,5jt  (see `page`)
+ *   donatur   — Donatur Pendukung, dana sukarela
+ * Assignment follows the printed book's own page order (reference.pdf).
+ */
 export type SponsorLogo = {
   slug: string;                                          // file is /sponsors/<slug>.webp
   name: string;                                          // display + img alt
-  tier: "utama" | "madya" | "pendukung" | "mitra";
+  tier: "utama" | "madya" | "pendukung" | "donatur";
+  page?: "1/2" | "1/4" | "1/8";                          // Sponsor Pendukung bracket
 };
 
 export type SponsorDonor = { name: string; note?: string };
@@ -66,7 +75,7 @@ export const invitation = {
   dateRange: { id: "23–27 September 2026", en: "23–27 September 2026" },
   imlekRange: "Pwe Gwee 13 — 17 · Imlek 2577",
   startsAt: "2026-09-23T08:00:00+07:00",
-  climaxAt: "2026-09-27T09:00:00+07:00",
+  climaxAt: "2026-09-27T14:00:00+07:00",
   endsAt:   "2026-09-27T18:00:00+07:00",
 
   venue: {
@@ -325,47 +334,49 @@ export const invitation = {
 
   // ─── sponsor roster (logos) ───────────────────────────────────
   sponsorLogos: [
-    { slug: "astic-group",               name: "ASTIC Group",                                          tier: "utama" },
-    { slug: "borobudur-lotus-artfest",   name: "Borobudur Lotus Artfest",                              tier: "utama" },
-    { slug: "bangun-jaya-group",         name: "Bangun Jaya Group",                                    tier: "utama" },
-    { slug: "dextone-avian",             name: "Dextone · Abrasive · Provioz · Veloz",                 tier: "utama" },
-    { slug: "new-armada",                name: "New Armada · PT Bumen Redja Abadi",                    tier: "utama" },
+    { slug: "astic-group",                    name: "ASTIC Group",                                            tier: "utama" },
+    { slug: "borobudur-lotus-artfest",        name: "Borobudur Lotus Artfest",                                tier: "utama" },
 
-    { slug: "dominique-jewellery",       name: "Dominique Jewellery",                                  tier: "madya" },
-    { slug: "handphone-tiam",            name: "Handphone Tiam",                                       tier: "madya" },
-    { slug: "kapal-api",                 name: "Kapal Api",                                            tier: "madya" },
-    { slug: "putra-jaya",                name: "Putra Jaya",                                           tier: "madya" },
-    { slug: "gibrig-indonesia-bersih",   name: "PT Gibrig Indonesia Bersih · Aneka Plastindo · Sushi Abe", tier: "madya" },
-    { slug: "cap-panda",                 name: "Cap Panda",                                            tier: "madya" },
+    { slug: "bangun-jaya-group",              name: "Bangun Jaya Group",                                      tier: "madya" },
+    { slug: "new-armada",                     name: "New Armada · PT Bumen Redja Abadi",                      tier: "madya" },
+    { slug: "dextone-avian",                  name: "Dextone · Abrasive · Provioz · Veloz",                   tier: "madya" },
 
-    { slug: "kalimasadha-nusantara",     name: "Kalimasadha Nusantara",                                tier: "pendukung" },
-    { slug: "aldana-mitrasarana-kita",   name: "PT Aldana Mitrasarana Kita",                           tier: "pendukung" },
-    { slug: "kotaminyak",                name: "KMI Solution · Kotaminyak",                            tier: "pendukung" },
-    { slug: "maju-jaya-plasindo",        name: "PT Maju Jaya Plasindo",                                tier: "pendukung" },
-    { slug: "mayapada-hospital",         name: "Mayapada Hospital",                                    tier: "pendukung" },
-    { slug: "surya-jaya",                name: "Surya Jaya",                                           tier: "pendukung" },
-    { slug: "palais-contruction",        name: "Palais Contruction · Tjoetji Sepatoe",                 tier: "pendukung" },
-    { slug: "global-copier",             name: "Global Copier",                                        tier: "pendukung" },
-    { slug: "megajaya-masterbatch",      name: "PT Megajaya Masterbatch",                              tier: "pendukung" },
-    { slug: "yuro-sport",                name: "Toko Yuro Sport",                                      tier: "pendukung" },
-    { slug: "polytech-chemical",         name: "PT Polytech Chemical Indonesia",                       tier: "pendukung" },
-    { slug: "pingan-pingsu-plastic",     name: "PT Pingan Pingsu Plastic",                             tier: "pendukung" },
-    { slug: "fajar-jaya-agung",          name: "PT Fajar Jaya Agung",                                  tier: "pendukung" },
-    { slug: "utama-jaya-sukses",         name: "CV Utama Jaya Sukses",                                 tier: "pendukung" },
-    { slug: "elephant-springbed",        name: "Elephant Spring & Latex Bed",                          tier: "pendukung" },
-    { slug: "tirta-samudra-emas",        name: "PT Tirta Samudra Emas",                                tier: "pendukung" },
-    { slug: "wahana-trilintas-mining",   name: "PT Wahana Trilintas Mining",                           tier: "pendukung" },
-    { slug: "pakons-prime",              name: "Pakons Prime",                                         tier: "pendukung" },
-    { slug: "maju-makmur-prima",         name: "Maju Makmur Prima",                                    tier: "pendukung" },
-    { slug: "sariwangi-mentari",         name: "PT Sariwangi Mentari",                                 tier: "pendukung" },
-    { slug: "bakpau-kue-555",            name: "Bakpau & Kue 555",                                     tier: "pendukung" },
+    { slug: "dominique-jewellery",            name: "Dominique Jewellery",                                    tier: "pendukung", page: "1/2" },
+    { slug: "handphone-tiam",                 name: "Handphone Tiam",                                         tier: "pendukung", page: "1/2" },
+    { slug: "kapal-api",                      name: "Kapal Api",                                              tier: "pendukung", page: "1/2" },
+    { slug: "putra-jaya",                     name: "Putra Jaya",                                             tier: "pendukung", page: "1/2" },
+    { slug: "gibrig-indonesia-bersih",        name: "PT Gibrig Indonesia Bersih · Aneka Plastindo · Sushi Abe",tier: "pendukung", page: "1/2" },
+    { slug: "cap-panda",                      name: "Cap Panda",                                              tier: "pendukung", page: "1/2" },
 
-    { slug: "daai-tv",                   name: "DAAI TV",                                              tier: "mitra" },
-    { slug: "mediapers",                 name: "MP MediaPers",                                         tier: "mitra" },
-    { slug: "actual-news",               name: "Actual News",                                          tier: "mitra" },
-    { slug: "detik-suara-rakyat",        name: "Detik Suara Rakyat",                                   tier: "mitra" },
-    { slug: "mandiri-kasih",             name: "Mandiri Kasih",                                        tier: "mitra" },
-    { slug: "universitas-buddhi-dharma", name: "Universitas Buddhi Dharma",                            tier: "mitra" },
+    { slug: "kalimasadha-nusantara",          name: "Kalimasadha Nusantara",                                  tier: "pendukung", page: "1/4" },
+    { slug: "aldana-mitrasarana-kita",        name: "PT Aldana Mitrasarana Kita",                             tier: "pendukung", page: "1/4" },
+    { slug: "kotaminyak",                     name: "KMI Solution · Kotaminyak",                              tier: "pendukung", page: "1/4" },
+    { slug: "maju-jaya-plasindo",             name: "PT Maju Jaya Plasindo",                                  tier: "pendukung", page: "1/4" },
+    { slug: "mayapada-hospital",              name: "Mayapada Hospital",                                      tier: "pendukung", page: "1/4" },
+    { slug: "surya-jaya",                     name: "Surya Jaya",                                             tier: "pendukung", page: "1/4" },
+    { slug: "palais-contruction",             name: "Palais Contruction · Tjoetji Sepatoe",                   tier: "pendukung", page: "1/4" },
+    { slug: "global-copier",                  name: "Global Copier",                                          tier: "pendukung", page: "1/4" },
+
+    { slug: "megajaya-masterbatch",           name: "PT Megajaya Masterbatch",                                tier: "pendukung", page: "1/8" },
+    { slug: "yuro-sport",                     name: "Toko Yuro Sport",                                        tier: "pendukung", page: "1/8" },
+    { slug: "polytech-chemical",              name: "PT Polytech Chemical Indonesia",                         tier: "pendukung", page: "1/8" },
+    { slug: "pingan-pingsu-plastic",          name: "PT Pingan Pingsu Plastic",                               tier: "pendukung", page: "1/8" },
+    { slug: "fajar-jaya-agung",               name: "PT Fajar Jaya Agung",                                    tier: "pendukung", page: "1/8" },
+    { slug: "utama-jaya-sukses",              name: "CV Utama Jaya Sukses",                                   tier: "pendukung", page: "1/8" },
+    { slug: "elephant-springbed",             name: "Elephant Spring & Latex Bed",                            tier: "pendukung", page: "1/8" },
+    { slug: "tirta-samudra-emas",             name: "PT Tirta Samudra Emas",                                  tier: "pendukung", page: "1/8" },
+    { slug: "wahana-trilintas-mining",        name: "PT Wahana Trilintas Mining",                             tier: "pendukung", page: "1/8" },
+    { slug: "pakons-prime",                   name: "Pakons Prime",                                           tier: "pendukung", page: "1/8" },
+    { slug: "maju-makmur-prima",              name: "Maju Makmur Prima",                                      tier: "pendukung", page: "1/8" },
+    { slug: "sariwangi-mentari",              name: "PT Sariwangi Mentari",                                   tier: "pendukung", page: "1/8" },
+    { slug: "bakpau-kue-555",                 name: "Bakpau & Kue 555",                                       tier: "pendukung", page: "1/8" },
+
+    { slug: "daai-tv",                        name: "DAAI TV",                                                tier: "donatur" },
+    { slug: "mediapers",                      name: "MP MediaPers",                                           tier: "donatur" },
+    { slug: "actual-news",                    name: "Actual News",                                            tier: "donatur" },
+    { slug: "detik-suara-rakyat",             name: "Detik Suara Rakyat",                                     tier: "donatur" },
+    { slug: "mandiri-kasih",                  name: "Mandiri Kasih",                                          tier: "donatur" },
+    { slug: "universitas-buddhi-dharma",      name: "Universitas Buddhi Dharma",                              tier: "donatur" },
   ] satisfies SponsorLogo[],
 
   // ─── donatur tanpa logo (teks / gulungan) ─────────────────────

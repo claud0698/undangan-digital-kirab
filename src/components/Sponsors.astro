@@ -4,26 +4,43 @@ import { invitation } from "~/config/invitation";
 interface Props { lang: Lang; }
 const { lang } = Astro.props;
 
-// Tiles are pre-rendered webp in /public/sponsors — one per slug, sized by tier below.
-// Utama is 4:3, every other band is 3:2; `dims` and the aspect-ratio rules in <style>
-// must stay in step with the exports (see .claude/skills/print-logo-to-web).
+// Tiles are pre-rendered webp in /public/sponsors, exported at roughly 2x their
+// largest rendered width. Tile size descends with contribution, mirroring how the
+// printed book gives a cover sponsor a full page and a ⅛-halaman sponsor a corner.
+// `dims` and the aspect-ratio / --cols rules in <style> must stay in step with the
+// exports (see .claude/skills/print-logo-to-web).
 const dims = {
-  utama:     { w: 720, h: 540 },
-  madya:     { w: 540, h: 360 },
-  pendukung: { w: 420, h: 280 },
-  mitra:     { w: 420, h: 280 },
+  utama:   { w: 960, h: 720 },   // 4:3 — square group lockups
+  madya:   { w: 660, h: 440 },
+  "1/2":   { w: 540, h: 360 },
+  "1/4":   { w: 420, h: 280 },
+  "1/8":   { w: 420, h: 280 },
+  donatur: { w: 420, h: 280 },
 } as const;
 
+type SizeKey = keyof typeof dims;
+
+const at = (tier: string, page?: string) =>
+  invitation.sponsorLogos.filter((l) => l.tier === tier && (page ? l.page === page : true));
+
 const bands = [
-  { tier: "utama",     label: { id: "Sponsor Utama",     en: "Principal Sponsors" } },
-  { tier: "madya",     label: { id: "Sponsor Madya",     en: "Mid-tier Sponsors" } },
-  { tier: "pendukung", label: { id: "Sponsor Pendukung", en: "Supporting Sponsors" } },
-  { tier: "mitra",     label: { id: "Mitra & Media",     en: "Partners & Media" } },
-] as const;
+  { key: "utama", label: { id: "Sponsor Utama", en: "Principal Sponsors" },
+    groups: [{ size: "utama" as SizeKey, items: at("utama") }] },
+  { key: "madya", label: { id: "Sponsor Madya", en: "Mid-tier Sponsors" },
+    groups: [{ size: "madya" as SizeKey, items: at("madya") }] },
+  { key: "pendukung", label: { id: "Sponsor Pendukung", en: "Supporting Sponsors" },
+    groups: [
+      { size: "1/2" as SizeKey, items: at("pendukung", "1/2") },
+      { size: "1/4" as SizeKey, items: at("pendukung", "1/4") },
+      { size: "1/8" as SizeKey, items: at("pendukung", "1/8") },
+    ] },
+  { key: "donatur", label: { id: "Donatur Pendukung", en: "Supporting Donors" },
+    groups: [{ size: "donatur" as SizeKey, items: at("donatur") }] },
+];
 
 const roster = bands
-  .map((b) => ({ ...b, items: invitation.sponsorLogos.filter((l) => l.tier === b.tier) }))
-  .filter((b) => b.items.length > 0);
+  .map((b) => ({ ...b, groups: b.groups.filter((g) => g.items.length) }))
+  .filter((b) => b.groups.length);
 ---
 <section class="sponsors" data-reveal>
   <div class="eyebrow">{lang === "id" ? "Dukungan" : "Supported By"}</div>
@@ -40,38 +57,39 @@ const roster = bands
 
   <div class="roster">
     {roster.map((band) => (
-      <div class:list={["band", `band-${band.tier}`]}>
-        <span class="band-label">{band.label[lang]}</span>
-        <div class="logo-grid">
-          {band.items.map((l) => (
-            <div class="logo-slot">
-              <img
-                src={`/sponsors/${l.slug}.webp`}
-                alt={l.name}
-                width={dims[band.tier].w}
-                height={dims[band.tier].h}
-                loading="lazy"
-                decoding="async"
-              />
-            </div>
-          ))}
-        </div>
+      <div class:list={["band", `band-${band.key}`]}>
+        <h3 class="band-label">{band.label[lang]}</h3>
+
+        {band.groups.map((g) => (
+          <div class:list={["logo-grid", `size-${g.size.replace("/", "-")}`]}>
+            {g.items.map((l) => (
+              <div class="logo-slot">
+                <img
+                  src={`/sponsors/${l.slug}.webp`}
+                  alt={l.name}
+                  width={dims[g.size].w}
+                  height={dims[g.size].h}
+                  loading="lazy"
+                  decoding="async"
+                  fetchpriority="low"
+                />
+              </div>
+            ))}
+          </div>
+        ))}
+
+        {band.key === "donatur" && invitation.sponsorDonors.length ? (
+          <ul class="donor-list" role="list">
+            {invitation.sponsorDonors.map((d) => (
+              <li>
+                <span class="d-name">{d.name}</span>
+                {d.note && <em class="d-note">“ {d.note} ”</em>}
+              </li>
+            ))}
+          </ul>
+        ) : null}
       </div>
     ))}
-
-    {invitation.sponsorDonors.length ? (
-      <div class="band band-donatur">
-        <span class="band-label">{lang === "id" ? "Donatur" : "Donors"}</span>
-        <ul class="donor-list">
-          {invitation.sponsorDonors.map((d) => (
-            <li>
-              <span class="d-name">{d.name}</span>
-              {d.note && <em class="d-note">“ {d.note} ”</em>}
-            </li>
-          ))}
-        </ul>
-      </div>
-    ) : null}
   </div>
 
   <p class="footnote">
@@ -107,7 +125,7 @@ const roster = bands
 
     <div class="contact-group">
       <span class="contact-heading">{lang === "id" ? "Informasi & Konfirmasi Dana" : "Donation Info & Confirmation"}</span>
-      <ul class="contact-list">
+      <ul class="contact-list" role="list">
         <li>
           <span class="c-name">Liliany Candra <em>· {lang === "id" ? "Wk. Bendahara" : "Vice Treasurer"}</em></span>
           <a href="https://wa.me/6281369757888" target="_blank" rel="noopener">+62 813-6975-7888</a>
@@ -122,7 +140,7 @@ const roster = bands
 
     <div class="contact-group">
       <span class="contact-heading">{lang === "id" ? "PIC Pengiriman Data / Gambar Sponsor" : "PIC for Sponsor Data / Artwork"}</span>
-      <ul class="contact-list">
+      <ul class="contact-list" role="list">
         <li>
           <span class="c-name">Lukas Susanto</span>
           <a href="https://wa.me/6285692413938" target="_blank" rel="noopener">+62 856 9241 3938</a>
@@ -181,6 +199,7 @@ const roster = bands
 
   .band-label {
     display: block;
+    font-weight: 400;
     text-align: center;
     font-family: 'Cinzel', serif;
     font-size: 9px;
@@ -202,31 +221,46 @@ const roster = bands
     opacity: 0.7;
   }
 
-  .logo-grid { display: grid; gap: 10px; }
-  .band-utama .logo-grid     { grid-template-columns: 1fr; gap: 12px; }
-  .band-madya .logo-grid     { grid-template-columns: repeat(2, 1fr); }
-  .band-pendukung .logo-grid { grid-template-columns: repeat(3, 1fr); gap: 8px; }
-  .band-mitra .logo-grid     { grid-template-columns: repeat(3, 1fr); gap: 8px; }
-
-  .band-utama .logo-slot { aspect-ratio: 4 / 3; }
+  /* Flex rather than grid: a remainder row centres itself instead of leaving the
+     last sponsor stranded at the left edge with empty space beside it. */
+  .logo-grid {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 10px;
+    --cols: 3;
+  }
+  .logo-grid + .logo-grid { margin-top: 10px; }
 
   .logo-slot {
+    flex: 0 0 calc((100% - (var(--cols) - 1) * 10px) / var(--cols));
     aspect-ratio: 3 / 2;
     border: 1px solid var(--gold);
     background: #fff;
     overflow: hidden;
     transition: border-color 0.25s ease, transform 0.25s ease, box-shadow 0.25s ease;
   }
-  .logo-slot:hover {
-    border-color: var(--red);
-    transform: translateY(-2px);
-    box-shadow: 0 6px 18px rgba(74, 8, 8, 0.18);
+  @media (hover: hover) {
+    .logo-slot:hover {
+      border-color: var(--red);
+      transform: translateY(-2px);
+      box-shadow: 0 6px 18px rgba(74, 8, 8, 0.18);
+    }
   }
   .logo-slot img {
     width: 100%;
     height: 100%;
     object-fit: contain;
   }
+
+  /* Size ladder — fewer columns means a bigger tile. Descends with contribution. */
+  .size-utama   { --cols: 1; }
+  .size-madya   { --cols: 2; }
+  .size-1-2     { --cols: 2; }
+  .size-1-4     { --cols: 3; }
+  .size-1-8     { --cols: 3; }
+  .size-donatur { --cols: 4; }
+  .size-utama .logo-slot { aspect-ratio: 4 / 3; }
 
   .donor-list {
     list-style: none;
@@ -349,7 +383,7 @@ const roster = bands
   .contact-list li {
     display: flex;
     flex-direction: column;
-    gap: 2px;
+    gap: 6px;
   }
   .contact-list .c-name {
     font-family: 'Cormorant Garamond', serif;
@@ -368,8 +402,13 @@ const roster = bands
     font-family: 'Cinzel', serif;
     font-size: 14px;
     letter-spacing: 0.06em;
-    color: var(--gold);
+    /* was --gold: the same 2.36:1 as .d-note above, on the only conversion path
+       in the section. --red is 7.86:1, and matches .c-email directly beneath. */
+    color: var(--red);
     text-decoration: none;
+    /* WCAG 2.5.8 wants a 24px target; 14px Cinzel alone gives ~21px. */
+    display: inline-block;
+    padding: 4px 0;
   }
   .contact-list a:hover { color: var(--red-bright); }
   .contact-list a.c-email {
@@ -436,17 +475,21 @@ const roster = bands
   @media (min-width: 720px) {
     .roster { max-width: 640px; }
     .band + .band { margin-top: 34px; }
-    .band-utama .logo-grid     { grid-template-columns: repeat(2, 1fr); }
-    .band-madya .logo-grid     { grid-template-columns: repeat(3, 1fr); }
-    .band-pendukung .logo-grid { grid-template-columns: repeat(4, 1fr); }
-    .band-mitra .logo-grid     { grid-template-columns: repeat(3, 1fr); }
+    .size-utama   { --cols: 2; }
+    .size-madya   { --cols: 3; }
+    .size-1-2     { --cols: 3; }
+    .size-1-4     { --cols: 4; }
+    .size-1-8     { --cols: 5; }
+    .size-donatur { --cols: 5; }
     .donor-list { grid-template-columns: repeat(2, 1fr); }
   }
 
   @media (min-width: 1080px) {
     .roster { max-width: 860px; }
-    .band-pendukung .logo-grid { grid-template-columns: repeat(5, 1fr); }
-    .band-mitra .logo-grid     { grid-template-columns: repeat(6, 1fr); }
+    .size-1-2     { --cols: 4; }
+    .size-1-4     { --cols: 5; }
+    .size-1-8     { --cols: 6; }
+    .size-donatur { --cols: 7; }
     .donor-list { grid-template-columns: repeat(4, 1fr); }
   }
 </style>
