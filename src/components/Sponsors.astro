@@ -17,6 +17,10 @@ const dims = {
 
 const ranks = [1, 2, 3, 4, 5] as const;
 
+const groupLabel: Partial<Record<(typeof ranks)[number], { id: string; en: string }>> = {
+  5: { id: "Mitra Pendukung", en: "Supporting Partners" },
+};
+
 const roster = ranks
   .map((r) => ({ rank: r, items: invitation.sponsorLogos.filter((l) => l.rank === r) }))
   .filter((g) => g.items.length);
@@ -36,21 +40,24 @@ const roster = ranks
 
   <div class="roster">
     {roster.map((g) => (
-      <div class:list={["logo-grid", `rank-${g.rank}`]}>
-        {g.items.map((l) => (
-          <div class="logo-slot">
-            <img
-              src={`/sponsors/${l.slug}.webp`}
-              alt={l.name}
-              width={dims[g.rank].w}
-              height={dims[g.rank].h}
-              loading="lazy"
-              decoding="async"
-              fetchpriority="low"
-            />
-          </div>
-        ))}
-      </div>
+      <Fragment>
+        {groupLabel[g.rank] && <h3 class="group-label">{groupLabel[g.rank]![lang]}</h3>}
+        <div class:list={["logo-grid", `rank-${g.rank}`]}>
+          {g.items.map((l) => (
+            <div class="logo-slot">
+              <img
+                src={`/sponsors/${l.slug}.webp`}
+                alt={l.name}
+                width={dims[g.rank].w}
+                height={dims[g.rank].h}
+                loading="lazy"
+                decoding="async"
+                fetchpriority="low"
+              />
+            </div>
+          ))}
+        </div>
+      </Fragment>
     ))}
 
     {invitation.sponsorDonors.length ? (
@@ -177,7 +184,7 @@ const roster = ranks
     gap: 10px;
     --cols: 3;
   }
-  .logo-grid + .logo-grid { margin-top: 16px; }
+  .logo-grid + .logo-grid { margin-top: 24px; }
 
   .logo-slot {
     flex: 0 0 calc((100% - (var(--cols) - 1) * 10px) / var(--cols));
@@ -208,22 +215,43 @@ const roster = ranks
   .rank-5 { --cols: 4; }
   .rank-1 .logo-slot { aspect-ratio: 4 / 3; }
 
-  .donor-list {
-    margin-top: 26px;
+  .group-label {
+    display: block;
+    font-weight: 400;
+    text-align: center;
+    font-family: 'Cinzel', serif;
+    font-size: 9px;
+    letter-spacing: 0.35em;
+    text-transform: uppercase;
+    color: var(--red);
+    opacity: 0.8;
+    margin: 30px 0 12px;
   }
+  .group-label::before,
+  .group-label::after {
+    content: "";
+    display: inline-block;
+    width: 22px;
+    height: 1px;
+    background: var(--gold);
+    vertical-align: middle;
+    margin: 0 10px;
+    opacity: 0.7;
+  }
+  .group-label + .logo-grid { margin-top: 0; }
 
   .donor-list {
     list-style: none;
     padding: 0;
-    margin: 0;
+    margin: 54px 0 0;
     display: grid;
     grid-template-columns: 1fr;
-    gap: 8px;
+    gap: 22px;
     text-align: center;
   }
   .donor-list li {
     border-top: 1px dashed rgba(122, 16, 16, 0.22);
-    padding-top: 10px;
+    padding-top: 16px;
   }
   .donor-list .d-name {
     display: block;
