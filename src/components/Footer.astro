@@ -70,7 +70,13 @@ const shareText = encodeURIComponent(
   const shareWA = document.getElementById("shareWA");
   const shareCopy = document.getElementById("shareCopy");
   const copyLabel = document.getElementById("copyLabel");
-  function getShareUrl() { return window.location.href.split("#")[0]; }
+  // Personalised invitations carry ?to=<name>&alamat=<address>&via=<slug>. Keeping the
+  // query string would forward the original recipient's name and home address to every
+  // person in the group, and misattribute their opens to the first guest's tracking slug.
+  function getShareUrl() {
+    const u = new URL(window.location.href);
+    return u.origin + u.pathname;
+  }
   if (shareWA) shareWA.href = "https://wa.me/?text=" + shareText + encodeURIComponent(getShareUrl());
   shareCopy?.addEventListener("click", async () => {
     try {
