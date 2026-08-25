@@ -5,44 +5,21 @@ interface Props { lang: Lang; }
 const { lang } = Astro.props;
 
 // Tiles are pre-rendered webp in /public/sponsors, exported at roughly 2x their
-// largest rendered width. Tile size descends with contribution, mirroring how the
-// printed book gives a cover sponsor a full page and a ⅛-halaman sponsor a corner.
-// `dims` and the aspect-ratio / --cols rules in <style> must stay in step with the
-// exports (see .claude/skills/print-logo-to-web).
+// largest rendered width. `rank` drives tile size only — 1 largest, 5 smallest.
+// Keep `dims` in step with the exports (see .claude/skills/print-logo-to-web).
 const dims = {
-  utama:   { w: 960, h: 720 },   // 4:3 — square group lockups
-  madya:   { w: 660, h: 440 },
-  "1/1":   { w: 660, h: 440 },   // full page in the printed book
-  "1/2":   { w: 540, h: 360 },
-  "1/4":   { w: 420, h: 280 },
-  "1/8":   { w: 420, h: 280 },
-  donatur: { w: 420, h: 280 },
+  1: { w: 960, h: 720 },   // 4:3 — square group lockups
+  2: { w: 660, h: 440 },
+  3: { w: 540, h: 360 },
+  4: { w: 420, h: 280 },
+  5: { w: 420, h: 280 },
 } as const;
 
-type SizeKey = keyof typeof dims;
+const ranks = [1, 2, 3, 4, 5] as const;
 
-const at = (tier: string, page?: string) =>
-  invitation.sponsorLogos.filter((l) => l.tier === tier && (page ? l.page === page : true));
-
-const bands = [
-  { key: "utama", label: { id: "Sponsor Utama", en: "Principal Sponsors" },
-    groups: [{ size: "utama" as SizeKey, items: at("utama") }] },
-  { key: "madya", label: { id: "Sponsor Madya", en: "Mid-tier Sponsors" },
-    groups: [{ size: "madya" as SizeKey, items: at("madya") }] },
-  { key: "pendukung", label: { id: "Sponsor Pendukung", en: "Supporting Sponsors" },
-    groups: [
-      { size: "1/1" as SizeKey, items: at("pendukung", "1/1") },
-      { size: "1/2" as SizeKey, items: at("pendukung", "1/2") },
-      { size: "1/4" as SizeKey, items: at("pendukung", "1/4") },
-      { size: "1/8" as SizeKey, items: at("pendukung", "1/8") },
-    ] },
-  { key: "donatur", label: { id: "Donatur Pendukung", en: "Supporting Donors" },
-    groups: [{ size: "donatur" as SizeKey, items: at("donatur") }] },
-];
-
-const roster = bands
-  .map((b) => ({ ...b, groups: b.groups.filter((g) => g.items.length) }))
-  .filter((b) => b.groups.length);
+const roster = ranks
+  .map((r) => ({ rank: r, items: invitation.sponsorLogos.filter((l) => l.rank === r) }))
+  .filter((g) => g.items.length);
 ---
 <section class="sponsors" data-reveal>
   <div class="eyebrow">{lang === "id" ? "Dukungan" : "Supported By"}</div>
@@ -58,40 +35,34 @@ const roster = bands
   </p>
 
   <div class="roster">
-    {roster.map((band) => (
-      <div class:list={["band", `band-${band.key}`]}>
-        <h3 class="band-label">{band.label[lang]}</h3>
-
-        {band.groups.map((g) => (
-          <div class:list={["logo-grid", `size-${g.size.replace("/", "-")}`]}>
-            {g.items.map((l) => (
-              <div class="logo-slot">
-                <img
-                  src={`/sponsors/${l.slug}.webp`}
-                  alt={l.name}
-                  width={dims[g.size].w}
-                  height={dims[g.size].h}
-                  loading="lazy"
-                  decoding="async"
-                  fetchpriority="low"
-                />
-              </div>
-            ))}
+    {roster.map((g) => (
+      <div class:list={["logo-grid", `rank-${g.rank}`]}>
+        {g.items.map((l) => (
+          <div class="logo-slot">
+            <img
+              src={`/sponsors/${l.slug}.webp`}
+              alt={l.name}
+              width={dims[g.rank].w}
+              height={dims[g.rank].h}
+              loading="lazy"
+              decoding="async"
+              fetchpriority="low"
+            />
           </div>
         ))}
-
-        {band.key === "donatur" && invitation.sponsorDonors.length ? (
-          <ul class="donor-list" role="list">
-            {invitation.sponsorDonors.map((d) => (
-              <li>
-                <span class="d-name">{d.name}</span>
-                {d.note && <em class="d-note">“ {d.note} ”</em>}
-              </li>
-            ))}
-          </ul>
-        ) : null}
       </div>
     ))}
+
+    {invitation.sponsorDonors.length ? (
+      <ul class="donor-list" role="list">
+        {invitation.sponsorDonors.map((d) => (
+          <li>
+            <span class="d-name">{d.name}</span>
+            {d.note && <em class="d-note">“ {d.note} ”</em>}
+          </li>
+        ))}
+      </ul>
+    ) : null}
   </div>
 
   <p class="footnote">
@@ -197,32 +168,6 @@ const roster = bands
     margin: 0 auto;
   }
 
-  .band + .band { margin-top: 26px; }
-
-  .band-label {
-    display: block;
-    font-weight: 400;
-    text-align: center;
-    font-family: 'Cinzel', serif;
-    font-size: 9px;
-    letter-spacing: 0.35em;
-    text-transform: uppercase;
-    color: var(--red);
-    opacity: 0.8;
-    margin-bottom: 12px;
-  }
-  .band-label::before,
-  .band-label::after {
-    content: "";
-    display: inline-block;
-    width: 22px;
-    height: 1px;
-    background: var(--gold);
-    vertical-align: middle;
-    margin: 0 10px;
-    opacity: 0.7;
-  }
-
   /* Flex rather than grid: a remainder row centres itself instead of leaving the
      last sponsor stranded at the left edge with empty space beside it. */
   .logo-grid {
@@ -232,7 +177,7 @@ const roster = bands
     gap: 10px;
     --cols: 3;
   }
-  .logo-grid + .logo-grid { margin-top: 10px; }
+  .logo-grid + .logo-grid { margin-top: 16px; }
 
   .logo-slot {
     flex: 0 0 calc((100% - (var(--cols) - 1) * 10px) / var(--cols));
@@ -256,14 +201,16 @@ const roster = bands
   }
 
   /* Size ladder — fewer columns means a bigger tile. Descends with contribution. */
-  .size-utama   { --cols: 1; }
-  .size-madya   { --cols: 2; }
-  .size-1-1     { --cols: 1; }
-  .size-1-2     { --cols: 2; }
-  .size-1-4     { --cols: 3; }
-  .size-1-8     { --cols: 3; }
-  .size-donatur { --cols: 4; }
-  .size-utama .logo-slot { aspect-ratio: 4 / 3; }
+  .rank-1 { --cols: 1; }
+  .rank-2 { --cols: 2; }
+  .rank-3 { --cols: 2; }
+  .rank-4 { --cols: 3; }
+  .rank-5 { --cols: 4; }
+  .rank-1 .logo-slot { aspect-ratio: 4 / 3; }
+
+  .donor-list {
+    margin-top: 26px;
+  }
 
   .donor-list {
     list-style: none;
@@ -477,24 +424,21 @@ const roster = bands
 
   @media (min-width: 720px) {
     .roster { max-width: 640px; }
-    .band + .band { margin-top: 34px; }
-    .size-utama   { --cols: 2; }
-    .size-madya   { --cols: 3; }
-    .size-1-1     { --cols: 2; }
-    .size-1-2     { --cols: 3; }
-    .size-1-4     { --cols: 4; }
-    .size-1-8     { --cols: 5; }
-    .size-donatur { --cols: 5; }
+    .rank-1 { --cols: 2; }
+    .rank-2 { --cols: 3; }
+    .rank-3 { --cols: 4; }
+    .rank-4 { --cols: 5; }
+    .rank-5 { --cols: 6; }
     .donor-list { grid-template-columns: repeat(2, 1fr); }
   }
 
   @media (min-width: 1080px) {
     .roster { max-width: 860px; }
-    .size-1-1     { --cols: 2; }
-    .size-1-2     { --cols: 4; }
-    .size-1-4     { --cols: 5; }
-    .size-1-8     { --cols: 6; }
-    .size-donatur { --cols: 7; }
+    .rank-1 { --cols: 2; }
+    .rank-2 { --cols: 3; }
+    .rank-3 { --cols: 4; }
+    .rank-4 { --cols: 6; }
+    .rank-5 { --cols: 7; }
     .donor-list { grid-template-columns: repeat(4, 1fr); }
   }
 </style>
