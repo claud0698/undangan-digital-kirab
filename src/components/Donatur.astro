@@ -1,0 +1,93 @@
+---
+import { type Lang } from "~/i18n";
+import { invitation } from "~/config/invitation";
+interface Props { lang: Lang; }
+const { lang } = Astro.props;
+
+const donors = invitation.sponsorDonors;
+---
+{donors.length > 0 && (
+  <section class="donatur" data-reveal>
+    <div class="eyebrow">{lang === "id" ? "Terima Kasih" : "With Gratitude"}</div>
+    <h2 class="section-title">{lang === "id" ? "Para Donatur" : "Our Donors"}</h2>
+    <div class="section-han">功 德 芳 名</div>
+    <div class="section-han-roman">{lang === "id" ? "Nama Para Penyokong" : "Roll of Merit"}</div>
+    <div class="divider"><span class="line"></span><span class="dot"></span><span class="line"></span></div>
+
+    <p class="lead">
+      {lang === "id"
+        ? "Dengan penuh hormat kami sampaikan terima kasih kepada Bapak/Ibu/Saudara/i sekeluarga yang telah berkenan berdana bagi terselenggaranya acara ini."
+        : "With deep respect we thank the families whose generosity made this celebration possible."}
+    </p>
+
+    <ul class="donor-list" role="list">
+      {donors.map((d) => (
+        <li>
+          <span class="d-name">{d.name}</span>
+          {d.note && <em class="d-note">“ {d.note} ”</em>}
+        </li>
+      ))}
+    </ul>
+  </section>
+)}
+
+<style>
+  .donatur {
+    background: var(--paper);
+    padding: 70px 30px;
+  }
+  .donatur .eyebrow { color: var(--red); }
+
+  .lead {
+    font-family: var(--font-display, 'Cormorant Garamond', serif);
+    font-style: italic;
+    text-align: center;
+    color: var(--ink);
+    opacity: 0.85;
+    max-width: 460px;
+    margin: 0 auto 2.4rem;
+    font-size: 16px;
+    line-height: 1.6;
+  }
+
+  .donor-list {
+    list-style: none;
+    padding: 0;
+    margin: 0 auto;
+    max-width: 460px;
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 22px;
+    text-align: center;
+  }
+  .donor-list li {
+    border-top: 1px dashed rgba(122, 16, 16, 0.22);
+    padding-top: 16px;
+  }
+  .donor-list .d-name {
+    display: block;
+    font-family: 'Cormorant Garamond', serif;
+    font-weight: 600;
+    font-size: 18px;
+    line-height: 1.25;
+    color: var(--red-deep);
+  }
+  .donor-list .d-note {
+    display: block;
+    font-family: 'Cormorant Garamond', serif;
+    font-style: italic;
+    font-size: 13px;
+    /* --gold on --paper is 2.2:1; these are people's names, so they need AA. */
+    color: var(--red);
+    opacity: 0.85;
+    margin-top: 2px;
+  }
+
+  @media (min-width: 720px) {
+    .donor-list { max-width: 640px; grid-template-columns: repeat(2, 1fr); }
+  }
+
+  @media (min-width: 1080px) {
+    .donor-list { max-width: 860px; grid-template-columns: repeat(4, 1fr); }
+  }
+</style>
