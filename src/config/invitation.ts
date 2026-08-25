@@ -41,7 +41,14 @@ export type SponsorLogo = {
   rank: 1 | 2 | 3 | 4 | 5;
 };
 
-export type SponsorDonor = { name: string; note?: string };
+/**
+ * `chineseName` is the donor's actual Chinese given name — Quency and Gloria share
+ * the generation character 芳 (Fong) — not a nickname, so render it plainly with no
+ * quotation marks. `city` follows the Tangerang klenteng convention of inscribing a
+ * donor's place of origin beside their name, as on Boen Tek Bio's own 19th-century
+ * bells and censers. Order below is the committee's; do not sort it.
+ */
+export type SponsorDonor = { name: string; chineseName?: string; city?: string };
 
 export const invitation = {
   organization: {
@@ -377,13 +384,13 @@ export const invitation = {
 
   // ─── donatur tanpa logo (teks / gulungan) ─────────────────────
   sponsorDonors: [
-    { name: "Quency Nathaniel Kertasasmita", note: "Cang Fong Ling" },
-    { name: "Gloria Nathaniel Kertasasmita",  note: "Cang Fong Cen" },
+    { name: "Quency Nathaniel Kertasasmita",         chineseName: "Cang Fong Ling" },
+    { name: "Gloria Nathaniel Kertasasmita",         chineseName: "Cang Fong Cen" },
     { name: "Chia Thiam Hua & Keluarga" },
-    { name: "Rudy Setiawan & Keluarga",       note: "Magelang" },
-    { name: "Rudi Gunawan / Ate & Keluarga",  note: "Lampung" },
+    { name: "Rudy Setiawan & Keluarga",              city: "Magelang" },
+    { name: "Rudi Gunawan / Ate & Keluarga",         city: "Lampung" },
     { name: "Liauw Denny & Keluarga" },
-    { name: "Andry Suryadi W & Keluarga",     note: "Tangerang" },
+    { name: "Andry Suryadi W & Keluarga",            city: "Tangerang" },
     { name: "Tommy & Keluarga" },
   ] satisfies SponsorDonor[],
 
