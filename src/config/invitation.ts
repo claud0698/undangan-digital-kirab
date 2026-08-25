@@ -41,7 +41,7 @@ export type SponsorLogo = {
   slug: string;                                          // file is /sponsors/<slug>.webp
   name: string;                                          // display + img alt
   tier: "utama" | "madya" | "pendukung" | "donatur";
-  page?: "1/2" | "1/4" | "1/8";                          // Sponsor Pendukung bracket
+  page?: "1/1" | "1/2" | "1/4" | "1/8";                   // printed page area -> tile size
 };
 
 export type SponsorDonor = { name: string; note?: string };
@@ -346,7 +346,7 @@ export const invitation = {
     { slug: "kapal-api",                      name: "Kapal Api",                                              tier: "pendukung", page: "1/2" },
     { slug: "putra-jaya",                     name: "Putra Jaya",                                             tier: "pendukung", page: "1/2" },
     { slug: "gibrig-indonesia-bersih",        name: "PT Gibrig Indonesia Bersih · Aneka Plastindo · Sushi Abe",tier: "pendukung", page: "1/2" },
-    { slug: "cap-panda",                      name: "Cap Panda",                                              tier: "pendukung", page: "1/2" },
+    { slug: "cap-panda",                      name: "Cap Panda",                                              tier: "pendukung", page: "1/1" },
 
     { slug: "kalimasadha-nusantara",          name: "Kalimasadha Nusantara",                                  tier: "pendukung", page: "1/4" },
     { slug: "aldana-mitrasarana-kita",        name: "PT Aldana Mitrasarana Kita",                             tier: "pendukung", page: "1/4" },
