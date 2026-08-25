@@ -230,6 +230,172 @@ const roster = ranks
   }
   .group-label + .logo-grid { margin-top: 0; }
 
+  .donasi {
+    max-width: 460px;
+    margin: 1.6rem auto 0;
+    display: flex;
+    flex-direction: column;
+    gap: 18px;
+  }
+
+  .bank-card {
+    background: var(--red-deep);
+    border: 1px solid var(--gold);
+    padding: 20px 22px;
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+    text-align: center;
+  }
+  .bank-label {
+    font-family: 'Cinzel', serif;
+    font-size: 9px;
+    letter-spacing: 0.4em;
+    text-transform: uppercase;
+    color: var(--gold-bright);
+    margin-bottom: 4px;
+  }
+  .bank-name {
+    font-family: 'Cormorant Garamond', serif;
+    font-weight: 600;
+    font-size: 22px;
+    color: var(--paper);
+    line-height: 1;
+  }
+  .bank-no {
+    font-family: 'Cinzel', serif;
+    font-size: 22px;
+    letter-spacing: 0.12em;
+    color: var(--gold-pale);
+    margin: 2px 0;
+  }
+  .bank-holder {
+    font-family: 'Cormorant Garamond', serif;
+    font-style: italic;
+    font-size: 13px;
+    color: var(--paper);
+    opacity: 0.85;
+    line-height: 1.4;
+  }
+  .bank-note {
+    margin-top: 12px;
+    padding-top: 12px;
+    border-top: 1px dashed rgba(212, 175, 96, 0.4);
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 13.5px;
+    line-height: 1.5;
+    color: var(--gold-pale);
+  }
+  .bank-note strong {
+    color: var(--gold-bright);
+    font-weight: 700;
+    font-size: 1.15em;
+    letter-spacing: 0.05em;
+  }
+
+  .contact-group {
+    border-top: 1px dashed rgba(122, 16, 16, 0.3);
+    padding-top: 16px;
+    text-align: center;
+  }
+  .contact-heading {
+    display: block;
+    font-family: 'Cinzel', serif;
+    font-size: 9px;
+    letter-spacing: 0.35em;
+    text-transform: uppercase;
+    color: var(--red);
+    opacity: 0.8;
+    margin-bottom: 12px;
+  }
+  .contact-list {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 14px;
+  }
+  .contact-list li {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+  }
+  .contact-list .c-name {
+    font-family: 'Cormorant Garamond', serif;
+    font-weight: 600;
+    font-size: 17px;
+    color: var(--red-deep);
+  }
+  .contact-list .c-name em {
+    font-weight: 400;
+    font-style: italic;
+    font-size: 13px;
+    color: var(--ink);
+    opacity: 0.65;
+  }
+  .contact-list a {
+    font-family: 'Cinzel', serif;
+    font-size: 14px;
+    letter-spacing: 0.06em;
+    /* was --gold: the same 2.36:1 as .d-note above, on the only conversion path
+       in the section. --red is 7.86:1, and matches .c-email directly beneath. */
+    color: var(--red);
+    text-decoration: none;
+    /* WCAG 2.5.8 wants a 24px target; 14px Cinzel alone gives ~21px. */
+    display: inline-block;
+    padding: 4px 0;
+  }
+  .contact-list a:hover { color: var(--red-bright); }
+  .contact-list a.c-email {
+    font-family: 'Cormorant Garamond', serif;
+    font-style: italic;
+    font-size: 13px;
+    letter-spacing: 0;
+    color: var(--red);
+    opacity: 0.85;
+  }
+
+  .paramita {
+    max-width: 460px;
+    margin: 2.6rem auto 0;
+    padding-top: 2rem;
+    border-top: 1px solid var(--gold);
+    text-align: center;
+  }
+  .paramita-han {
+    font-family: 'Noto Serif SC', serif;
+    font-size: 16px;
+    letter-spacing: 0.3em;
+    color: var(--gold);
+    margin-bottom: 6px;
+  }
+  .paramita-title {
+    font-family: 'Cormorant Garamond', serif;
+    font-weight: 600;
+    font-size: 28px;
+    color: var(--red-deep);
+    line-height: 1;
+    margin-bottom: 1.2rem;
+  }
+  .paramita p {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 16px;
+    line-height: 1.6;
+    color: var(--ink);
+    opacity: 0.88;
+    margin: 0 auto 1rem;
+  }
+  .paramita blockquote {
+    font-family: 'Cormorant Garamond', serif;
+    font-style: italic;
+    font-size: 16px;
+    line-height: 1.6;
+    color: var(--red);
+    margin: 1.4rem 0 0;
+    padding: 0;
+  }
+
   .footnote {
     margin: 2.4rem auto 0;
     text-align: center;
