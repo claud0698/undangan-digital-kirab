@@ -108,7 +108,9 @@ const STAGGER_CAP = 11;
     font-size: 9px;
     letter-spacing: 0.28em;
     text-transform: uppercase;
-    color: var(--gold);
+    /* --gold here is 2.75:1 on --paper, which fails AA at 9px. --red at .8 is 5.98:1. */
+    color: var(--red);
+    opacity: 0.8;
     margin-top: 6px;
   }
 
@@ -123,10 +125,13 @@ const STAGGER_CAP = 11;
     opacity: 0.55;
   }
 
-  /* The roll is unveiled, then it stays. Names never cycle, fade out, or move
-     again — a 功德芳名 is a record, and every attested form shows all names at
-     once. Motion is on arrival only. Reduced motion is handled globally in
-     global.css, which zeroes transitions site-wide. */
+  /* The roll is unveiled, then the names breathe. Two rules govern this:
+     nothing ever disappears, and nothing ever drops below AA. The floor is 0.62,
+     measured: --ink at .62 over --paper is 5.13:1, where .55 would be 4.07:1 and
+     fail. Only .d-name breathes — the Chinese name and city stay put, because
+     compounding their own alpha with a fading parent would sink them below AA.
+     Phase is staggered per item so the roll shimmers rather than pulsing in unison.
+     Reduced motion is handled globally in global.css (animation: none !important). */
   @media (prefers-reduced-motion: no-preference) {
     :global(.anim-ready) [data-reveal] .donor {
       opacity: 0;
@@ -138,6 +143,16 @@ const STAGGER_CAP = 11;
       transition: opacity 0.55s ease, transform 0.6s cubic-bezier(0.2, 0.7, 0.2, 1);
       transition-delay: calc(var(--i, 0) * 55ms);
     }
+    :global(.anim-ready) [data-reveal].in-view .d-name {
+      animation: donor-breath 9s ease-in-out infinite;
+      /* starts after the unveiling has settled, then drifts out of phase */
+      animation-delay: calc(1.4s + var(--i, 0) * 680ms);
+    }
+  }
+
+  @keyframes donor-breath {
+    0%, 100% { opacity: 1; }
+    50%      { opacity: 0.62; }
   }
 
   @media (min-width: 720px) {
