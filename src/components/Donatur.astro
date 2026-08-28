@@ -1,18 +1,34 @@
 ---
 import { type Lang } from "~/i18n";
 import { invitation } from "~/config/invitation";
+import DonorName from "./DonorName.astro";
 interface Props { lang: Lang; }
 const { lang } = Astro.props;
 
 // Order is the committee's own — never sort this. Re-ordering a merit roll to make
 // it tidy would silently demote someone.
 const donors = invitation.sponsorDonors;
+const N = donors.length;
 
-// Stagger index is capped so the unveiling stays under ~0.6s however long the roll
-// grows; past ~12 names the remainder arrive together rather than dripping in.
-const STAGGER_CAP = 11;
+// Eight cells in a 2 x 4 grid, each cycling through its own run of names. Ring
+// indexing ((p * ROWS + i) % N) keeps the last page from being ragged; at most
+// ROWS-1 names repeat once per pass. Short lists collapse to one page, i.e. a
+// plain static list, with no special-casing in the template.
+const ROWS = N >= 16 ? 8 : N;   // 2 columns x 4 rows
+const PAGES = Math.ceil(N / ROWS);
+const rows = Array.from({ length: ROWS }, (_, i) =>
+  Array.from({ length: PAGES }, (_, p) => donors[(p * ROWS + i) % N]),
+);
+
+// Initial for the seal, skipping honorifics and the memorial prefix so the letter
+// belongs to the person rather than to "Bp." or "Alm.".
+const SKIP = /^(bp|bpk|bapak|ibu|mr|mrs|ms|sdr|sdri|ko|alm|almh)\.?$/i;
+const initial = (name: string) => {
+  const word = name.split(/[\s/]+/).find((w) => /[A-Za-z]/.test(w) && !SKIP.test(w)) ?? name;
+  return (word.match(/[A-Za-z]/)?.[0] ?? "\u00b7").toUpperCase();
+};
 ---
-{donors.length > 0 && (
+{N > 0 && (
   <section class="donatur" data-reveal>
     <div class="eyebrow">{lang === "id" ? "Terima Kasih" : "With Gratitude"}</div>
     <h2 class="section-title">{lang === "id" ? "Para Donatur" : "Our Donors"}</h2>
@@ -26,14 +42,26 @@ const STAGGER_CAP = 11;
         : "With deep respect we thank the families whose generosity made this celebration possible."}
     </p>
 
-    <ul class="donor-list" role="list">
-      {donors.map((d, i) => (
-        <li class="donor" style={`--i:${Math.min(i, STAGGER_CAP)}`}>
-          <span class="d-name">{d.name}</span>
-          {d.chineseName && <span class="d-chinese">{d.chineseName}</span>}
-          {d.city && <span class="d-city">{d.city}</span>}
-        </li>
+    {/* One name at a time. Every donor is in the DOM; the script stacks them in a
+        single cell and fades between them. With JS off or reduced motion on, the
+        stack simply renders as the full list. */}
+    <div class="roll" data-roll data-pages={PAGES}>
+      {rows.map((names, ri) => (
+        <div class="row" style={`--i:${ri}`}>
+          {names.map((d, p) => (
+            <article class:list={["card", p === 0 && "is-on"]} data-name={d.name}>
+              <span class="seal" aria-hidden="true">{initial(d.name)}</span>
+              <div class="card-body"><DonorName d={d} /></div>
+            </article>
+          ))}
+        </div>
       ))}
+    </div>
+
+    {/* Canonical roll for assistive tech: complete, in the committee's order, and
+        static, so nothing ever moves under a screen-reader cursor. */}
+    <ul class="donor-sr" role="list" data-roll-all hidden>
+      {donors.map((d) => <li><DonorName d={d} /></li>)}
     </ul>
 
     <p class="roll-note">
@@ -58,65 +86,103 @@ const STAGGER_CAP = 11;
     color: var(--ink);
     opacity: 0.85;
     max-width: 460px;
-    margin: 0 auto 2.4rem;
+    margin: 0 auto 2.6rem;
     font-size: 16px;
     line-height: 1.6;
   }
 
-  /* auto-fit so one rule serves 8 names and 150 without a redesign */
-  .donor-list {
-    list-style: none;
-    padding: 0;
-    margin: 0 auto;
+  .roll {
     max-width: 460px;
+    margin: 0 auto;
     display: grid;
-    grid-template-columns: 1fr;
-    gap: 22px;
-    text-align: center;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 22px 12px;
   }
-  .donor {
-    border-top: 1px dashed rgba(122, 16, 16, 0.22);
-    padding-top: 16px;
-    overflow-wrap: anywhere;
-    text-wrap: balance;
+
+  .card {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    text-align: left;
+    /* stretch to the cell so seals align across a row regardless of how many
+       lines each entry has */
+    height: 100%;
   }
-  .d-name {
-    display: block;
-    font-family: 'Cormorant Garamond', serif;
-    font-weight: 600;
-    font-size: 18px;
-    line-height: 1.25;
-    /* Deliberately ink, not --red-deep: writing a living person's name in red is a
-       long-standing taboo (丹書不祥). Temple boards put gold or black characters ON
-       a red ground — the ground is red, the name is not. */
-    color: var(--ink);
-  }
-  /* A generation name (Quency and Gloria share 芳/Fong), not an alias — so no
-     quotation marks, which would read as "so-called". */
-  .d-chinese {
-    display: block;
-    font-family: 'Cormorant Garamond', serif;
-    font-size: 14px;
-    letter-spacing: 0.02em;
-    color: var(--red);
-    opacity: 0.9;
-    margin-top: 3px;
-  }
-  .d-city {
-    display: block;
+
+  .seal {
+    flex: 0 0 34px;
+    height: 34px;
+    display: grid;
+    place-items: center;
+    border-radius: 50%;
+    background: var(--red-deep);
+    color: var(--gold-pale);
     font-family: 'Cinzel', serif;
-    font-size: 9px;
-    letter-spacing: 0.28em;
-    text-transform: uppercase;
-    /* --gold here is 2.75:1 on --paper, which fails AA at 9px. --red at .8 is 5.98:1. */
-    color: var(--red);
-    opacity: 0.8;
-    margin-top: 6px;
+    font-size: 15px;
+    line-height: 1;
+    user-select: none;
   }
+
+  .card-body { min-width: 0; }
+
+  /* Each row stacks its own names in one grid cell, so a row is always as tall as
+     the tallest name it will ever show and never jumps between a one-line entry and
+     a three-line one. Hidden cards must keep participating in layout, which is why
+     display:none would be wrong here. */
+  .row { display: grid; gap: 16px; }
+
+  /* ── rolling mode ──
+     Cards drift in from the right and settle at their row's resting indent, so the
+     column reads as scattered rather than as a rigid stack. --x is the resting
+     offset, applied in both states so only the drift animates. */
+  .roll.is-rolling .row { gap: 0; }
+  .roll.is-rolling .card {
+    grid-area: 1 / 1;
+    opacity: 0;
+    transform: translateY(10px);
+    pointer-events: none;
+    user-select: none;
+    transition: opacity 900ms cubic-bezier(0.4, 0, 0.2, 1), transform 950ms cubic-bezier(0.4, 0, 0.2, 1);
+  }
+  /* Transitions read their timing from the destination state, so the leaving card
+     runs 0→900ms and the arriving one begins at 780ms, a slight overlap that
+     reads as a dissolve rather than a hard cut. Sequenced, not overlapped —
+     two serif names crossfading through each other at half opacity is a smear. */
+  .roll.is-rolling .card.is-on {
+    opacity: 1;
+    transform: none;
+    pointer-events: auto;
+    user-select: auto;
+    transition-delay: 780ms;
+  }
+
+  /* The names still change for reduced-motion users — that is the point of the
+     section — but they cross-fade in place with no travel and no cascade. */
+  @media (prefers-reduced-motion: reduce) {
+    .roll.is-rolling .card {
+      transform: none;
+      transition: opacity 700ms ease !important;
+      transition-delay: 0ms !important;
+    }
+    .roll.is-rolling .card.is-on {
+      transform: none;
+      transition-delay: 700ms !important;
+    }
+  }
+
+  .donor-sr {
+    position: absolute;
+    width: 1px; height: 1px;
+    margin: -1px; padding: 0; border: 0;
+    overflow: hidden;
+    clip-path: inset(50%);
+    white-space: nowrap;
+  }
+  .donor-sr[hidden] { display: none; }
 
   .roll-note {
     max-width: 460px;
-    margin: 2.4rem auto 0;
+    margin: 1.6rem auto 0;
     text-align: center;
     font-family: 'Cormorant Garamond', serif;
     font-style: italic;
@@ -125,44 +191,119 @@ const STAGGER_CAP = 11;
     opacity: 0.55;
   }
 
-  /* The roll is unveiled, then the names breathe. Two rules govern this:
-     nothing ever disappears, and nothing ever drops below AA. The floor is 0.62,
-     measured: --ink at .62 over --paper is 5.13:1, where .55 would be 4.07:1 and
-     fail. Only .d-name breathes — the Chinese name and city stay put, because
-     compounding their own alpha with a fading parent would sink them below AA.
-     Phase is staggered per item so the roll shimmers rather than pulsing in unison.
-     Reduced motion is handled globally in global.css (animation: none !important). */
+  @media (min-width: 720px) {
+    .roll { max-width: 760px; gap: 26px 32px; }
+    .card { gap: 14px; }
+    .seal { flex-basis: 44px; height: 44px; font-size: 19px; }
+  }
+
   @media (prefers-reduced-motion: no-preference) {
-    :global(.anim-ready) [data-reveal] .donor {
-      opacity: 0;
-      transform: translateY(8px);
-    }
-    :global(.anim-ready) [data-reveal].in-view .donor {
+    :global(.anim-ready) [data-reveal] .roll { opacity: 0; transform: translateY(10px); }
+    :global(.anim-ready) [data-reveal].in-view .roll {
       opacity: 1;
       transform: none;
-      transition: opacity 0.55s ease, transform 0.6s cubic-bezier(0.2, 0.7, 0.2, 1);
-      transition-delay: calc(var(--i, 0) * 55ms);
+      transition: opacity 0.6s ease, transform 0.65s cubic-bezier(0.2, 0.7, 0.2, 1);
     }
-    :global(.anim-ready) [data-reveal].in-view .d-name {
-      animation: donor-breath 9s ease-in-out infinite;
-      /* starts after the unveiling has settled, then drifts out of phase */
-      animation-delay: calc(1.4s + var(--i, 0) * 680ms);
-    }
-  }
-
-  @keyframes donor-breath {
-    0%, 100% { opacity: 1; }
-    50%      { opacity: 0.62; }
-  }
-
-  @media (min-width: 720px) {
-    .donor-list {
-      max-width: 640px;
-      grid-template-columns: repeat(auto-fit, minmax(190px, 1fr));
-    }
-  }
-
-  @media (min-width: 1080px) {
-    .donor-list { max-width: 860px; }
   }
 </style>
+
+<script>
+  const roll = document.querySelector<HTMLElement>("[data-roll]");
+  const srList = document.querySelector<HTMLElement>("[data-roll-all]");
+  const pages = Number(roll?.dataset.pages ?? 1);
+
+  if (roll && srList && pages > 1) {
+    const GAP_MIN = 1600;     // irregular beat — a fixed interval reads as a metronome
+    const GAP_MAX = 3600;
+    const gap = () => GAP_MIN + Math.random() * (GAP_MAX - GAP_MIN);
+    const reduce = matchMedia("(prefers-reduced-motion: reduce)");
+    const rows = Array.from(roll.querySelectorAll<HTMLElement>(".row")).map((el) =>
+      Array.from(el.querySelectorAll<HTMLElement>(".card")),
+    );
+
+    // One row turns at a time — both cells in it — with the rows picked at random.
+    // A short memory keeps the same row from coming up twice running, and the two
+    // cells are offset by a beat so the row dissolves rather than blinking.
+    const COLS = 2;
+    const lines = Array.from({ length: Math.ceil(rows.length / COLS) }, (_, l) =>
+      Array.from({ length: COLS }, (_, k) => l * COLS + k).filter((i) => i < rows.length),
+    );
+    const at = new Array(rows.length).fill(0);
+    const timers: (number | undefined)[] = new Array(
+      Math.ceil(rows.length / COLS),
+    ).fill(undefined);
+    let onScreen = false;
+    let held = false;
+
+    // Ring indexing means the tail page wraps back onto the head, so a handful of
+    // names sit in two different cells' pools. Without this guard a random pick
+    // could show the same person twice at once.
+    const nameOf = (card?: HTMLElement) => card?.dataset.name ?? "";
+    const visible = new Set<string>();
+    rows.forEach((cards, i) => visible.add(nameOf(cards[at[i]])));
+
+    const advance = (idx: number) => {
+      const cards = rows[idx];
+      const prev = at[idx];
+      visible.delete(nameOf(cards[prev]));
+      const free = cards
+        .map((_, i) => i)
+        .filter((i) => i !== prev && !visible.has(nameOf(cards[i])));
+      if (free.length) {
+        const next = free[Math.floor(Math.random() * free.length)];
+        cards[prev]?.classList.remove("is-on");
+        cards[next]?.classList.add("is-on");
+        at[idx] = next;
+      }
+      visible.add(nameOf(cards[at[idx]]));
+    };
+
+    // Each row runs its own clock on its own random interval, so the rows drift
+    // out of phase instead of taking turns on one shared beat. Within a row the
+    // second cell lags the first, so the row dissolves rather than blinking.
+    const tick = (l: number) => {
+      lines[l].forEach((idx, k) => {
+        if (k === 0) advance(idx);
+        else window.setTimeout(() => advance(idx), 260);
+      });
+      timers[l] = window.setTimeout(() => tick(l), gap());
+    };
+
+    const shouldRun = () => onScreen && !held && !document.hidden;
+    const stop = () => {
+      timers.forEach((t, l) => { window.clearTimeout(t); timers[l] = undefined; });
+    };
+    const sync = () => {
+      if (!shouldRun()) { stop(); return; }
+      timers.forEach((t, l) => {
+        if (t === undefined) timers[l] = window.setTimeout(() => tick(l), gap());
+      });
+    };
+
+    // The rolling column is decoration; the sr-only list beside it is the real roll,
+    // complete and in the committee's order, so nothing moves under a SR cursor.
+    // aria-hidden must be the string "true" — toggleAttribute would set "", which
+    // ARIA reads as undefined, i.e. not hidden at all.
+    roll.classList.add("is-rolling");
+    roll.setAttribute("aria-hidden", "true");
+    srList.hidden = false;
+
+    new IntersectionObserver((es) => { onScreen = es[0].isIntersecting; sync(); },
+      { threshold: 0.2 }).observe(roll);
+
+    document.addEventListener("visibilitychange", sync);
+
+    // No hover pause: the roll fills most of the section, so a cursor resting over
+    // it would freeze the display indefinitely and read as broken. Focus still
+    // pauses, and it stops when scrolled away or the tab is hidden.
+    roll.addEventListener("focusin", () => { held = true; sync(); });
+    roll.addEventListener("focusout", () => { held = false; sync(); });
+
+    reduce.addEventListener("change", sync);
+    sync();
+
+    // Safety net: if the observer somehow never reports the roll as visible, start
+    // regardless rather than sitting frozen.
+    window.setTimeout(() => { if (timers.every((t) => t === undefined) && !held) { onScreen = true; sync(); } }, 2500);
+  }
+</script>

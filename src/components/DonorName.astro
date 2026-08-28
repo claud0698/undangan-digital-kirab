@@ -1,0 +1,54 @@
+---
+import { type SponsorDonor } from "~/config/invitation";
+interface Props { d: SponsorDonor; }
+const { d } = Astro.props;
+---
+{d.chineseName && <span class="d-chinese">{d.chineseName}</span>}
+<span class="d-name">{d.name}</span>
+{d.city && <span class="d-city">{d.city}</span>}
+
+<style>
+  /* These live here, not in Donatur.astro. Astro scopes styles to the component
+     that OWNS the markup, so a rule written next door never matches these spans. */
+
+  /* The Chinese name leads. Quency and Gloria share the generation character
+     芳 (Fong), so these are real given names, not aliases — no quotation marks,
+     which would read as "so-called". */
+  .d-chinese {
+    display: block;
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 12px;
+    letter-spacing: 0.04em;
+    color: var(--red);
+    opacity: 0.9;
+    margin-bottom: 2px;
+  }
+  .d-name {
+    display: block;
+    font-family: 'Cormorant Garamond', serif;
+    font-weight: 600;
+    font-size: 15.5px;
+    line-height: 1.28;
+    /* Ink, not red: writing a living person's name in red is a lasting taboo
+       (丹書不祥). Temple boards put gold or black characters ON a red ground. */
+    color: var(--ink);
+    overflow-wrap: anywhere;
+  }
+  .d-city {
+    display: block;
+    font-family: 'Cinzel', serif;
+    font-size: 8px;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    /* --gold is 2.75:1 on --paper and fails AA at 9px; --red at .8 clears it. */
+    color: var(--red);
+    opacity: 0.8;
+    margin-top: 6px;
+  }
+
+  @media (min-width: 720px) {
+    .d-chinese { font-size: 14px; }
+    .d-name { font-size: 19px; line-height: 1.3; }
+    .d-city { font-size: 9px; letter-spacing: 0.28em; }
+  }
+</style>
