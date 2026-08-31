@@ -380,6 +380,21 @@ export const invitation = {
     { slug: "detik-suara-rakyat",             name: "Detik Suara Rakyat",                                     rank: 5 },
     { slug: "mandiri-kasih",                  name: "Mandiri Kasih",                                          rank: 5 },
     { slug: "universitas-buddhi-dharma",      name: "Universitas Buddhi Dharma",                              rank: 5 },
+
+    // Received 31 Aug as PDF. Eight of these nine are not in the treasurer's
+    // ledger as of 22 Aug, so no contribution bracket is known for them; they sit
+    // in rank 5, which asserts nothing about what was paid. Re-rank once the
+    // committee confirms. Nara JW Lawfirm is the ledger's "Lawyer Nara Jw" —
+    // a firm, not a person, so it moves off the donor roll and onto the wall.
+    { slug: "ichitan",                        name: "Ichitan",                                                rank: 5 },
+    { slug: "vajrayana-buddhist-indonesia",   name: "Vajrayana Buddhist Indonesia",                           rank: 5 },
+    { slug: "andika-mas",                     name: "Toko Mas Andika Mas",                                    rank: 5 },
+    { slug: "menembus-batas",                 name: "MB Menembus Batas",                                      rank: 5 },
+    { slug: "tng-tv",                         name: "TNG TV",                                                 rank: 5 },
+    { slug: "disbudpar-kota-tangerang",       name: "Disbudpar Kota Tangerang",                               rank: 5 },
+    { slug: "bakorsiskom-polsekta",           name: "Bakorsiskom Polsekta Tangerang",                         rank: 5 },
+    { slug: "kota-tangerang",                 name: "Kota Tangerang",                                         rank: 5 },
+    { slug: "nara-jw-lawfirm",                name: "Nara JW Lawfirm",                                        rank: 5 },
   ] satisfies SponsorLogo[],
 
   // ─── donatur tanpa logo (teks / gulungan) ─────────────────────
@@ -429,7 +444,6 @@ export const invitation = {
     { name: "Mrs. Nina",                                 city: "Jakarta" },
     { name: "Rita Iskandar" },
     { name: "Claudya" },
-    { name: "Nara Jw" },
   ] satisfies SponsorDonor[],
 
   share: {
