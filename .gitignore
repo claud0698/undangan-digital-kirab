@@ -18,3 +18,7 @@ rute-kirab-4k.jpg
 # 370MB of print-resolution sponsor source zips + reference proposal PDF
 sponsorship logo/
 *.zip
+
+# Working copies of the treasurer's ledger — donor names, not for the repo
+donatur-export.csv
+donatur-klasifikasi.csv

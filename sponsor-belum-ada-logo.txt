@@ -25,27 +25,30 @@ B. BELUM JELAS - MOHON DIKONFIRMASI DULU
 
   - A.n Osin nata lih - Xtra laundry
       kategori ledger : Perorangan
-      pertanyaan      : person with a small business — roll or logo?
+      pertanyaan      : perorangan yang punya usaha kecil.
+                        Masuk daftar donatur, atau minta logo?
 
   - Atak Borneo Prima Utama Jaya
       kategori ledger : Perorangan
-      pertanyaan      : person or company?
+      pertanyaan      : ini nama orang atau nama perusahaan?
 
   - PT. Armada Perkasa Mobilindo Jakarta
       kategori ledger : Pendukung
-      pertanyaan      : in the Armada group, but not on the New Armada tile
+      pertanyaan      : termasuk grup Armada, tetapi tidak tercetak
+                        di logo New Armada. Perlu logo sendiri?
 
   - Dana Kirab Umat
       kategori ledger : Perorangan
-      pertanyaan      : collection from the congregation, or a person?
+      pertanyaan      : dana kumpulan dari umat, atau nama orang?
 
   - Dana Kirab Farica
       kategori ledger : Perorangan
-      pertanyaan      : is Farica a donor's name?
+      pertanyaan      : apakah Farica nama donatur?
 
   - Dana Kirab Cicil
       kategori ledger : Perorangan
-      pertanyaan      : 'cicil' = instalment — a payment, or a person?
+      pertanyaan      : 'cicil' berarti angsuran. Ini pembayaran
+                        bertahap, atau nama orang?
 
 ======================================================================
 C. LOGO BARU SUDAH DITERIMA (31 Agustus) - TIDAK PERLU DIMINTA LAGI
@@ -74,8 +77,7 @@ C. LOGO BARU SUDAH DITERIMA (31 Agustus) - TIDAK PERLU DIMINTA LAGI
 D. RINGKASAN
 ======================================================================
 
-  Logo sudah tampil di website  : 38
-  Logo baru diterima            : 9
+  Logo sudah tampil di website  : 47  (38 lama + 9 baru)
   Sudah bayar, logo belum ada   : 2
   Perlu konfirmasi dulu         : 6
 
