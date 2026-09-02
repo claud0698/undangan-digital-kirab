@@ -1,7 +1,7 @@
 DAFTAR SPONSOR YANG BELUM ADA LOGO
 Kirab Budaya & Ruwat Bumi 2026 - Tjie Thien Ta Sen Bio Tangerang
-Dibuat: 31-08-2026
-Sumber: ledger 'Dana Kirab Budaya 2026.xlsx' (per 22 Agustus)
+Dibuat: 31-08-2026 (diperbarui 02-09-2026)
+Sumber: ledger 'Dana Kirab Budaya 2026.xlsx' (per 28 Agustus)
         + berkas logo PDF per 31 Agustus
 
 ======================================================================
@@ -50,6 +50,17 @@ B. BELUM JELAS - MOHON DIKONFIRMASI DULU
       pertanyaan      : 'cicil' berarti angsuran. Ini pembayaran
                         bertahap, atau nama orang?
 
+  - Dana Kirab Gab dari Lilian   [BARU di ledger 28 Agustus]
+      kategori ledger : Donatur Pendukung
+      pertanyaan      : dana gabungan yang dikumpulkan Ibu Lilian,
+                        atau dana pribadi beliau? Kalau gabungan,
+                        nama siapa saja yang perlu dicantumkan?
+
+  - Dana Kirab   [BARU di ledger 28 Agustus]
+      kategori ledger : Perorangan
+      pertanyaan      : tanpa nama penyumbang. Ditulis 'Hamba Buddha',
+                        atau ada nama yang belum tercatat?
+
 ======================================================================
 C. LOGO BARU SUDAH DITERIMA (31 Agustus) - TIDAK PERLU DIMINTA LAGI
 ======================================================================
@@ -68,7 +79,7 @@ C. LOGO BARU SUDAH DITERIMA (31 Agustus) - TIDAK PERLU DIMINTA LAGI
              Di ledger tertulis 'Lawyer Nara Jw' dan sempat masuk daftar
              donatur. Sekarang dipindah ke dinding logo.
 
-  Catatan 2: delapan dari sembilan logo baru ini belum tercatat di ledger
+  Catatan 2: per ledger 28 Agustus, delapan dari sembilan logo baru ini belum tercatat di ledger
              per 22 Agustus. Mohon dicek apakah ledger sudah diperbarui,
              atau apakah mereka mitra/instansi dan bukan sponsor tunai.
              Ini menentukan besar tampilan logo di website.
@@ -79,7 +90,16 @@ D. RINGKASAN
 
   Logo sudah tampil di website  : 47  (38 lama + 9 baru)
   Sudah bayar, logo belum ada   : 2
-  Perlu konfirmasi dulu         : 6
+  Perlu konfirmasi dulu         : 8
+
+  Perubahan dari ledger 28 Agustus:
+    - DEXTONE sudah tercatat DITERIMA (sebelumnya masih menunggu).
+    - Tiga pemasukan baru: Dana Kirab Gab dari Lilian, Dana Kirab,
+      dan Ko Bebeng & Keluarga.
+    - Halim Susanto (Palembang) sempat tidak tampil karena kesalahan
+      pencocokan nama dengan 'Bp. Alim / Dominique Jewellery'.
+      Sudah diperbaiki, sekarang masuk daftar donatur.
+    - Total dana diterima : Rp 314.609.466 dari target Rp 888.888.000
 
   PIC pengiriman logo : Bp. Lukas Susanto
                         +62 856 9241 3938

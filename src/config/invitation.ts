@@ -444,6 +444,8 @@ export const invitation = {
     { name: "Mrs. Nina",                                 city: "Jakarta" },
     { name: "Rita Iskandar" },
     { name: "Claudya" },
+    { name: "Halim Susanto",                             city: "Palembang" },
+    { name: "Ko Bebeng & Keluarga" },
   ] satisfies SponsorDonor[],
 
   share: {
