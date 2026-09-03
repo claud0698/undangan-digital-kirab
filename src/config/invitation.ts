@@ -394,7 +394,7 @@ export const invitation = {
     { slug: "disbudpar-kota-tangerang",       name: "Disbudpar Kota Tangerang",                               rank: 5 },
     { slug: "bakorsiskom-polsekta",           name: "Bakorsiskom Polsekta Tangerang",                         rank: 5 },
     { slug: "kota-tangerang",                 name: "Kota Tangerang",                                         rank: 5 },
-    { slug: "nara-jw-lawfirm",                name: "Nara JW Lawfirm",                                        rank: 5 },
+    { slug: "nara-jw-lawfirm",                name: "Nara JW Lawfirm",                                        rank: 4 },
   ] satisfies SponsorLogo[],
 
   // ─── donatur tanpa logo (teks / gulungan) ─────────────────────
