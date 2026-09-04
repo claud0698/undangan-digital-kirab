@@ -343,7 +343,7 @@ export const invitation = {
     { slug: "borobudur-lotus-artfest",        name: "Borobudur Lotus Artfest",                                rank: 1 },
     { slug: "bangun-jaya-group",              name: "Bangun Jaya Group",                                      rank: 1 },
     { slug: "dextone-avian",                  name: "Dextone · Abrasive · Provioz · Veloz",                   rank: 1 },
-    { slug: "new-armada",                     name: "New Armada · PT Bumen Redja Abadi",                      rank: 1 },
+    { slug: "new-armada",                     name: "New Armada · PT Bumen Redja Abadi · Armada Auto Tara · PT Armada Perkasa Mobilindo", rank: 1 },
 
     { slug: "dominique-jewellery",            name: "Dominique Jewellery",                                    rank: 2 },
     { slug: "handphone-tiam",                 name: "Handphone Tiam",                                         rank: 2 },
@@ -421,6 +421,7 @@ export const invitation = {
     { name: "Lily" },
     { name: "Andry Suryadi W & Keluarga",                city: "Tangerang" },
     { name: "Benny Nova & Lany Nova" },
+    { name: "Toko Asen Snack Jawaringan" },
     { name: "Marsan & Eni" },
     { name: "Alm. Hauw Hin Bih & Lien Nio",              city: "Cikupa" },
     { name: "Laurent Wang & Vincent Ong" },

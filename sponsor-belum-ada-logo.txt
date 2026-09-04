@@ -5,18 +5,23 @@ Sumber: ledger 'Dana Kirab Budaya 2026.xlsx' (per 28 Agustus)
         + berkas logo PDF per 31 Agustus
 
 ======================================================================
-A. SUDAH BAYAR, LOGO BELUM ADA - PERLU DIKEJAR
+A. SUDAH BAYAR, LOGO BELUM ADA - SELESAI (05-09-2026)
 ======================================================================
 
-  - Toko Asen Snack Jawaringan
-      kategori: Sponsor Pendukung
+  Ketiganya sudah dijawab panitia, tidak perlu dikejar lagi:
 
-  - Pt. Samudra Permata Motokarz (Hendra)
-      kategori: Sponsor Madya   *** PRIORITAS UTAMA ***
+  - Pt. Samudra Permata Motokarz (Bp. Hendra) - Rp 20 juta
+      Keluarga tidak berkenan memakai nama PT. Dananya ditampilkan
+      atas nama putrinya, Quency Nathaniel Kertasasmita
+      "Cang Fong Ling", yang memang sudah ada di daftar donatur.
+      Tidak perlu logo.
 
-  Catatan: Samudra Permata Motokarz ada di Sponsor Madya, tingkat
-  tertinggi bersama ASTIC Group, Bangun Jaya Group dan Dextone.
-  Satu-satunya di tingkat itu yang belum tampil di website.
+  - PT. Armada Perkasa Mobilindo Jakarta - Rp 2,5 juta
+      Sudah tergabung di dalam logo New Armada. Tidak perlu logo
+      tersendiri.
+
+  - Toko Asen Snack Jawaringan - Rp 500.072
+      Cukup ditulis namanya saja. Sudah masuk daftar donatur.
 
 ======================================================================
 B. BELUM JELAS - MOHON DIKONFIRMASI DULU
@@ -31,11 +36,6 @@ B. BELUM JELAS - MOHON DIKONFIRMASI DULU
   - Atak Borneo Prima Utama Jaya
       kategori ledger : Perorangan
       pertanyaan      : ini nama orang atau nama perusahaan?
-
-  - PT. Armada Perkasa Mobilindo Jakarta
-      kategori ledger : Pendukung
-      pertanyaan      : termasuk grup Armada, tetapi tidak tercetak
-                        di logo New Armada. Perlu logo sendiri?
 
   - Dana Kirab Umat
       kategori ledger : Perorangan
@@ -107,9 +107,8 @@ E. ADA DI SPANDUK, BELUM ADA DI WEBSITE  (dikoreksi 04-09-2026)
       Berkat Jaya Lestari, PT. Eco Sukses Indo Mitra,
       PT. Kayana Handal Aneka Indo
 
-  Ini juga menjawab pertanyaan di bagian B tentang PT. Armada Perkasa
-  Mobilindo: panitia memang menggabung anggota grup ke dalam satu
-  kotak, jadi Armada Perkasa cukup ikut tile New Armada.
+  Dikonfirmasi panitia 05-09-2026: PT. Armada Perkasa Mobilindo memang
+  sudah tergabung di dalam logo New Armada, tidak perlu kotak sendiri.
 
   YANG BENAR-BENAR BELUM ADA DI WEBSITE:
     - Explift  (elevator & escalator, 快菱电梯)
@@ -125,8 +124,8 @@ D. RINGKASAN
 
   Logo sudah tampil di website  : 48  (termasuk PT Prima Mining
                                   Nusantara, logo diterima 04-09)
-  Sudah bayar, logo belum ada   : 2
-  Perlu konfirmasi dulu         : 8
+  Sudah bayar, logo belum ada   : 0  (semua sudah dijawab)
+  Perlu konfirmasi dulu         : 7
   Ada di spanduk, belum di web  : 4 (+1 lambang belum terbaca)
 
   Perubahan dari ledger 28 Agustus:
