@@ -13,6 +13,11 @@
   --red-deep: #4a0808;
   --red-bright: #a31818;
   --gold: #b48536;
+  /* Small gold text on the paper grounds only. --gold measures 2.75:1 on
+     --paper and 2.36:1 on --paper-2, well under AA for 13-18px; this reads
+     as the same antique gold but clears 4.5:1 on both. Everything on a dark
+     ground keeps --gold / --gold-bright / --gold-pale. */
+  --gold-ink: #7d5713;
   --gold-bright: #d8a847;
   --gold-pale: #e9cf86;
 }
@@ -234,7 +239,7 @@ a { color: inherit; }
 section { position: relative; z-index: 2; padding: 72px 30px; }
 .eyebrow { font-family: 'Cinzel', serif; font-size: 10px; letter-spacing: .5em; color: var(--red); text-align: center; margin-bottom: 14px; text-transform: uppercase; }
 .section-title { font-family: 'Cormorant Garamond', serif; font-size: 32px; font-weight: 600; color: var(--red-deep); text-align: center; line-height: 1.1; margin-bottom: 8px; }
-.section-han { font-family: 'Noto Serif SC', serif; text-align: center; color: var(--gold); font-size: 14px; letter-spacing: .3em; margin-bottom: 8px; }
+.section-han { font-family: 'Noto Serif SC', serif; text-align: center; color: var(--gold-ink); font-size: 14px; letter-spacing: .3em; margin-bottom: 8px; }
 .section-han-roman { font-family: 'Cormorant Garamond', serif; font-style: italic; text-align: center; color: var(--red); font-size: 13px; letter-spacing: .05em; margin-bottom: 24px; opacity: .8; }
 .han-roman { font-family: 'Cormorant Garamond', serif; font-style: italic; text-align: center; color: var(--gold); font-size: 13px; letter-spacing: .08em; margin-top: 4px; margin-bottom: 8px; opacity: .85; }
 .divider { display: flex; align-items: center; justify-content: center; margin: 22px auto; gap: 10px; }
@@ -281,7 +286,7 @@ section { position: relative; z-index: 2; padding: 72px 30px; }
   .intro-body { max-width: 820px; }
   .intro-body p { font-size: 20px; line-height: 2; }
 }
-.salam-stamp { text-align: center; margin: 8px 0 24px; font-family: 'Noto Serif SC', serif; color: var(--gold); font-size: 18px; letter-spacing: .3em; }
+.salam-stamp { text-align: center; margin: 8px 0 24px; font-family: 'Noto Serif SC', serif; color: var(--gold-ink); font-size: 18px; letter-spacing: .3em; }
 
 /* COUNTDOWN */
 .countdown-section { background: linear-gradient(180deg, var(--paper) 0%, var(--paper-2) 100%); padding: 50px 30px 70px; }
