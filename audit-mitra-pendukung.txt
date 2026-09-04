@@ -48,11 +48,10 @@ A. SUDAH DIPINDAH KE SPONSOR  (5)  - tinggal butuh nilainya
 
   4. Mandiri Kasih
        di spanduk : baris sponsor
-       di ledger  : ADA - "Mandiri Kasih (Benny)", Rp 1.000.072,
-                    tercatat sebagai Donasi Perorangan
-       pertanyaan : ini nama usaha atau nama dana dari Bp. Benny?
-                    Kalau perorangan, sebaiknya pindah ke daftar
-                    donatur, bukan dinding logo.
+       di ledger  : ADA - "Mandiri Kasih (Benny)", Rp 1.000.072
+       status     : SELESAI. Karena nilainya sudah tercatat di ledger,
+                    tidak perlu ditanyakan lagi - tampil di ukuran
+                    sponsor terkecil sesuai nilainya.
 
   5. Vajrayana Buddhist Indonesia
        di spanduk : baris sponsor (bukan baris instansi)
@@ -80,9 +79,8 @@ C. RINGKASAN PERTANYAAN UNTUK PIC
   1. Berapa nilai kontribusi Ichitan, Andika Mas, dan MB /
      Menembus Batas? Sekarang tampil di ukuran terkecil; kalau
      nilainya lebih besar, ukurannya kami naikkan.
-  2. Mandiri Kasih - nama usaha atau donatur perorangan?
-  3. Vajrayana Buddhist Indonesia - sponsor atau mitra?
-  4. Apakah keempat/kelima nama di atas sudah dicatat di ledger?
+  2. Vajrayana Buddhist Indonesia - sponsor atau mitra?
+  3. Apakah Ichitan, Andika Mas dan MB sudah dicatat di ledger?
      Sampai versi 28 Agustus belum ada.
 
   PIC data sponsor : Bp. Lukas Susanto
