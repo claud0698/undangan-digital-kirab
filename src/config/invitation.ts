@@ -379,7 +379,7 @@ export const invitation = {
     { slug: "mediapers",                      name: "MP MediaPers",                                           rank: 5 },
     { slug: "actual-news",                    name: "Actual News",                                            rank: 5 },
     { slug: "detik-suara-rakyat",             name: "Detik Suara Rakyat",                                     rank: 5 },
-    { slug: "mandiri-kasih",                  name: "Mandiri Kasih",                                          rank: 5 },
+    { slug: "mandiri-kasih",                  name: "Mandiri Kasih",                                          rank: 4 },
     { slug: "universitas-buddhi-dharma",      name: "Universitas Buddhi Dharma",                              rank: 5 },
 
     // Received 31 Aug as PDF. Eight of these nine are not in the treasurer's
@@ -387,10 +387,10 @@ export const invitation = {
     // in rank 5, which asserts nothing about what was paid. Re-rank once the
     // committee confirms. Nara JW Lawfirm is the ledger's "Lawyer Nara Jw" —
     // a firm, not a person, so it moves off the donor roll and onto the wall.
-    { slug: "ichitan",                        name: "Ichitan",                                                rank: 5 },
-    { slug: "vajrayana-buddhist-indonesia",   name: "Vajrayana Buddhist Indonesia",                           rank: 5 },
-    { slug: "andika-mas",                     name: "Toko Mas Andika Mas",                                    rank: 5 },
-    { slug: "menembus-batas",                 name: "MB Menembus Batas",                                      rank: 5 },
+    { slug: "ichitan",                        name: "Ichitan",                                                rank: 4 },
+    { slug: "vajrayana-buddhist-indonesia",   name: "Vajrayana Buddhist Indonesia",                           rank: 4 },
+    { slug: "andika-mas",                     name: "Toko Mas Andika Mas",                                    rank: 4 },
+    { slug: "menembus-batas",                 name: "MB Menembus Batas",                                      rank: 4 },
     { slug: "tng-tv",                         name: "TNG TV",                                                 rank: 5 },
     { slug: "disbudpar-kota-tangerang",       name: "Disbudpar Kota Tangerang",                               rank: 5 },
     { slug: "bakorsiskom-polsekta",           name: "Bakorsiskom Polsekta Tangerang",                         rank: 5 },

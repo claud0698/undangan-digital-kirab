@@ -1,6 +1,6 @@
 AUDIT KATEGORI "MITRA PENDUKUNG" DI WEBSITE
 Kirab Budaya & Ruwat Bumi 2026 - Tjie Thien Ta Sen Bio Tangerang
-Dibuat: 04-09-2026
+Dibuat: 04-09-2026  |  SUDAH DIKERJAKAN 05-09-2026
 Dibandingkan dengan : - ledger 'Dana Kirab Budaya 2026.xlsx' (per 28 Agustus)
                       - foto spanduk fisik di depan vihara
 
@@ -20,8 +20,12 @@ MASALAHNYA
   website masuk ke "Mitra Pendukung".
 
 ======================================================================
-A. SEHARUSNYA SPONSOR, BUKAN "MITRA PENDUKUNG"  (5)
+A. SUDAH DIPINDAH KE SPONSOR  (5)  - tinggal butuh nilainya
 ======================================================================
+  STATUS: kelima logo ini SUDAH dikeluarkan dari "Mitra Pendukung"
+  dan sekarang tampil sebagai sponsor, mengikuti posisinya di spanduk.
+  Untuk sementara ditaruh di ukuran sponsor paling kecil (Rp 2,5jt)
+  karena nilainya belum diketahui.
   Mohon dibantu: berapa nilai kontribusinya? Ukuran logo di website
   mengikuti nilai sponsor (20jt / 10jt / 5jt / 2,5jt), jadi tanpa
   angka kami tidak bisa menempatkannya dengan benar.
@@ -72,7 +76,8 @@ C. RINGKASAN PERTANYAAN UNTUK PIC
 ======================================================================
 
   1. Berapa nilai kontribusi Ichitan, Andika Mas, dan MB /
-     Menembus Batas? (untuk menentukan ukuran logo)
+     Menembus Batas? Sekarang tampil di ukuran terkecil; kalau
+     nilainya lebih besar, ukurannya kami naikkan.
   2. Mandiri Kasih - nama usaha atau donatur perorangan?
   3. Vajrayana Buddhist Indonesia - sponsor atau mitra?
   4. Apakah keempat/kelima nama di atas sudah dicatat di ledger?
