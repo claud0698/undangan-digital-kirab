@@ -33,8 +33,10 @@ A. SUDAH DIPINDAH KE SPONSOR  (5)  - tinggal butuh nilainya
   1. Ichitan  (merek minuman)
        di spanduk : baris sponsor
        di ledger  : TIDAK ADA
-       catatan    : merek nasional, kemungkinan nilainya besar.
-                    Saat ini tampil paling kecil - kemungkinan keliru.
+       status     : SUDAH DIKONFIRMASI SEBAGAI SPONSOR (05-09-2026).
+                    Yang masih kurang hanya nilainya. Saat ini tampil
+                    di ukuran terkecil; mohon dikabari nilainya agar
+                    ukurannya bisa disesuaikan.
 
   2. Toko Mas Andika Mas  (Pasar Muara Karang, Jakarta Utara)
        di spanduk : baris sponsor
