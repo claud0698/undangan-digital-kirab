@@ -339,6 +339,7 @@ export const invitation = {
   // ─── sponsor roster (logos) ───────────────────────────────────
   sponsorLogos: [
     { slug: "astic-group",                    name: "ASTIC Group",                                            rank: 1 },
+    { slug: "prima-mining-nusantara",         name: "PT Prima Mining Nusantara",                              rank: 1 },
     { slug: "borobudur-lotus-artfest",        name: "Borobudur Lotus Artfest",                                rank: 1 },
     { slug: "bangun-jaya-group",              name: "Bangun Jaya Group",                                      rank: 1 },
     { slug: "dextone-avian",                  name: "Dextone · Abrasive · Provioz · Veloz",                   rank: 1 },

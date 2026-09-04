@@ -85,63 +85,49 @@ C. LOGO BARU SUDAH DITERIMA (31 Agustus) - TIDAK PERLU DIMINTA LAGI
              Ini menentukan besar tampilan logo di website.
 
 ======================================================================
-E. ADA DI SPANDUK, BELUM ADA DI WEBSITE  (cek 03-09-2026)
+E. ADA DI SPANDUK, BELUM ADA DI WEBSITE  (dikoreksi 04-09-2026)
 ======================================================================
-  Sumber: foto spanduk fisik di depan vihara, dibaca per kotak logo.
-  Semua 47 logo yang sudah tayang di website ADA di spanduk.
-  Yang berikut ini ada di spanduk tetapi belum ada di website.
+  Sumber: foto spanduk fisik, dibaca per kotak logo, lalu dicocokkan
+  dengan gambar tile yang benar-benar tayang di website.
 
-  E1. Grup ASTIC  (tanda terima KB2026/07/0050-56, tujuh nomor)
-      Spanduk memasang anggota grup satu per satu, website baru
-      memasang satu logo "Astic Group".
-        - PT. Eco Ramah Lestari
-        - PT. Asticon Indoplast
-        - PT. Polyplast Sukses Abadi
-        - PT. Payungplast Abadi
-        - MUC / PT. Maju Utama Sukses
-        - PT. Nusa Visi Prima
-        - San-Tri Engineering
+  KOREKSI: daftar tanggal 03-09 keliru. Empat belas nama yang disebut
+  "belum ada" ternyata SUDAH tayang, hanya saja digabung dalam satu
+  tile grup - persis seperti di undangan cetak. Jadi tidak perlu
+  diminta lagi:
 
-  E2. Grup ARMADA
-      Sama polanya: dipasang terpisah di spanduk.
-        - PT. Bumen Redja Abadi  (Mitsubishi Motors / Fuso)
-        - Armada Auto Tara
-      Catatan: ini menjawab pertanyaan di bagian B tentang
-      PT. Armada Perkasa Mobilindo - panitia TIDAK menggabung
-      anggota grup ke logo induk, jadi Armada Perkasa pun
-      semestinya punya kotak sendiri.
+    - dalam tile ASTIC GROUP : PT. Eco Ramah Lestari, PT. Asticon
+      Indoplast, PT. Polyplast Sukses Abadi, PT. Payungplast Abadi,
+      MUC / PT. Maju Utama Sukses, PT. Nusa Visi Prima,
+      San-Tri Engineering
+    - dalam tile DEXTONE     : Abrasive, Provioz, Veloz
+    - dalam tile NEW ARMADA  : PT. Bumen Redja Abadi, Armada Auto Tara
+    - dalam tile GIB         : Aneka Plastindo, Sushi Abe
+    - dalam tile PALAIS      : Tjoetji Sepatoe
+    - dalam tile BANGUN JAYA : PT. Bangun Jaya Plastik, PT. Bangun
+      Berkat Jaya Lestari, PT. Eco Sukses Indo Mitra,
+      PT. Kayana Handal Aneka Indo
 
-  E3. Berdiri sendiri, belum tercatat di ledger
-        - Abrasive  (grinding paste)
-        - Provioz  (Japan Hoist)
-        - Veloz  (Japan Tools)
-        - Aneka Plastindo
-        - Sushi Abe
-        - Explift  (elevator & escalator, 快菱电梯)
+  Ini juga menjawab pertanyaan di bagian B tentang PT. Armada Perkasa
+  Mobilindo: panitia memang menggabung anggota grup ke dalam satu
+  kotak, jadi Armada Perkasa cukup ikut tile New Armada.
 
-  E4. Baris instansi & media di bagian bawah spanduk
-        - Wonderful Indonesia
-        - Polda Metro Jaya
-        - Kodim 0506 Tangerang
-        - satu lambang segi delapan yang belum terbaca; tulisan
-          melingkarnya berakhir "...INDONESIA". Mohon dibantu
-          namanya.
-
-  E5. Perlu keputusan
-        - Tjoetji Sepatoe punya kotak sendiri di spanduk, tetapi
-          di ledger digabung dengan Plais Contruction dan di
-          website ikut satu logo. Dipisah atau tetap digabung?
-        - DAAI+ terpasang di sebelah DAAI TV. Logo terpisah,
-          atau varian dari logo yang sama?
+  YANG BENAR-BENAR BELUM ADA DI WEBSITE:
+    - Explift  (elevator & escalator, 快菱电梯)
+    - Wonderful Indonesia
+    - Polda Metro Jaya
+    - Kodim 0506 Tangerang
+    - satu lambang segi delapan di baris instansi yang belum terbaca;
+      tulisan melingkarnya berakhir "...INDONESIA". Mohon namanya.
 
 ======================================================================
 D. RINGKASAN
 ======================================================================
 
-  Logo sudah tampil di website  : 47  (38 lama + 9 baru)
+  Logo sudah tampil di website  : 48  (termasuk PT Prima Mining
+                                  Nusantara, logo diterima 04-09)
   Sudah bayar, logo belum ada   : 2
   Perlu konfirmasi dulu         : 8
-  Ada di spanduk, belum di web  : 18 (+2 perlu keputusan, 1 belum terbaca)
+  Ada di spanduk, belum di web  : 4 (+1 lambang belum terbaca)
 
   Perubahan dari ledger 28 Agustus:
     - DEXTONE sudah tercatat DITERIMA (sebelumnya masih menunggu).
