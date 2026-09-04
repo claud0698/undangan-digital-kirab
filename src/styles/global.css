@@ -63,7 +63,7 @@ a { color: inherit; }
   .committee-grid { grid-template-columns: 1fr 1fr 1fr; gap: 24px; max-width: 600px; }
 }
 @media (min-width: 1080px) {
-  body { background: #0c0503 url("/gallery/temple-pagoda.webp") center/cover fixed; }
+  body { background: #0c0503 url("/gallery/temple-pagoda-v2.webp") center/cover fixed; }
   body::before { content: ""; position: fixed; inset: 0; background: linear-gradient(135deg, rgba(20,4,2,.92), rgba(40,8,8,.88)); z-index: 0; }
   .shell { max-width: 1080px; margin: 40px auto; box-shadow: 0 40px 120px rgba(0,0,0,.7); border: 1px solid rgba(180,133,54,.3); position: relative; z-index: 1; }
   .cover { height: 720px; min-height: 0; }
@@ -121,7 +121,7 @@ a { color: inherit; }
 }
 .cover-bg {
   position: absolute; inset: 0;
-  background-image: url("/gallery/gate.webp");
+  background-image: url("/gallery/gate-v2.webp");
   background-size: cover; background-position: center 30%;
   filter: contrast(1.05) saturate(1.05) brightness(.55);
   opacity: .45;
@@ -569,7 +569,7 @@ section { position: relative; z-index: 2; padding: 72px 30px; }
 
 /* CLOSING */
 .closing-section { background: linear-gradient(180deg, #5a0c0c, #2a0606); color: var(--paper); padding: 70px 30px 50px; text-align: center; position: relative; overflow: hidden; }
-.closing-section::before { content: ""; position: absolute; inset: 0; background-image: url("/gallery/temple-pagoda.webp"); background-size: cover; background-position: center; opacity: .15; filter: blur(1px); }
+.closing-section::before { content: ""; position: absolute; inset: 0; background-image: url("/gallery/temple-pagoda-v2.webp"); background-size: cover; background-position: center; opacity: .15; filter: blur(1px); }
 .closing-section > * { position: relative; z-index: 2; }
 .closing-section .han { font-family: 'Noto Serif SC', serif; color: var(--gold-bright); font-size: 36px; letter-spacing: .4em; margin-bottom: 14px; }
 .closing-section .han-roman { color: var(--gold-pale); opacity: .85; font-family: 'Cormorant Garamond', serif; font-style: italic; }
@@ -588,7 +588,7 @@ section { position: relative; z-index: 2; padding: 72px 30px; }
 .lang-switch a.active { background: var(--gold); color: var(--red-deep); }
 
 /* INTRO OVERLAY */
-.intro-overlay { position: fixed; inset: 0; background-color: #1a0303; background-image: radial-gradient(ellipse 88% 56% at 50% 54%, rgba(0,0,0,.55), rgba(0,0,0,0) 72%), linear-gradient(180deg, rgba(34,7,7,.9), rgba(13,3,3,.96)), url("/gallery/gate.webp"); background-size: cover; background-position: center; z-index: 200; display: flex; flex-direction: column; align-items: center; justify-content: safe center; overflow-y: auto; color: var(--paper); text-align: center; padding: 34px 30px; transition: opacity .8s ease; }
+.intro-overlay { position: fixed; inset: 0; background-color: #1a0303; background-image: radial-gradient(ellipse 88% 56% at 50% 54%, rgba(0,0,0,.55), rgba(0,0,0,0) 72%), linear-gradient(180deg, rgba(34,7,7,.9), rgba(13,3,3,.96)), url("/gallery/gate-v2.webp"); background-size: cover; background-position: center; z-index: 200; display: flex; flex-direction: column; align-items: center; justify-content: safe center; overflow-y: auto; color: var(--paper); text-align: center; padding: 34px 30px; transition: opacity .8s ease; }
 .intro-overlay.hidden { opacity: 0; pointer-events: none; }
 .intro-overlay .han { font-family: 'Noto Serif SC', serif; font-size: 58px; color: var(--gold-bright); margin-bottom: 6px; text-shadow: 0 2px 18px rgba(0,0,0,.6); }
 .intro-overlay .han-roman { font-family: 'Cormorant Garamond', serif; font-style: normal; font-size: 25px; font-weight: 600; color: var(--paper); margin: 0 0 12px; letter-spacing: .04em; opacity: 1; text-shadow: 0 2px 12px rgba(0,0,0,.55); }
