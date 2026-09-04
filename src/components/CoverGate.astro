@@ -176,7 +176,17 @@ const lanternSvg = `<svg viewBox="0 0 60 100" xmlns="http://www.w3.org/2000/svg"
     };
     rafId = requestAnimationFrame(step);
   };
-  const scheduleResume = () => { clearTimeout(idleTimer); idleTimer = window.setTimeout(startAuto, RESUME_MS); };
+  // Nothing may arm the drift until the guest has opened the invitation. The
+  // gesture listeners below are live from module execution, and body{overflow:hidden}
+  // stops the viewport moving but not the events: a swipe on the overlay used to
+  // start the loop, which then advanced its own `pos` against a frozen page and
+  // dumped the reader hundreds of pixels down the moment they tapped through.
+  let opened = false;
+  const scheduleResume = () => {
+    if (!opened) return;
+    clearTimeout(idleTimer);
+    idleTimer = window.setTimeout(startAuto, RESUME_MS);
+  };
 
   // A real scroll gesture (wheel / touch drag / nav keys) pauses the drift,
   // then it resumes 5s later. Taps and our own scrollTo don't count.
@@ -192,6 +202,7 @@ const lanternSvg = `<svg viewBox="0 0 60 100" xmlns="http://www.w3.org/2000/svg"
     document.body.style.overflow = "";
     setTimeout(() => overlay?.remove(), 900);
     // Begin the gentle drift a few seconds after the cover is revealed.
+    opened = true;
     scheduleResume();
   });
 

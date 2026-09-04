@@ -58,8 +58,11 @@ const initial = (name: string) => {
       ))}
     </div>
 
-    {/* Canonical roll for assistive tech: complete, in the committee's order, and
-        static, so nothing ever moves under a screen-reader cursor. */}
+    {/* Canonical roll: complete, in the committee's order, and static, so nothing
+        ever moves under a screen-reader cursor. It is also the no-script view —
+        the rolling stack emits ROWS x PAGES cards, which for 44 donors wraps four
+        families onto a second card each, and a merit roll must not name anyone
+        twice. */}
     <ul class="donor-sr" role="list" data-roll-all hidden>
       {donors.map((d) => <li><DonorName d={d} /></li>)}
     </ul>
@@ -71,6 +74,28 @@ const initial = (name: string) => {
     </p>
   </section>
 )}
+
+<noscript>
+  <style>
+    /* No script: the rolling stack would show every page at once, repeating four
+       families. Show the canonical list instead, laid out to read properly. */
+    .donatur .roll { display: none !important; }
+    .donatur .donor-sr[hidden] {
+      display: grid !important;
+      position: static;
+      width: auto; height: auto;
+      margin: 0 auto; padding: 0;
+      clip-path: none;
+      white-space: normal;
+      overflow: visible;
+      max-width: 460px;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 22px 12px;
+      list-style: none;
+      text-align: left;
+    }
+  </style>
+</noscript>
 
 <style>
   .donatur {
@@ -188,7 +213,9 @@ const initial = (name: string) => {
     font-style: italic;
     font-size: 13px;
     color: var(--ink);
-    opacity: 0.55;
+    /* 0.55 measured 4.07:1 on --paper and failed AA. This is the line that
+       stops the roll being read as a ranking; it has to be legible. */
+    opacity: 0.68;
   }
 
   @media (min-width: 720px) {
@@ -234,6 +261,7 @@ const initial = (name: string) => {
     ).fill(undefined);
     let onScreen = false;
     let held = false;
+    let observed = false;
 
     // Ring indexing means the tail page wraps back onto the head, so a handful of
     // names sit in two different cells' pools. Without this guard a random pick
@@ -261,10 +289,11 @@ const initial = (name: string) => {
     // Each row runs its own clock on its own random interval, so the rows drift
     // out of phase instead of taking turns on one shared beat. Within a row the
     // second cell lags the first, so the row dissolves rather than blinking.
+    const lagTimers: (number | undefined)[] = new Array(lines.length).fill(undefined);
     const tick = (l: number) => {
       lines[l].forEach((idx, k) => {
         if (k === 0) advance(idx);
-        else window.setTimeout(() => advance(idx), 260);
+        else lagTimers[l] = window.setTimeout(() => advance(idx), 260);
       });
       timers[l] = window.setTimeout(() => tick(l), gap());
     };
@@ -272,6 +301,7 @@ const initial = (name: string) => {
     const shouldRun = () => onScreen && !held && !document.hidden;
     const stop = () => {
       timers.forEach((t, l) => { window.clearTimeout(t); timers[l] = undefined; });
+      lagTimers.forEach((t, l) => { window.clearTimeout(t); lagTimers[l] = undefined; });
     };
     const sync = () => {
       if (!shouldRun()) { stop(); return; }
@@ -288,7 +318,7 @@ const initial = (name: string) => {
     roll.setAttribute("aria-hidden", "true");
     srList.hidden = false;
 
-    new IntersectionObserver((es) => { onScreen = es[0].isIntersecting; sync(); },
+    new IntersectionObserver((es) => { observed = true; onScreen = es[0].isIntersecting; sync(); },
       { threshold: 0.2 }).observe(roll);
 
     document.addEventListener("visibilitychange", sync);
@@ -302,8 +332,13 @@ const initial = (name: string) => {
     reduce.addEventListener("change", sync);
     sync();
 
-    // Safety net: if the observer somehow never reports the roll as visible, start
-    // regardless rather than sitting frozen.
-    window.setTimeout(() => { if (timers.every((t) => t === undefined) && !held) { onScreen = true; sync(); } }, 2500);
+    // Safety net for a browser that never delivers an IntersectionObserver entry.
+    // It must not simply force onScreen: the roll sits far below the fold, so at
+    // 2.5s it is legitimately off-screen on every load, and forcing it there ran
+    // sixteen cards the whole time the guest was still reading the cover. Only
+    // step in if the observer has said nothing at all.
+    window.setTimeout(() => {
+      if (!observed && !held) { onScreen = true; sync(); }
+    }, 4000);
   }
 </script>

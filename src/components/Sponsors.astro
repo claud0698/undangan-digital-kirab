@@ -47,7 +47,7 @@ const roster = ranks
             <div class="logo-slot">
               <img
                 src={`/sponsors/${l.slug}.webp`}
-                alt={l.name}
+                alt={l.name.replace(/ · /g, ", ")}
                 width={dims[g.rank].w}
                 height={dims[g.rank].h}
                 loading="lazy"
@@ -201,8 +201,10 @@ const roster = ranks
   .rank-1 { --cols: 1; }
   .rank-2 { --cols: 2; }
   .rank-3 { --cols: 2; }
-  .rank-4 { --cols: 3; }
-  .rank-5 { --cols: 4; }
+  /* On a 360px phone, --cols:4 gave a 67x45px tile — wordmarks like
+     "Bakorsiskom Polsekta Tangerang" became texture. One column fewer each. */
+  .rank-4 { --cols: 2; }
+  .rank-5 { --cols: 3; }
   .rank-1 .logo-slot { aspect-ratio: 4 / 3; }
 
   .group-label {
