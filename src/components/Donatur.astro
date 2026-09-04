@@ -213,8 +213,8 @@ const initial = (name: string) => {
   const pages = Number(roll?.dataset.pages ?? 1);
 
   if (roll && srList && pages > 1) {
-    const GAP_MIN = 1600;     // irregular beat — a fixed interval reads as a metronome
-    const GAP_MAX = 3600;
+    const GAP_MIN = 2900;     // irregular beat — a fixed interval reads as a metronome
+    const GAP_MAX = 5800;
     const gap = () => GAP_MIN + Math.random() * (GAP_MAX - GAP_MIN);
     const reduce = matchMedia("(prefers-reduced-motion: reduce)");
     const rows = Array.from(roll.querySelectorAll<HTMLElement>(".row")).map((el) =>

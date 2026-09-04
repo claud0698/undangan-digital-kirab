@@ -1,0 +1,84 @@
+AUDIT KATEGORI "MITRA PENDUKUNG" DI WEBSITE
+Kirab Budaya & Ruwat Bumi 2026 - Tjie Thien Ta Sen Bio Tangerang
+Dibuat: 04-09-2026
+Dibandingkan dengan : - ledger 'Dana Kirab Budaya 2026.xlsx' (per 28 Agustus)
+                      - foto spanduk fisik di depan vihara
+
+======================================================================
+MASALAHNYA
+======================================================================
+
+  Di website ada satu kelompok berjudul "MITRA PENDUKUNG" berisi 14
+  logo. Judul itu cocok untuk media dan instansi, tetapi di dalamnya
+  ikut masuk beberapa MEREK USAHA. Menyebut perusahaan sebagai
+  "mitra" - bukan sponsor - bisa terasa kurang tepat bagi mereka.
+
+  Di spanduk fisik pemisahannya jelas:
+    - baris paling bawah  = media & instansi
+    - kotak-kotak di atas = sponsor usaha
+  Lima logo di bawah ini ada di BARIS SPONSOR pada spanduk, tetapi di
+  website masuk ke "Mitra Pendukung".
+
+======================================================================
+A. SEHARUSNYA SPONSOR, BUKAN "MITRA PENDUKUNG"  (5)
+======================================================================
+  Mohon dibantu: berapa nilai kontribusinya? Ukuran logo di website
+  mengikuti nilai sponsor (20jt / 10jt / 5jt / 2,5jt), jadi tanpa
+  angka kami tidak bisa menempatkannya dengan benar.
+
+  1. Ichitan  (merek minuman)
+       di spanduk : baris sponsor
+       di ledger  : TIDAK ADA
+       catatan    : merek nasional, kemungkinan nilainya besar.
+                    Saat ini tampil paling kecil - kemungkinan keliru.
+
+  2. Toko Mas Andika Mas  (Pasar Muara Karang, Jakarta Utara)
+       di spanduk : baris sponsor
+       di ledger  : TIDAK ADA
+
+  3. MB / Menembus Batas  (General Trading Skrap Logam & Besi)
+       di spanduk : baris sponsor
+       di ledger  : TIDAK ADA
+
+  4. Mandiri Kasih
+       di spanduk : baris sponsor
+       di ledger  : ADA - "Mandiri Kasih (Benny)", Rp 1.000.072,
+                    tercatat sebagai Donasi Perorangan
+       pertanyaan : ini nama usaha atau nama dana dari Bp. Benny?
+                    Kalau perorangan, sebaiknya pindah ke daftar
+                    donatur, bukan dinding logo.
+
+  5. Vajrayana Buddhist Indonesia
+       di spanduk : baris sponsor (bukan baris instansi)
+       di ledger  : TIDAK ADA
+       pertanyaan : organisasi Buddhis - tetap disebut mitra,
+                    atau dimasukkan sebagai sponsor?
+
+======================================================================
+B. SUDAH BENAR SEBAGAI "MITRA PENDUKUNG"  (9)
+======================================================================
+  Semuanya ada di baris paling bawah spanduk, dan tidak ada satu pun
+  yang tercatat di ledger - jadi memang mitra, bukan sponsor tunai.
+
+    Media    : DAAI TV, MP MediaPers, Actual News,
+               Detik Suara Rakyat, TNG TV
+    Instansi : Universitas Buddhi Dharma,
+               Disbudpar Kota Tangerang,
+               Bakorsiskom Polsekta Tangerang,
+               Pemerintah Kota Tangerang
+
+======================================================================
+C. RINGKASAN PERTANYAAN UNTUK PIC
+======================================================================
+
+  1. Berapa nilai kontribusi Ichitan, Andika Mas, dan MB /
+     Menembus Batas? (untuk menentukan ukuran logo)
+  2. Mandiri Kasih - nama usaha atau donatur perorangan?
+  3. Vajrayana Buddhist Indonesia - sponsor atau mitra?
+  4. Apakah keempat/kelima nama di atas sudah dicatat di ledger?
+     Sampai versi 28 Agustus belum ada.
+
+  PIC data sponsor : Bp. Lukas Susanto
+                     +62 856 9241 3938
+                     lian0901lucas@gmail.com
+  Bendahara        : Ibu Liliany Candra
