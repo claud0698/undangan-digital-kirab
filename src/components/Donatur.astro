@@ -243,7 +243,6 @@ const initial = (name: string) => {
     const GAP_MIN = 2900;     // irregular beat — a fixed interval reads as a metronome
     const GAP_MAX = 5800;
     const gap = () => GAP_MIN + Math.random() * (GAP_MAX - GAP_MIN);
-    const reduce = matchMedia("(prefers-reduced-motion: reduce)");
     const rows = Array.from(roll.querySelectorAll<HTMLElement>(".row")).map((el) =>
       Array.from(el.querySelectorAll<HTMLElement>(".card")),
     );
@@ -329,7 +328,6 @@ const initial = (name: string) => {
     roll.addEventListener("focusin", () => { held = true; sync(); });
     roll.addEventListener("focusout", () => { held = false; sync(); });
 
-    reduce.addEventListener("change", sync);
     sync();
 
     // Safety net for a browser that never delivers an IntersectionObserver entry.
