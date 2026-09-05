@@ -45,7 +45,7 @@ const visitedTotal = guests.filter((g) => (g.visit_count ?? 0) > 0).length;
          skip those dynamic rows, leaving freshly-added guests unstyled/cramped. -->
     <style is:global>
       :root {
-        --bg: #0f0b0b; --panel: #17110f; --line: #2c211c; --line2: #3a2c24;
+        --bg: #0f0b0b; --panel: #17110f; --line: #2c211c; --line2: #7a6553;
         --gold: #d8a847; --gold-bright: #f0c869; --text: #efe6d8; --muted: #a99a86;
         --red: #b5321f; --ok: #2f7d4f;
       }
@@ -90,7 +90,8 @@ const visitedTotal = guests.filter((g) => (g.visit_count ?? 0) > 0).length;
       .field { margin-bottom: 14px; }
       .field label { display: block; font-size: 12px; color: var(--muted); margin-bottom: 6px; text-transform: uppercase; letter-spacing: .08em; }
       .field input {
-        width: 100%; padding: 11px 12px; background: #100c0a; border: 1px solid var(--line2);
+        /* 16px or iOS zooms on focus and never zooms back out */
+        width: 100%; padding: 12px; font-size: 16px; background: #100c0a; border: 1px solid var(--line2);
         border-radius: 8px; outline: none;
       }
       .field input:focus { border-color: var(--gold); }
@@ -164,7 +165,7 @@ const visitedTotal = guests.filter((g) => (g.visit_count ?? 0) > 0).length;
       .add .field-title { white-space: nowrap; font-size: 12px; font-weight: 600; letter-spacing: .02em; color: var(--gold-pale, #e9cf86); }
       .add .field-title .req { color: #e0894a; }
       .add .field-title .opt { font-weight: 400; color: var(--muted); }
-      .add .hint { font-size: 11px; line-height: 1.35; color: #8a7c6a; overflow-wrap: anywhere; }
+      .add .hint { font-size: 13px; line-height: 1.35; color: #8a7c6a; overflow-wrap: anywhere; }
       .add .hint code { overflow-wrap: anywhere; word-break: break-all; }
       /* button fills its own cell and bottom-aligns with the inputs via the
          hidden spacer label above it */
@@ -227,12 +228,16 @@ const visitedTotal = guests.filter((g) => (g.visit_count ?? 0) > 0).length;
       .toast { position: fixed; bottom: 20px; left: 50%; transform: translateX(-50%);
         background: var(--ok); color: #fff; padding: 10px 18px; border-radius: 999px; font-size: 14px;
         opacity: 0; pointer-events: none; transition: opacity .2s; z-index: 50; max-width: 90vw; text-align: center; }
-      .toast.show { opacity: 1; }
+      .toast.show { opacity: 1; pointer-events: auto; }
+      .toast-action { margin-left: 12px; background: rgba(0,0,0,.28); color: #fff;
+        border: 1px solid rgba(255,255,255,.45); border-radius: 999px;
+        padding: 6px 14px; font-size: 13px; font-weight: 700; cursor: pointer; }
+      .toast-action:hover { background: rgba(0,0,0,.45); }
       .toast.err { background: var(--red); }
 
       /* ── mobile ── (the add form reflows on its own via auto-fit) */
-      @media (max-width: 720px) {
-        .cat-select, .cell[contenteditable], .search input { font-size: 16px; }
+      @media (max-width: 1024px) {
+        .cat-select, .sort-select, .cell[contenteditable], .search input { font-size: 16px; }
         /* toolbar: search full width on its own row; filter + sort share the next row */
         .toolbar { gap: 8px; }
         .toolbar .search { flex: 1 1 100%; min-width: 0; }
@@ -260,6 +265,42 @@ const visitedTotal = guests.filter((g) => (g.visit_count ?? 0) > 0).length;
         .link-row .btn { order: 2; margin-left: auto; }
         .row-actions { flex: 1; justify-content: flex-start; }
         .date-cell { font-size: 14px; }
+
+        /* ── phone: a card per guest, not a transcribed table row ──
+           Ten stacked label/value pairs made one guest 537px tall, so a page of
+           100 was ~53,000px of scrolling, and the guest's name carried no more
+           weight than "Diaudit oleh". Keep what a volunteer acts on; the rest
+           stays in the DOM for search and CSV, just not shouting. */
+        .grid tbody td[data-label="Ditambah"],
+        .grid tbody td[data-label="Diaudit oleh"],
+        .grid tbody td[data-label="Tautan Kustom"] { display: none; }
+        .link-row a { display: none; }
+
+        /* the name leads the card */
+        .grid tbody td[data-label="Nama"]::before { display: none; }
+        .grid tbody td[data-label="Nama"] .cell { font-size: 18px; font-weight: 600; }
+
+        /* every control a thumb has to hit */
+        .btn-icon { width: 44px; height: 44px; padding: 0; }
+        .btn-sm { padding: 11px 16px; }
+        .toolbar .btn, .pager .btn { min-height: 44px; }
+        .cat-select,
+        .cell[contenteditable] {
+          min-height: 44px; padding: 10px 12px;
+          background: #100c0a; border: 1px solid var(--line2); border-radius: 8px;
+        }
+        .cell[contenteditable]:focus { border-color: var(--gold); }
+        .link-row .btn { flex: 1 1 auto; text-align: center; }
+
+        /* The save confirmation has to live where the eye already is: a toast
+           pinned to the bottom sits behind the Android keyboard, which stays
+           up through the tap-cell / type / tap-next-cell loop. */
+        .toast { top: 12px; bottom: auto; }
+        .grid tbody tr[data-saved] td[data-label="Nama"] .cell { border-color: #3f7d54; }
+        .grid tbody tr[data-saved]::after {
+          content: "✓ Tersimpan"; display: block;
+          margin: 2px 12px 8px; font-size: 13px; color: #7fc79b;
+        }
       }
     </style>
   </head>
@@ -413,13 +454,13 @@ const visitedTotal = guests.filter((g) => (g.visit_count ?? 0) > 0).length;
               <tr data-id={g.id} data-name={g.name} data-salutation={g.salutation ?? ""}
                   data-address={g.address ?? ""} data-slug={g.slug ?? ""}>
                 <td data-label="Sebutan">
-                  <div class="cell" contenteditable="plaintext-only" data-field="salutation">{g.salutation ?? ""}</div>
+                  <div class="cell" contenteditable="plaintext-only" spellcheck="false" autocapitalize="words" data-field="salutation">{g.salutation ?? ""}</div>
                 </td>
                 <td data-label="Nama">
-                  <div class="cell" contenteditable="plaintext-only" data-field="name">{g.name}</div>
+                  <div class="cell" contenteditable="plaintext-only" spellcheck="false" autocapitalize="words" data-field="name">{g.name}</div>
                 </td>
                 <td data-label="Alamat">
-                  <div class="cell" contenteditable="plaintext-only" data-field="address">{g.address ?? ""}</div>
+                  <div class="cell" contenteditable="plaintext-only" spellcheck="false" autocapitalize="words" data-field="address">{g.address ?? ""}</div>
                 </td>
                 <td data-label="Kategori">
                   <select class="cat-select" data-field="category">
@@ -427,7 +468,7 @@ const visitedTotal = guests.filter((g) => (g.visit_count ?? 0) > 0).length;
                   </select>
                 </td>
                 <td data-label="Tautan Kustom">
-                  <div class="cell slug" contenteditable="plaintext-only" data-field="slug">{g.slug ?? ""}</div>
+                  <div class="cell slug" contenteditable="plaintext-only" spellcheck="false" autocapitalize="words" data-field="slug">{g.slug ?? ""}</div>
                 </td>
                 <td data-label="Tautan">
                   <div class="link-col">
@@ -483,7 +524,7 @@ const visitedTotal = guests.filter((g) => (g.visit_count ?? 0) > 0).length;
         const escapeHtml = (s) =>
           String(s ?? "").replace(/[&<>"']/g, (c) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[c]));
         const slugify = (s) =>
-          String(s ?? "").toLowerCase().normalize("NFKD").replace(/[^a-z0-9]+/g, "");
+          String(s ?? "").toLowerCase().normalize("NFKD").replace(/[^a-z0-9]+/g, "-").replace(/^-+|-+$/g, "");
         const fmtDate = (iso) => {
           try {
             return new Intl.DateTimeFormat("id-ID", {
@@ -495,16 +536,32 @@ const visitedTotal = guests.filter((g) => (g.visit_count ?? 0) > 0).length;
         const prettyLink = (g) => (g.slug ? `${site}/undangan/${g.slug}` : "");
 
         let toastTimer;
-        const toast = (msg, isErr) => {
-          toastEl.textContent = msg;
+        // `action` turns the toast into the only way back from a delete, so it
+        // stays up long enough to be read and tapped on a phone.
+        const toast = (msg, isErr, action) => {
+          toastEl.textContent = "";
+          toastEl.append(msg);
           toastEl.classList.toggle("err", !!isErr);
+          if (action) {
+            const b = document.createElement("button");
+            b.type = "button";
+            b.className = "toast-action";
+            b.textContent = action.label;
+            b.addEventListener("click", () => {
+              toastEl.classList.remove("show");
+              action.onClick();
+            });
+            toastEl.append(b);
+          }
           toastEl.classList.add("show");
           clearTimeout(toastTimer);
-          toastTimer = setTimeout(() => toastEl.classList.remove("show"), 2000);
+          toastTimer = setTimeout(() => toastEl.classList.remove("show"), action ? 9000 : 2000);
         };
 
         // ── view state: search + sort + pagination ──
-        const PAGE_SIZE = 100;
+        // 100 cards is roughly 53,000px of scrolling on a phone; a page you can
+        // actually reach the bottom of beats one big list.
+        const PAGE_SIZE = window.matchMedia("(max-width: 1024px)").matches ? 25 : 100;
         const pager = document.getElementById("pager");
         let query = "", sortBy = "terbaru", catFilter = "", page = 1;
 
@@ -594,7 +651,7 @@ const visitedTotal = guests.filter((g) => (g.visit_count ?? 0) > 0).length;
           tr.dataset.address = g.address || "";
           tr.dataset.slug = g.slug || "";
           const editCell = (field, val, label, cls) =>
-            `<td data-label="${label}"><div class="cell ${cls || ""}" contenteditable="plaintext-only" data-field="${field}">${escapeHtml(val)}</div></td>`;
+            `<td data-label="${label}"><div class="cell ${cls || ""}" contenteditable="plaintext-only" spellcheck="false" autocapitalize="words" data-field="${field}">${escapeHtml(val)}</div></td>`;
           const pretty = prettyLink(g);
           const visits = g.visit_count ?? 0, opens = g.open_count ?? 0;
           const state = opens > 0 ? "opened" : visits > 0 ? "visited" : "none";
@@ -637,6 +694,7 @@ const visitedTotal = guests.filter((g) => (g.visit_count ?? 0) > 0).length;
             if (!res.ok) throw new Error(out.error || "gagal");
             rows.prepend(buildRow(out.guest));
             addForm.reset();
+          addForm.querySelector('[name="name"]')?.focus();
             slugTouched = false;
             updateCount();
             refreshSummary();
@@ -645,6 +703,20 @@ const visitedTotal = guests.filter((g) => (g.visit_count ?? 0) > 0).length;
             toast("Gagal: " + err.message, true);
           } finally {
             btn.disabled = false;
+          }
+        });
+
+        // Enter must not open a second line: textContent joins block children
+        // with no separator, so the saved value silently glues them together.
+        // Escape restores the value the cell had on focus.
+        rows.addEventListener("keydown", (e) => {
+          const cell = e.target.closest?.("[contenteditable]");
+          if (!cell) return;
+          if (e.key === "Enter") { e.preventDefault(); cell.blur(); }
+          else if (e.key === "Escape") {
+            e.preventDefault();
+            cell.textContent = cell.dataset.baseline ?? "";
+            cell.blur();
           }
         });
 
@@ -703,6 +775,11 @@ const visitedTotal = guests.filter((g) => (g.visit_count ?? 0) > 0).length;
             if (baseline !== null && el.textContent !== undefined) el.textContent = baseline; // revert text cell
           } finally {
             tr.classList.remove("saving");
+            // A toast alone is not enough on a phone: it fires behind the
+            // keyboard. Mark the row so the confirmation sits under the name.
+            tr.dataset.saved = "1";
+            window.clearTimeout(tr._savedT);
+            tr._savedT = window.setTimeout(() => delete tr.dataset.saved, 4000);
           }
         }
 
@@ -730,6 +807,15 @@ const visitedTotal = guests.filter((g) => (g.visit_count ?? 0) > 0).length;
           }
           if (e.target.closest("[data-del]")) {
             if (!confirm(`Hapus tamu "${tr.dataset.name}"?`)) return;
+            // The slug dies with the row, so a link already sent over WhatsApp
+            // starts 404-ing. Keep enough to put the guest back exactly.
+            const snapshot = {
+              name: tr.dataset.name,
+              salutation: tr.dataset.salutation || null,
+              address: tr.dataset.address || null,
+              slug: tr.dataset.slug || null,
+              category: tr.querySelector('[data-field="category"]')?.value,
+            };
             tr.classList.add("saving");
             try {
               const res = await fetch(`/api/users/${tr.dataset.id}`, { method: "DELETE" });
@@ -737,7 +823,18 @@ const visitedTotal = guests.filter((g) => (g.visit_count ?? 0) > 0).length;
               tr.remove();
               updateCount();
               refreshSummary();
-              toast("Tamu dihapus");
+              toast("Tamu dihapus", false, {
+                label: "Urungkan",
+                onClick: async () => {
+                  const r = await fetch("/api/users", {
+                    method: "POST",
+                    headers: { "Content-Type": "application/json" },
+                    body: JSON.stringify(snapshot),
+                  });
+                  if (r.ok) location.reload();
+                  else toast("Gagal mengurungkan — tamu perlu ditambah ulang", true);
+                },
+              });
             } catch { tr.classList.remove("saving"); toast("Gagal menghapus", true); }
           }
         });
