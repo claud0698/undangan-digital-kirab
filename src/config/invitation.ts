@@ -346,7 +346,6 @@ export const invitation = {
   sponsorLogos: [
     { slug: "astic-group-v2",                    name: "ASTIC Group",                                            rank: 1 },
     { slug: "prima-mining-nusantara",         name: "PT Prima Mining Nusantara",                              rank: 1 },
-    { slug: "emc-tangerang",                  name: "RS EMC Tangerang",                                       rank: 1 },
     { slug: "borobudur-lotus-artfest-v2",        name: "Borobudur Lotus Artfest",                                rank: 1 },
     { slug: "bangun-jaya-group-v2",              name: "Bangun Jaya Group",                                      rank: 1 },
     { slug: "dextone-avian-v2",                  name: "Dextone · Abrasive · Provioz · Veloz",                   rank: 1 },
@@ -364,6 +363,7 @@ export const invitation = {
     { slug: "kotaminyak-v2",                     name: "KMI Solution · Kotaminyak",                              rank: 3 },
     { slug: "maju-jaya-plasindo-v2",             name: "PT Maju Jaya Plasindo",                                  rank: 3 },
     { slug: "mayapada-hospital-v2",              name: "Mayapada Hospital",                                      rank: 3 },
+    { slug: "emc-tangerang-v2",                  name: "RS EMC Tangerang",                                       rank: 3 },
     { slug: "surya-jaya-v2",                     name: "Surya Jaya",                                             rank: 3 },
     { slug: "palais-contruction-v2",             name: "Palais Contruction · Tjoetji Sepatoe",                   rank: 3 },
     { slug: "global-copier-v2",                  name: "Global Copier",                                          rank: 3 },

@@ -1,6 +1,6 @@
 DAFTAR SPONSOR YANG BELUM ADA LOGO
 Kirab Budaya & Ruwat Bumi 2026 - Tjie Thien Ta Sen Bio Tangerang
-Dibuat: 31-08-2026 (diperbarui 02-09-2026)
+Dibuat: 31-08-2026 (diperbarui 05-09-2026)
 Sumber: ledger 'Dana Kirab Budaya 2026.xlsx' (per 28 Agustus)
         + berkas logo PDF per 31 Agustus
 
@@ -112,11 +112,21 @@ E. ADA DI SPANDUK, BELUM ADA DI WEBSITE  (dikoreksi 04-09-2026)
 
   YANG BENAR-BENAR BELUM ADA DI WEBSITE:
     - Kodim 0506 Tangerang
-      Lambang kesatuan (perisai merah-putih, padi-kapas, pita
+      Lambang kesatuannya (perisai merah-putih, padi-kapas, pita
       hijau "TANGERANG") tidak ada di internet. Situs resmi Kodim
-      hanya memuat lambang TNI AD dan Korem. Mohon file aslinya.
+      hanya memuat lambang TNI AD dan Korem, bukan lambang satuan.
+      Di spanduk ukurannya terlalu kecil untuk diperbesar.
+      MOHON FILE ASLINYA.
     - satu lambang segi delapan di baris instansi yang belum terbaca;
       tulisan melingkarnya berakhir "...INDONESIA". Mohon namanya.
+
+  Sudah dikerjakan 04-05 September:
+    - Explift             : file PDF sudah diterima, sudah tayang
+    - Wonderful Indonesia : diambil dari Wikimedia Commons (domain
+                            publik), sudah dicocokkan dengan spanduk
+    - Polda Metro Jaya    : idem
+    - RS EMC Tangerang    : dari folder Drive, versi berwarna
+    - PT Prima Mining Nusantara : dari kop surat .docx
 
 ======================================================================
 D. RINGKASAN
@@ -138,6 +148,12 @@ D. RINGKASAN
       pencocokan nama dengan 'Bp. Alim / Dominique Jewellery'.
       Sudah diperbaiki, sekarang masuk daftar donatur.
     - Total dana diterima : Rp 314.609.466 dari target Rp 888.888.000
+
+  Catatan tampilan: logo dikelompokkan dalam dua bagian berjudul,
+  "Didukung Oleh" untuk instansi/pemerintah dan "Mitra Pendukung"
+  untuk media. Bagian sponsor di atasnya sengaja TIDAK diberi judul
+  tingkatan, agar nilai kontribusi masing-masing sponsor tidak
+  terbaca publik.
 
   PIC pengiriman logo : Bp. Lukas Susanto
                         +62 856 9241 3938
