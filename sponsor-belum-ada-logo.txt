@@ -111,7 +111,6 @@ E. ADA DI SPANDUK, BELUM ADA DI WEBSITE  (dikoreksi 04-09-2026)
   sudah tergabung di dalam logo New Armada, tidak perlu kotak sendiri.
 
   YANG BENAR-BENAR BELUM ADA DI WEBSITE:
-    - Explift  (elevator & escalator, 快菱电梯)
     - Wonderful Indonesia
     - Polda Metro Jaya
     - Kodim 0506 Tangerang
@@ -122,11 +121,12 @@ E. ADA DI SPANDUK, BELUM ADA DI WEBSITE  (dikoreksi 04-09-2026)
 D. RINGKASAN
 ======================================================================
 
-  Logo sudah tampil di website  : 48  (termasuk PT Prima Mining
-                                  Nusantara, logo diterima 04-09)
+  Logo sudah tampil di website  : 50  (termasuk PT Prima Mining
+                                  Nusantara, RS EMC Tangerang dan
+                                  Explift, diterima 04-05 September)
   Sudah bayar, logo belum ada   : 0  (semua sudah dijawab)
   Perlu konfirmasi dulu         : 7
-  Ada di spanduk, belum di web  : 4 (+1 lambang belum terbaca)
+  Ada di spanduk, belum di web  : 3 (+1 lambang belum terbaca)
 
   Perubahan dari ledger 28 Agustus:
     - DEXTONE sudah tercatat DITERIMA (sebelumnya masih menunggu).

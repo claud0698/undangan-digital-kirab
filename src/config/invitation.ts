@@ -340,6 +340,7 @@ export const invitation = {
   sponsorLogos: [
     { slug: "astic-group-v2",                    name: "ASTIC Group",                                            rank: 1 },
     { slug: "prima-mining-nusantara",         name: "PT Prima Mining Nusantara",                              rank: 1 },
+    { slug: "emc-tangerang",                  name: "RS EMC Tangerang",                                       rank: 1 },
     { slug: "borobudur-lotus-artfest-v2",        name: "Borobudur Lotus Artfest",                                rank: 1 },
     { slug: "bangun-jaya-group-v2",              name: "Bangun Jaya Group",                                      rank: 1 },
     { slug: "dextone-avian-v2",                  name: "Dextone · Abrasive · Provioz · Veloz",                   rank: 1 },
@@ -396,6 +397,7 @@ export const invitation = {
     { slug: "bakorsiskom-polsekta",           name: "Bakorsiskom Polsekta Tangerang",                         rank: 5 },
     { slug: "kota-tangerang",                 name: "Kota Tangerang",                                         rank: 5 },
     { slug: "nara-jw-lawfirm",                name: "Nara JW Lawfirm",                                        rank: 4 },
+    { slug: "explift",                        name: "Explift Elevator & Escalator",                           rank: 4 },
   ] satisfies SponsorLogo[],
 
   // ─── donatur tanpa logo (teks / gulungan) ─────────────────────
