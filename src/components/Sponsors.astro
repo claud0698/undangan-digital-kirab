@@ -468,30 +468,46 @@ const roster = ranks
   // The account number is printed with spaces so it can be read aloud; m-BCA
   // rejects that on paste, so the button copies the bare digits instead.
   document.querySelectorAll<HTMLButtonElement>(".copy-rek").forEach((btn) => {
-    btn.addEventListener("click", async () => {
-      const digits = btn.dataset.rek ?? "";
-      let ok = false;
-      try {
-        await navigator.clipboard.writeText(digits);
-        ok = true;
-      } catch {
-        // WhatsApp's in-app browser can refuse the async clipboard; fall back.
-        const ta = document.createElement("textarea");
-        ta.value = digits;
-        ta.setAttribute("readonly", "");
-        ta.style.cssText = "position:fixed;top:-1000px;opacity:0";
-        document.body.appendChild(ta);
-        ta.select();
-        try { ok = document.execCommand("copy"); } catch { ok = false; }
-        ta.remove();
-      }
-      if (!ok) return;
+    const flash = () => {
       btn.textContent = btn.dataset.done ?? "";
       btn.classList.add("is-done");
       window.setTimeout(() => {
         btn.textContent = btn.dataset.copy ?? "";
         btn.classList.remove("is-done");
       }, 2200);
+    };
+
+    btn.addEventListener("click", () => {
+      const digits = btn.dataset.rek ?? "";
+
+      // execCommand first, and synchronously. It is deprecated but it is the
+      // only path that cannot lose the user gesture: awaiting the async
+      // clipboard and falling back in its catch means the fallback runs after
+      // the gesture has already expired, which is exactly how this fails in
+      // WhatsApp's in-app browser — the one browser most of these guests use.
+      const ta = document.createElement("textarea");
+      ta.value = digits;
+      ta.setAttribute("readonly", "");
+      ta.style.cssText = "position:fixed;top:-1000px;opacity:0";
+      document.body.appendChild(ta);
+      ta.select();
+      ta.setSelectionRange(0, digits.length);
+      let ok = false;
+      try { ok = document.execCommand("copy"); } catch { ok = false; }
+      ta.remove();
+
+      if (ok) { flash(); return; }
+      navigator.clipboard?.writeText(digits).then(flash).catch(() => {
+        // Both refused. Select the printed number so it can be copied by hand
+        // rather than leaving the button looking broken.
+        const no = btn.parentElement?.querySelector(".bank-no");
+        if (!no) return;
+        const r = document.createRange();
+        r.selectNodeContents(no);
+        const sel = window.getSelection();
+        sel?.removeAllRanges();
+        sel?.addRange(r);
+      });
     });
   });
 </script>
