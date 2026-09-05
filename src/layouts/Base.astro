@@ -12,7 +12,7 @@ interface Props {
 const { lang, title, description } = Astro.props;
 const docTitle =
   title ?? `Kirab Budaya & Ruwat Bumi 2026 — ${invitation.organization.name} ${invitation.organization.location}`;
-const docDesc = description ?? pick(invitation.opening, lang).slice(0, 160);
+const docDesc = description ?? pick(invitation.preview, lang);
 
 const site = Astro.site?.toString().replace(/\/$/, "") ?? "";
 const path = Astro.url.pathname;

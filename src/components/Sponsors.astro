@@ -13,12 +13,17 @@ const dims = {
   3: { w: 540, h: 360 },
   4: { w: 420, h: 280 },
   5: { w: 420, h: 280 },
+  6: { w: 420, h: 280 },   // same size as 5 — a separate band, not a tier
 } as const;
 
-const ranks = [1, 2, 3, 4, 5] as const;
+const ranks = [1, 2, 3, 4, 6, 5] as const;   // institutions before media
 
+// Only these two bands carry a heading. The sponsor tiers above are
+// deliberately unlabelled: several sponsors gave on different terms, and
+// naming the bands would publish who gave what.
 const groupLabel: Partial<Record<(typeof ranks)[number], { id: string; en: string }>> = {
-  5: { id: "Mitra Pendukung", en: "Supporting Partners" },
+  6: { id: "Didukung Oleh", en: "Supported By" },
+  5: { id: "Mitra Pendukung", en: "Media Partners" },
 };
 
 const roster = ranks
@@ -83,12 +88,17 @@ const roster = ranks
       <span class="bank-label">{lang === "id" ? "Rekening Donasi" : "Donation Account"}</span>
       <span class="bank-name">Bank BCA</span>
       <span class="bank-no">10 888 666 72</span>
+      <button type="button" class="copy-rek" data-rek="1088866672"
+        data-copy={lang === "id" ? "Salin No. Rekening" : "Copy Account Number"}
+        data-done={lang === "id" ? "Tersalin ✓" : "Copied ✓"}>
+        {lang === "id" ? "Salin No. Rekening" : "Copy Account Number"}
+      </button>
       <span class="bank-holder">a/n. Yayasan Wihara Dhamma Budhi Bhakti</span>
       <span class="bank-note">
         {lang === "id" ? (
-          <Fragment>Mohon tambahkan <strong>72</strong> di akhir nominal transfer (cth: Rp&nbsp;500.072) — kode khusus dana Kirab.</Fragment>
+          <Fragment>Mohon tambahkan <strong>72</strong> di akhir nominal transfer (cth: Rp&nbsp;500.072) — mengikuti 72 lilin dan 72 macam buah persembahan. Kode ini membantu kami mencatat dana Bapak/Ibu dan mencantumkan nama pada 功德芳名.</Fragment>
         ) : (
-          <Fragment>Please add <strong>72</strong> to the end of your transfer amount (e.g. Rp&nbsp;500,072) — the unique code for Kirab funds.</Fragment>
+          <Fragment>Please add <strong>72</strong> to the end of your transfer amount (e.g. Rp&nbsp;500,072) — echoing the 72 candles and 72 kinds of fruit offered. It lets us trace your gift and place your name on the roll of merit.</Fragment>
         )}
       </span>
     </div>
@@ -205,6 +215,8 @@ const roster = ranks
      "Bakorsiskom Polsekta Tangerang" became texture. One column fewer each. */
   .rank-4 { --cols: 2; }
   .rank-5 { --cols: 3; }
+ .rank-6 { --cols: 3; }
+  .rank-6 { --cols: 3; }
   .rank-1 .logo-slot { aspect-ratio: 4 / 3; }
 
   .group-label {
@@ -279,6 +291,27 @@ const roster = ranks
     opacity: 0.85;
     line-height: 1.4;
   }
+  .copy-rek {
+    display: block;
+    margin: 12px auto 14px;
+    min-height: 46px;
+    padding: 0 22px;
+    font-family: 'Cinzel', serif;
+    font-size: 12px;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: var(--paper);
+    background: var(--jade);
+    border: 1px solid var(--jade-deep);
+    border-radius: 2px;
+    cursor: pointer;
+    transition: background 0.2s ease, transform 0.12s ease;
+  }
+  .copy-rek:hover { background: var(--jade-deep); }
+  .copy-rek:active { transform: translateY(1px); }
+  .copy-rek:focus-visible { outline: 2px solid var(--gold-bright); outline-offset: 2px; }
+  .copy-rek.is-done { background: var(--jade-deep); }
+
   .bank-note {
     margin-top: 12px;
     padding-top: 12px;
@@ -417,6 +450,7 @@ const roster = ranks
     .rank-3 { --cols: 4; }
     .rank-4 { --cols: 5; }
     .rank-5 { --cols: 6; }
+    .rank-6 { --cols: 6; }
   }
 
   @media (min-width: 1080px) {
@@ -426,5 +460,38 @@ const roster = ranks
     .rank-3 { --cols: 4; }
     .rank-4 { --cols: 6; }
     .rank-5 { --cols: 7; }
+    .rank-6 { --cols: 7; }
   }
 </style>
+
+<script>
+  // The account number is printed with spaces so it can be read aloud; m-BCA
+  // rejects that on paste, so the button copies the bare digits instead.
+  document.querySelectorAll<HTMLButtonElement>(".copy-rek").forEach((btn) => {
+    btn.addEventListener("click", async () => {
+      const digits = btn.dataset.rek ?? "";
+      let ok = false;
+      try {
+        await navigator.clipboard.writeText(digits);
+        ok = true;
+      } catch {
+        // WhatsApp's in-app browser can refuse the async clipboard; fall back.
+        const ta = document.createElement("textarea");
+        ta.value = digits;
+        ta.setAttribute("readonly", "");
+        ta.style.cssText = "position:fixed;top:-1000px;opacity:0";
+        document.body.appendChild(ta);
+        ta.select();
+        try { ok = document.execCommand("copy"); } catch { ok = false; }
+        ta.remove();
+      }
+      if (!ok) return;
+      btn.textContent = btn.dataset.done ?? "";
+      btn.classList.add("is-done");
+      window.setTimeout(() => {
+        btn.textContent = btn.dataset.copy ?? "";
+        btn.classList.remove("is-done");
+      }, 2200);
+    });
+  });
+</script>

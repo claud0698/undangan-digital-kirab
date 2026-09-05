@@ -20,6 +20,11 @@
   --gold-ink: #7d5713;
   --gold-bright: #d8a847;
   --gold-pale: #e9cf86;
+  /* The one action colour. Red and gold are the temple's; jade sits with them
+     in the same decorative tradition but is used here for nothing except
+     things you can tap. 5.29:1 on --paper-2. */
+  --jade: #1f6f5c;
+  --jade-deep: #175445;
 }
 
 @theme {

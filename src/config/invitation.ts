@@ -38,7 +38,7 @@ export type SponsorTier = {
 export type SponsorLogo = {
   slug: string;                                          // file is /sponsors/<slug>.webp
   name: string;                                          // img alt
-  rank: 1 | 2 | 3 | 4 | 5;
+  rank: 1 | 2 | 3 | 4 | 5 | 6;
 };
 
 /**
@@ -97,6 +97,12 @@ export const invitation = {
   opening: {
     id: "Dalam rangka menyambut Sejit YMS Tjie Thien Ta Sen & HUT Tjie Thien Ta Sen Bio Ke-43 Tahun, kami akan menyelenggarakan Kirab Budaya & Ruwat Bumi 2026. Sebagai penghormatan dan ungkapan rasa terima kasih kami kepada YMS Tjie Thien Ta Sen sebagai dewa pemberi berkah dan pembimbing yang kita yakini selalu memberikan kesehatan, keselamatan, perlindungan, dan kemakmuran bagi kita semua.",
     en: "In welcoming the Birthday of YMS TJIE THIEN TA SEN & the 43rd Anniversary of Tjie Thien Ta Sen Bio, we will hold the Cultural Procession & Earth Blessing 2026 — a tribute and expression of gratitude to YMS TJIE THIEN TA SEN, the deity of blessing and guidance who continually grants health, safety, protection, and prosperity to us all.",
+  },
+  // Written for the WhatsApp preview card, not sliced from the letter above:
+  // the card gets ~160 characters, and the opening prose was ending mid-word.
+  preview: {
+    id: "23–27 September 2026 · Puncak Kirab 5,8 km Minggu 27 Sept pukul 14.00 · Tjie Thien Ta Sen Bio, Kota Tangerang. Sejit Agung, sekali dalam 7 tahun.",
+    en: "23–27 September 2026 · 5.8 km procession Sunday 27 Sept, 2pm · Tjie Thien Ta Sen Bio, Kota Tangerang. The Great Sejit, once every seven years.",
   },
   invite: {
     id: "Demi kelancaran dan suksesnya acara ini, kami mengharapkan kehadiran dan partisipasi Bapak/Ibu sekalian dalam acara ini.",
@@ -381,7 +387,7 @@ export const invitation = {
     { slug: "actual-news",                    name: "Actual News",                                            rank: 5 },
     { slug: "detik-suara-rakyat",             name: "Detik Suara Rakyat",                                     rank: 5 },
     { slug: "mandiri-kasih",                  name: "Mandiri Kasih",                                          rank: 4 },
-    { slug: "universitas-buddhi-dharma",      name: "Universitas Buddhi Dharma",                              rank: 5 },
+    { slug: "universitas-buddhi-dharma",      name: "Universitas Buddhi Dharma",                              rank: 6 },
 
     // Received 31 Aug as PDF. Eight of these nine are not in the treasurer's
     // ledger as of 22 Aug, so no contribution bracket is known for them; they sit
@@ -393,11 +399,11 @@ export const invitation = {
     { slug: "andika-mas",                     name: "Toko Mas Andika Mas",                                    rank: 4 },
     { slug: "menembus-batas",                 name: "MB Menembus Batas",                                      rank: 4 },
     { slug: "tng-tv",                         name: "TNG TV",                                                 rank: 5 },
-    { slug: "disbudpar-kota-tangerang",       name: "Disbudpar Kota Tangerang",                               rank: 5 },
-    { slug: "bakorsiskom-polsekta",           name: "Bakorsiskom Polsekta Tangerang",                         rank: 5 },
-    { slug: "kota-tangerang",                 name: "Kota Tangerang",                                         rank: 5 },
-    { slug: "wonderful-indonesia",            name: "Wonderful Indonesia",                                    rank: 5 },
-    { slug: "polda-metro-jaya",               name: "Polda Metro Jaya",                                       rank: 5 },
+    { slug: "disbudpar-kota-tangerang",       name: "Disbudpar Kota Tangerang",                               rank: 6 },
+    { slug: "bakorsiskom-polsekta",           name: "Bakorsiskom Polsekta Tangerang",                         rank: 6 },
+    { slug: "kota-tangerang",                 name: "Kota Tangerang",                                         rank: 6 },
+    { slug: "wonderful-indonesia",            name: "Wonderful Indonesia",                                    rank: 6 },
+    { slug: "polda-metro-jaya",               name: "Polda Metro Jaya",                                       rank: 6 },
     { slug: "nara-jw-lawfirm",                name: "Nara JW Lawfirm",                                        rank: 4 },
     { slug: "explift",                        name: "Explift Elevator & Escalator",                           rank: 4 },
   ] satisfies SponsorLogo[],
