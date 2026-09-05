@@ -111,9 +111,10 @@ E. ADA DI SPANDUK, BELUM ADA DI WEBSITE  (dikoreksi 04-09-2026)
   sudah tergabung di dalam logo New Armada, tidak perlu kotak sendiri.
 
   YANG BENAR-BENAR BELUM ADA DI WEBSITE:
-    - Wonderful Indonesia
-    - Polda Metro Jaya
     - Kodim 0506 Tangerang
+      Lambang kesatuan (perisai merah-putih, padi-kapas, pita
+      hijau "TANGERANG") tidak ada di internet. Situs resmi Kodim
+      hanya memuat lambang TNI AD dan Korem. Mohon file aslinya.
     - satu lambang segi delapan di baris instansi yang belum terbaca;
       tulisan melingkarnya berakhir "...INDONESIA". Mohon namanya.
 
@@ -121,12 +122,13 @@ E. ADA DI SPANDUK, BELUM ADA DI WEBSITE  (dikoreksi 04-09-2026)
 D. RINGKASAN
 ======================================================================
 
-  Logo sudah tampil di website  : 50  (termasuk PT Prima Mining
-                                  Nusantara, RS EMC Tangerang dan
-                                  Explift, diterima 04-05 September)
+  Logo sudah tampil di website  : 52  (termasuk PT Prima Mining
+                                  Nusantara, RS EMC Tangerang,
+                                  Explift, Wonderful Indonesia dan
+                                  Polda Metro Jaya)
   Sudah bayar, logo belum ada   : 0  (semua sudah dijawab)
   Perlu konfirmasi dulu         : 7
-  Ada di spanduk, belum di web  : 3 (+1 lambang belum terbaca)
+  Ada di spanduk, belum di web  : 1 (+1 lambang belum terbaca)
 
   Perubahan dari ledger 28 Agustus:
     - DEXTONE sudah tercatat DITERIMA (sebelumnya masih menunggu).

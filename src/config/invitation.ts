@@ -396,6 +396,8 @@ export const invitation = {
     { slug: "disbudpar-kota-tangerang",       name: "Disbudpar Kota Tangerang",                               rank: 5 },
     { slug: "bakorsiskom-polsekta",           name: "Bakorsiskom Polsekta Tangerang",                         rank: 5 },
     { slug: "kota-tangerang",                 name: "Kota Tangerang",                                         rank: 5 },
+    { slug: "wonderful-indonesia",            name: "Wonderful Indonesia",                                    rank: 5 },
+    { slug: "polda-metro-jaya",               name: "Polda Metro Jaya",                                       rank: 5 },
     { slug: "nara-jw-lawfirm",                name: "Nara JW Lawfirm",                                        rank: 4 },
     { slug: "explift",                        name: "Explift Elevator & Escalator",                           rank: 4 },
   ] satisfies SponsorLogo[],
