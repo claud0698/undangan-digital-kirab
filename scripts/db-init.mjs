@@ -78,6 +78,26 @@ async function main() {
   await sql`alter table users add column if not exists first_opened_at  timestamptz`;
   await sql`alter table users add column if not exists last_opened_at   timestamptz`;
 
+  // Login throttle. Two independent buckets per attempt — one keyed on the
+  // source IP, one on the username being tried — and a lock on either refuses
+  // the attempt. The account bucket is the one that matters: an IP-only counter
+  // was deleted wholesale on any successful login, so anyone holding one valid
+  // credential could reset it between guesses and grind another admin's
+  // password unmetered. Signing in as yourself cannot clear someone else's
+  // account bucket.
+  await sql`
+    create table if not exists login_throttle (
+      key          text        primary key,
+      fails        int         not null default 0,
+      locked_until timestamptz,
+      updated_at   timestamptz not null default now()
+    )
+  `;
+  // Old rows are worthless once expired and the key space is unbounded.
+  await sql`delete from login_throttle where updated_at < now() - interval '1 day'`;
+
+  // Superseded by login_throttle above; kept only so an old deploy mid-rollout
+  // does not error. Safe to drop once every instance is on the new code.
   // Login throttle: per-IP failed-attempt counter + temporary lockout.
   await sql`
     create table if not exists login_attempts (

@@ -20,8 +20,18 @@ export function sameOrigin(request: Request): boolean {
   }
 }
 
-/** Best-effort client IP from Vercel's forwarding headers. */
+/**
+ * Client IP from Vercel's forwarding headers.
+ *
+ * x-vercel-forwarded-for and x-real-ip are set by Vercel's proxy and cannot be
+ * spoofed by the client. Plain x-forwarded-for can carry a client-supplied
+ * prefix, so it is only a last resort — reading it first would have let anyone
+ * mint a fresh throttle bucket per request and make the rate limit a no-op.
+ */
 export function getClientIp(request: Request): string {
-  const xff = request.headers.get("x-forwarded-for");
+  const h = request.headers;
+  const trusted = h.get("x-vercel-forwarded-for") ?? h.get("x-real-ip");
+  if (trusted?.trim()) return trusted.split(",")[0].trim();
+  const xff = h.get("x-forwarded-for");
   return (xff ? xff.split(",")[0].trim() : "") || "unknown";
 }

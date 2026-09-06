@@ -1,12 +1,12 @@
 ---
 export const prerender = false;
 
-import { getSession } from "~/lib/auth";
+import { getLiveSession } from "~/lib/auth";
 import { listGuests, getAdminState, type Guest } from "~/lib/db";
 import { CATEGORIES, SALUTATIONS } from "~/lib/categories";
 import AdminStats from "~/components/AdminStats.astro";
 
-const session = getSession(Astro.cookies);
+const session = await getLiveSession(Astro.cookies);
 const guests: Guest[] = session ? await listGuests() : [];
 const site = Astro.site?.toString().replace(/\/$/, "") ?? "";
 const loginError = Astro.url.searchParams.get("error");
@@ -82,7 +82,7 @@ const visitedTotal = guests.filter((g) => openState(g) === "visited").length;
 <html lang="id">
   <head>
     <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, interactive-widget=resizes-content" />
     <meta name="robots" content="noindex, nofollow" />
     <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
     <title>Admin — Undangan Kirab 2026</title>
@@ -358,6 +358,11 @@ const visitedTotal = guests.filter((g) => openState(g) === "visited").length;
       }
       /* ── top bar actions ── */
       .top-actions { display: flex; gap: 8px; flex-wrap: wrap; justify-content: flex-end; }
+      .logout-form { margin: 0; display: flex; }
+      /* Four identical ghost buttons put signing out one mis-tap from exporting
+         a CSV. Keluar is the only one of them with a consequence. */
+      .btn-quit { color: #d8a08f; border-color: #4a2f28; }
+      .btn-quit:hover { color: #fff; background: var(--red); border-color: var(--red); }
 
       /* ── "still on the handed-over password" nudge ── */
       .nudge {
@@ -440,15 +445,46 @@ const visitedTotal = guests.filter((g) => openState(g) === "visited").length;
       .dots span.on { background: var(--gold); }
       .tour-btns { display: flex; gap: 8px; }
 
+      @media (max-width: 1024px) {
+        /* The 44px pass covered the guest card but not what arrived with the
+           dialog and the tour: the eye toggle someone uses one-handed while
+           typing a password they cannot see, the dialog close, and Undo —
+           which is the only way back from a delete and was a 33px target. */
+        .peek { width: 44px; height: 44px; right: 2px; }
+        .input-wrap input { padding-right: 52px; }
+        .icon-x { width: 44px; height: 44px; }
+        .toast { display: flex; align-items: center; justify-content: center; gap: 10px; }
+        .toast-action { margin-left: 0; min-height: 44px; padding: 10px 18px; }
+      }
+
       @media (max-width: 600px) {
         .top { flex-direction: column; align-items: stretch; }
         .top-actions { justify-content: flex-start; }
         .top-actions .btn { flex: 1 1 auto; min-height: 44px; }
+        .logout-form { flex: 1 1 auto; }
+        .logout-form .btn { width: 100%; }
         .sheet { width: 100%; max-width: none; border-radius: 14px 14px 0 0; margin: auto auto 0; padding-bottom: 26px; }
         .sheet-actions .btn { flex: 1; min-height: 44px; }
         .nudge .btn { min-height: 44px; }
+        /* dvh/svh, not vh: on Chrome Android vh is the URL-bar-retracted
+           height, so a card sized in vh runs past the bottom of what is
+           actually visible and the primary button lands below the fold. */
         .tour { padding: 0; align-items: flex-end; }
-        .tour-card { border-radius: 14px 14px 0 0; padding: 16px 14px 12px; }
+        .tour-card {
+          border-radius: 14px 14px 0 0; padding: 16px 14px 12px;
+          margin: auto 0 0;   /* auto on every side was beating align-items */
+          max-height: 100dvh; overflow-y: auto; overscroll-behavior: contain;
+        }
+        .tour-step img { max-height: 34svh; }
+        .tour-foot {
+          position: sticky; bottom: 0; background: var(--panel);
+          margin-top: 12px; padding-bottom: 2px;
+        }
+        .sheet { max-height: 92dvh; overflow-y: auto; overscroll-behavior: contain; }
+        .sheet-actions {
+          position: sticky; bottom: -26px; background: var(--panel);
+          padding-bottom: 26px; margin-bottom: -26px;
+        }
         .tour-btns .btn { min-height: 44px; padding: 10px 18px; }
         .tour-x { width: 44px; height: 44px; }
       }
@@ -525,8 +561,8 @@ const visitedTotal = guests.filter((g) => openState(g) === "visited").length;
             <button class="btn btn-ghost btn-sm" id="tourBtn" type="button">Panduan</button>
             <button class="btn btn-ghost btn-sm" id="pwBtn" type="button">Ubah Sandi</button>
             <button class="btn btn-ghost btn-sm" id="csvBtn">Ekspor CSV</button>
-            <form method="POST" action="/api/auth/logout" style="margin:0;">
-              <button class="btn btn-ghost btn-sm" type="submit">Keluar</button>
+            <form method="POST" action="/api/auth/logout" class="logout-form">
+              <button class="btn btn-ghost btn-sm btn-quit" type="submit">Keluar</button>
             </form>
           </div>
         </div>
@@ -570,7 +606,7 @@ const visitedTotal = guests.filter((g) => openState(g) === "visited").length;
           </label>
           <label class="add-field">
             <span class="field-title">Tautan Kustom <span class="opt">(opsional)</span></span>
-            <input name="slug" placeholder="tautan-kustom" autocomplete="off"
+            <input name="slug" autocapitalize="none" autocorrect="off" placeholder="tautan-kustom" autocomplete="off"
               pattern="[a-z0-9-]+" title="huruf kecil, angka, tanda hubung" />
             <span class="hint">Tautan pendek, mis. <em>andriwijaya</em> → <code>{site.replace(/^https?:\/\//, "")}/undangan/andriwijaya</code>. Terisi otomatis dari nama.</span>
           </label>
@@ -742,7 +778,7 @@ const visitedTotal = guests.filter((g) => openState(g) === "visited").length;
             <button class="icon-x tour-x" id="tourSkip" type="button" aria-label="Lewati panduan">&times;</button>
             {TOUR.map((step, i) => (
               <figure class="tour-step" data-step={i} hidden={i > 0}>
-                <img src={step.img} alt={step.title} width={step.w} height={step.h} loading="lazy" decoding="async" />
+                <img src={step.img} alt={step.title} width={step.w} height={step.h} decoding="async" />
                 <figcaption>
                   <h2 id={i === 0 ? "tourTitle" : undefined}>{step.title}</h2>
                   <p>{step.body}</p>
@@ -806,7 +842,7 @@ const visitedTotal = guests.filter((g) => openState(g) === "visited").length;
               b.setAttribute("aria-pressed", "false");
               b.parentElement.querySelector("input").type = "password";
             });
-            dlg.showModal();
+            if (!dlg.open) dlg.showModal();
             cur.focus();
           };
           document.getElementById("pwBtn")?.addEventListener("click", openPw);
@@ -879,7 +915,10 @@ const visitedTotal = guests.filter((g) => openState(g) === "visited").length;
             render();
           });
           prevBtn.addEventListener("click", () => { at = Math.max(0, at - 1); render(); });
-          document.getElementById("tourSkip").addEventListener("click", closeTour);
+          // Called through the variable, never passed by reference: closeTour is
+          // reassigned below when the password request has to follow the tour,
+          // and a handler registered with the old value would keep the old one.
+          document.getElementById("tourSkip").addEventListener("click", () => closeTour());
           tour.addEventListener("click", (e) => { if (e.target === tour) closeTour(); });
           document.addEventListener("keydown", (e) => { if (e.key === "Escape" && !tour.hidden) closeTour(); });
           // Reopening from the button is just reading it again — it does not
@@ -889,10 +928,11 @@ const visitedTotal = guests.filter((g) => openState(g) === "visited").length;
           // First sign-in shows the walkthrough, and the password request waits its
           // turn rather than stacking a second box on top of the first.
           if (autoTour) {
-            const after = closeTour;
-            closeTour = () => { after(); if (mustChange) setTimeout(openPw, 350); };
-            document.getElementById("tourSkip").onclick = closeTour;
-            nextBtn.onclick = () => { at === tourLen - 1 ? closeTour() : (at += 1, render()); };
+            // Wrap, do not re-register: assigning .onclick on top of the
+            // addEventListener above left both handlers live, so every tap
+            // advanced two steps and a first-time reader never saw steps 2 or 4.
+            const base = closeTour;
+            closeTour = () => { base(); if (mustChange) setTimeout(openPw, 350); };
             openTour();
           } else if (mustChange) {
             openPw();
@@ -945,7 +985,7 @@ const visitedTotal = guests.filter((g) => openState(g) === "visited").length;
           }
           toastEl.classList.add("show");
           clearTimeout(toastTimer);
-          toastTimer = setTimeout(() => toastEl.classList.remove("show"), action ? 9000 : 2000);
+          toastTimer = setTimeout(() => toastEl.classList.remove("show"), action ? 15000 : 2000);
         };
         // The password dialog lives in its own <script> block and needs the same
         // confirmation strip; this is the seam between the two.
@@ -1166,16 +1206,19 @@ const visitedTotal = guests.filter((g) => openState(g) === "visited").length;
             const auditCell = tr.querySelector("[data-audit]");
             if (auditCell && g.audited_by) auditCell.textContent = g.audited_by;
             toast("Tersimpan");
+            // A toast alone is not enough on a phone: it fires behind the
+            // keyboard. Mark the row so the confirmation sits under the name.
+            // Success path only — this used to sit in the finally, so a save
+            // that failed and reverted the text still showed "✓ Tersimpan",
+            // and this marker is the one the volunteer actually reads.
+            tr.dataset.saved = "1";
+            window.clearTimeout(tr._savedT);
+            tr._savedT = window.setTimeout(() => delete tr.dataset.saved, 4000);
           } catch (err) {
             toast("Gagal: " + err.message, true);
             if (baseline !== null && el.textContent !== undefined) el.textContent = baseline; // revert text cell
           } finally {
             tr.classList.remove("saving");
-            // A toast alone is not enough on a phone: it fires behind the
-            // keyboard. Mark the row so the confirmation sits under the name.
-            tr.dataset.saved = "1";
-            window.clearTimeout(tr._savedT);
-            tr._savedT = window.setTimeout(() => delete tr.dataset.saved, 4000);
           }
         }
 
@@ -1222,13 +1265,21 @@ const visitedTotal = guests.filter((g) => openState(g) === "visited").length;
               toast("Tamu dihapus", false, {
                 label: "Urungkan",
                 onClick: async () => {
-                  const r = await fetch("/api/users", {
-                    method: "POST",
-                    headers: { "Content-Type": "application/json" },
-                    body: JSON.stringify(snapshot),
-                  });
-                  if (r.ok) location.reload();
-                  else toast("Gagal mengurungkan — tamu perlu ditambah ulang", true);
+                  // Unguarded, an offline tap rejected here with nothing shown:
+                  // the toast carrying this button had already been dismissed,
+                  // so the guest stayed deleted and the volunteer believed the
+                  // undo had worked. Never leave this one silent.
+                  try {
+                    const r = await fetch("/api/users", {
+                      method: "POST",
+                      headers: { "Content-Type": "application/json" },
+                      body: JSON.stringify(snapshot),
+                    });
+                    if (r.ok) return location.reload();
+                    toast("Gagal mengurungkan — tamu perlu ditambah ulang", true);
+                  } catch {
+                    toast("Gagal mengurungkan — periksa koneksi, tamu perlu ditambah ulang", true);
+                  }
                 },
               });
             } catch { tr.classList.remove("saving"); toast("Gagal menghapus", true); }

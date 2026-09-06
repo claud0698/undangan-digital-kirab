@@ -1,6 +1,6 @@
 import type { APIRoute } from "astro";
 import { listGuests, createGuest, uniqueSlug } from "~/lib/db";
-import { getSession } from "~/lib/auth";
+import { getLiveSession } from "~/lib/auth";
 import { sameOrigin } from "~/lib/csrf";
 import { isValidCategory } from "~/lib/categories";
 
@@ -13,12 +13,12 @@ const isUniqueViolation = (e: unknown): boolean =>
   !!e && (((e as { code?: string }).code === "23505") || /duplicate key|unique/i.test(String((e as Error).message ?? "")));
 
 export const GET: APIRoute = async ({ cookies }) => {
-  if (!getSession(cookies)) return json({ error: "unauthorized" }, 401);
+  if (!(await getLiveSession(cookies))) return json({ error: "unauthorized" }, 401);
   return json({ guests: await listGuests() });
 };
 
 export const POST: APIRoute = async ({ request, cookies }) => {
-  const session = getSession(cookies);
+  const session = await getLiveSession(cookies);
   if (!session) return json({ error: "unauthorized" }, 401);
   if (!sameOrigin(request)) return json({ error: "forbidden" }, 403);
 

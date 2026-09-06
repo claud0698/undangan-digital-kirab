@@ -203,26 +203,54 @@ export async function markAdminOnboarded(id: number): Promise<void> {
 const LOGIN_MAX_FAILS = 8;
 const LOGIN_LOCK_MINUTES = 15;
 
-export async function getLoginLock(ip: string): Promise<{ locked_until: string | null } | null> {
-  const rows = (await sql`select locked_until from login_attempts where ip = ${ip}`) as {
-    locked_until: string | null;
-  }[];
-  return rows[0] ?? null;
+/**
+ * Every attempt is counted against two keys: the source IP and the username
+ * being tried. A lock on either refuses it.
+ *
+ * The account key exists because the IP key alone is worthless here — it used
+ * to be deleted outright on any successful login, so an admin holding one valid
+ * credential could guess seven times at a colleague's password, sign in as
+ * themselves to wipe the counter, and repeat without ever tripping the lock.
+ * Nobody can clear another account's key, because clearing it requires signing
+ * in as that account.
+ */
+export const throttleKeys = (ip: string, username: string): string[] => [
+  `ip:${ip}`,
+  `user:${username.trim().toLowerCase()}`,
+];
+
+/** The furthest-away lock across the given keys, or null if none is locked. */
+export async function getLoginLock(keys: string[]): Promise<{ locked_until: string } | null> {
+  const rows = (await sql`
+    select max(locked_until) as locked_until from login_throttle
+    where key = any(${keys}) and locked_until > now()
+  `) as { locked_until: string | null }[];
+  const until = rows[0]?.locked_until;
+  return until ? { locked_until: until } : null;
 }
 
-/** Record a failed attempt; lock the IP once it crosses the threshold (resetting the counter). */
-export async function recordLoginFail(ip: string): Promise<void> {
-  await sql`
-    insert into login_attempts (ip, fails, updated_at) values (${ip}, 1, now())
-    on conflict (ip) do update set
-      fails = case when login_attempts.fails + 1 >= ${LOGIN_MAX_FAILS} then 0 else login_attempts.fails + 1 end,
-      locked_until = case when login_attempts.fails + 1 >= ${LOGIN_MAX_FAILS}
+/**
+ * Count a failed attempt against every key and lock the ones that cross the
+ * line. Returns true when this attempt is the one that tripped the lock, so the
+ * caller can say so now rather than reporting a plain wrong password and only
+ * revealing the lockout on the next try.
+ */
+export async function recordLoginFail(keys: string[]): Promise<boolean> {
+  const rows = (await sql`
+    insert into login_throttle (key, fails, updated_at)
+    select k, 1, now() from unnest(${keys}::text[]) as k
+    on conflict (key) do update set
+      fails = case when login_throttle.fails + 1 >= ${LOGIN_MAX_FAILS} then 0 else login_throttle.fails + 1 end,
+      locked_until = case when login_throttle.fails + 1 >= ${LOGIN_MAX_FAILS}
                           then now() + (${LOGIN_LOCK_MINUTES} || ' minutes')::interval
-                          else login_attempts.locked_until end,
+                          else login_throttle.locked_until end,
       updated_at = now()
-  `;
+    returning locked_until
+  `) as { locked_until: string | null }[];
+  return rows.some((r) => r.locked_until && new Date(r.locked_until).getTime() > Date.now());
 }
 
-export async function resetLoginAttempts(ip: string): Promise<void> {
-  await sql`delete from login_attempts where ip = ${ip}`;
+/** Clear the keys a successful sign-in has earned the right to clear. */
+export async function resetLoginAttempts(keys: string[]): Promise<void> {
+  await sql`delete from login_throttle where key = any(${keys})`;
 }

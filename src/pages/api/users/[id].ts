@@ -1,6 +1,6 @@
 import type { APIRoute } from "astro";
 import { updateGuest, deleteGuest, getGuestById, uniqueSlug } from "~/lib/db";
-import { getSession } from "~/lib/auth";
+import { getLiveSession } from "~/lib/auth";
 import { sameOrigin } from "~/lib/csrf";
 import { isValidCategory } from "~/lib/categories";
 import { isValidSlug } from "~/lib/slug";
@@ -15,7 +15,7 @@ const EDITABLE = ["salutation", "name", "address", "category"] as const;
 const REQUIRED = ["name", "address", "category"] as const;
 
 export const PATCH: APIRoute = async ({ params, request, cookies }) => {
-  const session = getSession(cookies);
+  const session = await getLiveSession(cookies);
   if (!session) return json({ error: "unauthorized" }, 401);
   if (!sameOrigin(request)) return json({ error: "forbidden" }, 403);
   const id = Number(params.id);
@@ -53,7 +53,7 @@ export const PATCH: APIRoute = async ({ params, request, cookies }) => {
 };
 
 export const DELETE: APIRoute = async ({ params, request, cookies }) => {
-  if (!getSession(cookies)) return json({ error: "unauthorized" }, 401);
+  if (!(await getLiveSession(cookies))) return json({ error: "unauthorized" }, 401);
   if (!sameOrigin(request)) return json({ error: "forbidden" }, 403);
   const id = Number(params.id);
   if (!Number.isInteger(id)) return json({ error: "bad id" }, 400);

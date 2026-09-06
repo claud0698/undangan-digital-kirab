@@ -1,5 +1,5 @@
 import type { APIRoute } from "astro";
-import { getSession } from "~/lib/auth";
+import { getLiveSession } from "~/lib/auth";
 import { markAdminOnboarded } from "~/lib/db";
 import { sameOrigin } from "~/lib/csrf";
 
@@ -13,7 +13,7 @@ export const prerender = false;
 export const POST: APIRoute = async ({ request, cookies }) => {
   if (!sameOrigin(request)) return new Response("forbidden", { status: 403 });
 
-  const session = getSession(cookies);
+  const session = await getLiveSession(cookies);
   if (!session) return new Response("unauthorized", { status: 401 });
 
   await markAdminOnboarded(session.id);

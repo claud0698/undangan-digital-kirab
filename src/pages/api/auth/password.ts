@@ -1,13 +1,18 @@
 import type { APIRoute } from "astro";
-import { getSession, verifyPassword, hashPassword, createSessionToken, setSessionCookie } from "~/lib/auth";
-import { getAdminPasswordHash, setAdminPassword, getLoginLock, recordLoginFail, resetLoginAttempts } from "~/lib/db";
+import { getLiveSession, verifyPassword, hashPassword, createSessionToken, setSessionCookie, pwcOf } from "~/lib/auth";
+import { getAdminPasswordHash, setAdminPassword, getAdminState, getLoginLock, recordLoginFail, resetLoginAttempts, throttleKeys } from "~/lib/db";
 import { sameOrigin, getClientIp } from "~/lib/csrf";
 
 export const prerender = false;
 
 /** Shortest password we accept. Long enough to matter, short enough to be typed on a phone. */
 const MIN_LENGTH = 8;
-/** scrypt cost scales with input, so refuse anything absurd rather than hashing it. */
+/**
+ * scrypt's cost is fixed by N/r/p, not by input length — so this is not about
+ * hashing cost. It is about not accepting a megabyte of request body, and
+ * scryptSync blocks the event loop, so every wasted call stalls the lambda.
+ * The login route applies the same cap for the same reason.
+ */
 const MAX_LENGTH = 200;
 
 const fail = (error: string, status = 400) =>
@@ -19,14 +24,13 @@ const fail = (error: string, status = 400) =>
 export const POST: APIRoute = async ({ request, cookies }) => {
   if (!sameOrigin(request)) return fail("Permintaan ditolak.", 403);
 
-  const session = getSession(cookies);
+  const session = await getLiveSession(cookies);
   if (!session) return fail("Sesi berakhir. Silakan masuk lagi.", 401);
 
   // A wrong current password here is the same guessing game as the login form,
-  // so it goes through the same per-IP throttle rather than being unlimited.
-  const ip = getClientIp(request);
-  const lock = await getLoginLock(ip);
-  if (lock?.locked_until && new Date(lock.locked_until).getTime() > Date.now()) {
+  // so it shares the same two-key throttle rather than being unlimited.
+  const keys = throttleKeys(getClientIp(request), session.username);
+  if (await getLoginLock(keys)) {
     return fail("Terlalu banyak percobaan. Coba lagi dalam beberapa menit.", 429);
   }
 
@@ -51,18 +55,23 @@ export const POST: APIRoute = async ({ request, cookies }) => {
   if (!stored) return fail("Akun tidak ditemukan.", 401);
 
   if (!verifyPassword(current, stored)) {
-    await recordLoginFail(ip);
+    await recordLoginFail(keys);
     return fail("Kata sandi lama salah.");
   }
 
   await setAdminPassword(session.id, hashPassword(next));
-  await resetLoginAttempts(ip);
+  await resetLoginAttempts(keys);
 
-  // Sessions are stateless HMAC tokens, so changing the password cannot revoke
-  // the ones already handed out — they stay valid until they expire. Re-issuing
-  // this browser's cookie at least resets its 7 days from the change, and keeps
-  // the admin signed in instead of bouncing them to the login screen.
-  setSessionCookie(cookies, createSessionToken({ id: session.id, username: session.username }));
+  // Every token carries the password_changed_at it was minted against, and
+  // getLiveSession compares that to the database, so the change just invalidated
+  // every other browser holding a cookie for this account — which is the whole
+  // point of telling someone to change their password. This browser gets a fresh
+  // one so the person doing it is not signed out by their own action.
+  const state = await getAdminState(session.id);
+  setSessionCookie(
+    cookies,
+    createSessionToken({ id: session.id, username: session.username }, pwcOf(state?.password_changed_at)),
+  );
 
   return new Response(JSON.stringify({ ok: true }), {
     status: 200,
