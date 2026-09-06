@@ -2,13 +2,52 @@
 export const prerender = false;
 
 import { getSession } from "~/lib/auth";
-import { listGuests, type Guest } from "~/lib/db";
+import { listGuests, getAdminState, type Guest } from "~/lib/db";
 import { CATEGORIES, SALUTATIONS } from "~/lib/categories";
 
 const session = getSession(Astro.cookies);
 const guests: Guest[] = session ? await listGuests() : [];
 const site = Astro.site?.toString().replace(/\/$/, "") ?? "";
 const loginError = Astro.url.searchParams.get("error");
+
+// Self-service state for the signed-in admin.
+//   showTour          — has never finished or skipped the walkthrough, so it
+//                       opens by itself. Once. The Panduan button reopens it.
+//   passwordIsInitial — password_changed_at is still null, i.e. they are using
+//                       whatever whoever created the account handed them.
+const adminState = session ? await getAdminState(session.id) : null;
+const showTour = !!session && !adminState?.onboarded_at;
+const passwordIsInitial = !!session && !adminState?.password_changed_at;
+
+// The walkthrough. Images are of the tool itself, shot against invented guests
+// — never a real guest list, since public/ is served to anyone who asks.
+const TOUR = [
+  {
+    img: "/admin-demo/1-ringkasan.webp", w: 1000, h: 844,
+    title: "Selamat datang di Panel Admin",
+    body: "Di sini Anda membuat undangan pribadi untuk setiap tamu. Satu tamu, satu tautan, dan Anda bisa melihat siapa saja yang sudah membukanya.",
+  },
+  {
+    img: "/admin-demo/2-tambah-tamu.webp", w: 1000, h: 910,
+    title: "1. Tambahkan tamu",
+    body: "Isi nama, alamat, dan kategori, lalu tekan Tambah. Sebutan seperti Bapak atau Ibu boleh dikosongkan. Tautan pribadi tamu terisi otomatis dari namanya.",
+  },
+  {
+    img: "/admin-demo/3-tautan.webp", w: 1000, h: 655,
+    title: "2. Kirim tautannya",
+    body: "Setiap tamu punya tautannya sendiri. Tekan Salin untuk menyalin, atau tombol hijau WhatsApp untuk langsung mengirimkannya beserta ucapan.",
+  },
+  {
+    img: "/admin-demo/4-status.webp", w: 1580, h: 1238,
+    title: "3. Pantau yang sudah membuka",
+    body: "Kolom Dibuka terisi sendiri. Abu-abu berarti belum dibuka, kuning berarti tautannya sudah dikunjungi, hijau berarti tamu menekan Buka Undangan. Angka di sebelahnya jumlah kunjungan.",
+  },
+  {
+    img: "/admin-demo/5-ubah-sandi.webp", w: 1000, h: 1024,
+    title: "4. Ganti kata sandi Anda",
+    body: "Tekan Ubah Sandi di kanan atas. Kata sandi pertama Anda diberikan oleh pengurus — sebaiknya segera diganti dengan yang hanya Anda yang tahu.",
+  },
+];
 
 const prettyLink = (g: Pick<Guest, "slug">) => (g.slug ? `${site}/undangan/${g.slug}` : "");
 const fmtDate = (iso: string) =>
@@ -310,6 +349,100 @@ const visitedTotal = guests.filter((g) => (g.visit_count ?? 0) > 0).length;
           margin: 2px 12px 8px; font-size: 13px; color: #7fc79b;
         }
       }
+      /* ── top bar actions ── */
+      .top-actions { display: flex; gap: 8px; flex-wrap: wrap; justify-content: flex-end; }
+
+      /* ── "still on the handed-over password" nudge ── */
+      .nudge {
+        display: flex; align-items: center; gap: 12px; flex-wrap: wrap;
+        margin-bottom: 16px; padding: 11px 14px;
+        background: #241a10; border: 1px solid #4a3a1c; border-left: 3px solid var(--gold);
+        border-radius: 10px; color: #e6d8bd; font-size: 14px;
+      }
+      .nudge span { flex: 1; min-width: 200px; }
+
+      /* ── modal sheet (change password) ── */
+      .sheet {
+        width: min(430px, calc(100vw - 24px)); padding: 24px 22px 20px;
+        background: var(--panel); color: var(--text);
+        border: 1px solid var(--line); border-radius: 14px;
+        box-shadow: 0 24px 70px rgba(0,0,0,.6);
+      }
+      .sheet::backdrop { background: rgba(0,0,0,.66); }
+      .sheet h2 { margin: 0 0 4px; font-size: 18px; color: var(--gold-bright); }
+      .sheet-sub { margin: 0 0 18px; color: var(--muted); font-size: 13px; line-height: 1.45; }
+      .sheet-x { position: absolute; top: 10px; right: 10px; margin: 0; }
+      .icon-x {
+        background: transparent; border: 0; color: var(--muted); cursor: pointer;
+        width: 34px; height: 34px; border-radius: 8px; font-size: 24px; line-height: 1;
+      }
+      .icon-x:hover { color: var(--text); background: rgba(255,255,255,.06); }
+      .sheet-actions { display: flex; gap: 10px; justify-content: flex-end; margin-top: 18px; }
+      .sheet-actions .btn { min-width: 96px; justify-content: center; display: inline-flex; align-items: center; gap: 8px; }
+      .sheet-err {
+        margin-top: 14px; padding: 10px 12px; border-radius: 8px;
+        background: #3a1712; border: 1px solid #6b2a20; color: #f0bdb2; font-size: 13.5px;
+      }
+      /* Requirements are stated up front and tick as they are met, so the rule
+         is never a surprise delivered by the server after pressing Simpan. */
+      .rules { list-style: none; margin: 8px 0 0; padding: 0; }
+      .rules li {
+        position: relative; padding-left: 20px; font-size: 12.5px; color: var(--muted); line-height: 1.7;
+      }
+      .rules li::before { content: "○"; position: absolute; left: 2px; }
+      .rules li.met { color: #86c79b; }
+      .rules li.met::before { content: "✓"; }
+
+      /* ── walkthrough ── */
+      .tour {
+        position: fixed; inset: 0; z-index: 60; display: flex;
+        align-items: center; justify-content: center; padding: 16px;
+        background: rgba(6,4,3,.82); overflow-y: auto;
+      }
+      .tour[hidden] { display: none; }
+      .tour-card {
+        position: relative; width: min(560px, 100%); margin: auto;
+        background: var(--panel); border: 1px solid var(--line); border-radius: 16px;
+        box-shadow: 0 24px 70px rgba(0,0,0,.6); padding: 18px 18px 14px;
+      }
+      .tour-x { position: absolute; top: 8px; right: 8px; z-index: 1; }
+      .tour-step { margin: 0; }
+      .tour-step[hidden] { display: none; }
+      .tour-step img {
+        display: block; width: 100%; height: auto; border-radius: 10px;
+        border: 1px solid var(--line2); background: var(--bg);
+        /* Cap the picture so the caption and Lanjut always stay on screen —
+           a 4:5 shot on a 667px phone would otherwise push them below the fold.
+           The screenshots already sit on --bg, so contain letterboxes invisibly. */
+        max-height: 46vh; object-fit: contain; object-position: top;
+      }
+      .tour-step figcaption { padding: 14px 4px 0; }
+      .tour-step h2 { margin: 0 0 6px; font-size: 17px; color: var(--gold-bright); }
+      .tour-step p { margin: 0; font-size: 14px; line-height: 1.6; color: #d9cdbb; }
+      .tour-foot {
+        display: flex; align-items: center; justify-content: space-between;
+        gap: 12px; margin-top: 16px; padding-top: 12px; border-top: 1px solid var(--line);
+      }
+      .dots { display: flex; gap: 7px; }
+      .dots span { width: 7px; height: 7px; border-radius: 50%; background: var(--line2); transition: background .2s; }
+      .dots span.on { background: var(--gold); }
+      .tour-btns { display: flex; gap: 8px; }
+
+      @media (max-width: 600px) {
+        .top { flex-direction: column; align-items: stretch; }
+        .top-actions { justify-content: flex-start; }
+        .top-actions .btn { flex: 1 1 auto; min-height: 44px; }
+        .sheet { width: 100%; max-width: none; border-radius: 14px 14px 0 0; margin: auto auto 0; padding-bottom: 26px; }
+        .sheet-actions .btn { flex: 1; min-height: 44px; }
+        .nudge .btn { min-height: 44px; }
+        .tour { padding: 0; align-items: flex-end; }
+        .tour-card { border-radius: 14px 14px 0 0; padding: 16px 14px 12px; }
+        .tour-btns .btn { min-height: 44px; padding: 10px 18px; }
+        .tour-x { width: 44px; height: 44px; }
+      }
+
+      @media (prefers-reduced-motion: reduce) { .dots span { transition: none; } }
+
     </style>
   </head>
   <body>
@@ -376,13 +509,22 @@ const visitedTotal = guests.filter((g) => (g.visit_count ?? 0) > 0).length;
             <h1>Manajemen Tamu</h1>
             <div class="sub">Login sebagai <strong>{session.username}</strong></div>
           </div>
-          <div style="display:flex; gap:8px;">
+          <div class="top-actions">
+            <button class="btn btn-ghost btn-sm" id="tourBtn" type="button">Panduan</button>
+            <button class="btn btn-ghost btn-sm" id="pwBtn" type="button">Ubah Sandi</button>
             <button class="btn btn-ghost btn-sm" id="csvBtn">Ekspor CSV</button>
             <form method="POST" action="/api/auth/logout" style="margin:0;">
               <button class="btn btn-ghost btn-sm" type="submit">Keluar</button>
             </form>
           </div>
         </div>
+
+        {passwordIsInitial && (
+          <div class="nudge" id="pwNudge">
+            <span>Anda masih memakai kata sandi yang diberikan saat akun dibuat.</span>
+            <button class="btn btn-sm" type="button" data-open-pw>Ubah sekarang</button>
+          </div>
+        )}
 
         <!-- add guest — Sebutan opsional, sisanya wajib -->
         <form class="add" id="addForm">
@@ -519,6 +661,214 @@ const visitedTotal = guests.filter((g) => (g.visit_count ?? 0) > 0).length;
       </div>
     )}
 
+    {session && (
+      <>
+        <!-- ── change password ───────────────────────────────────────── -->
+        <dialog class="sheet" id="pwDialog" aria-labelledby="pwTitle">
+          <form method="dialog" class="sheet-x"><button class="icon-x" aria-label="Tutup">&times;</button></form>
+          <h2 id="pwTitle">Ubah Kata Sandi</h2>
+          <p class="sheet-sub">Masuk berikutnya pakai kata sandi baru ini. Username tetap <strong>{session.username}</strong>.</p>
+
+          <form id="pwForm" novalidate>
+            <div class="field">
+              <label for="pwCur">Kata sandi lama</label>
+              <div class="input-wrap">
+                <input id="pwCur" name="current" type="password" autocomplete="current-password" required />
+                <button type="button" class="peek" data-peek aria-label="Tampilkan kata sandi" aria-pressed="false">
+                  <svg class="icon-on" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M1 12s4-7 11-7 11 7 11 7-4 7-11 7-11-7-11-7z" /><circle cx="12" cy="12" r="3" /></svg>
+                  <svg class="icon-off" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M17.94 17.94A10.07 10.07 0 0 1 12 20c-7 0-11-8-11-8a18.45 18.45 0 0 1 5.06-5.94M9.9 4.24A9.12 9.12 0 0 1 12 4c7 0 11 8 11 8a18.5 18.5 0 0 1-2.16 3.19m-6.72-1.07a3 3 0 1 1-4.24-4.24" /><line x1="1" y1="1" x2="23" y2="23" /></svg>
+                </button>
+              </div>
+            </div>
+            <div class="field">
+              <label for="pwNew">Kata sandi baru</label>
+              <div class="input-wrap">
+                <input id="pwNew" name="next" type="password" autocomplete="new-password" required />
+                <button type="button" class="peek" data-peek aria-label="Tampilkan kata sandi" aria-pressed="false">
+                  <svg class="icon-on" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M1 12s4-7 11-7 11 7 11 7-4 7-11 7-11-7-11-7z" /><circle cx="12" cy="12" r="3" /></svg>
+                  <svg class="icon-off" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M17.94 17.94A10.07 10.07 0 0 1 12 20c-7 0-11-8-11-8a18.45 18.45 0 0 1 5.06-5.94M9.9 4.24A9.12 9.12 0 0 1 12 4c7 0 11 8 11 8a18.5 18.5 0 0 1-2.16 3.19m-6.72-1.07a3 3 0 1 1-4.24-4.24" /><line x1="1" y1="1" x2="23" y2="23" /></svg>
+                </button>
+              </div>
+              <ul class="rules" id="pwRules">
+                <li data-rule="len">Minimal 8 karakter</li>
+                <li data-rule="diff">Berbeda dari kata sandi lama</li>
+              </ul>
+            </div>
+            <div class="field">
+              <label for="pwConf">Ulangi kata sandi baru</label>
+              <div class="input-wrap">
+                <input id="pwConf" name="confirm" type="password" autocomplete="new-password" required />
+                <button type="button" class="peek" data-peek aria-label="Tampilkan kata sandi" aria-pressed="false">
+                  <svg class="icon-on" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M1 12s4-7 11-7 11 7 11 7-4 7-11 7-11-7-11-7z" /><circle cx="12" cy="12" r="3" /></svg>
+                  <svg class="icon-off" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M17.94 17.94A10.07 10.07 0 0 1 12 20c-7 0-11-8-11-8a18.45 18.45 0 0 1 5.06-5.94M9.9 4.24A9.12 9.12 0 0 1 12 4c7 0 11 8 11 8a18.5 18.5 0 0 1-2.16 3.19m-6.72-1.07a3 3 0 1 1-4.24-4.24" /><line x1="1" y1="1" x2="23" y2="23" /></svg>
+                </button>
+              </div>
+              <ul class="rules"><li data-rule="match">Sama dengan kata sandi baru</li></ul>
+            </div>
+
+            <div class="sheet-err" id="pwErr" hidden></div>
+            <div class="sheet-actions">
+              <button class="btn btn-ghost" type="button" data-close-pw>Batal</button>
+              <button class="btn" type="submit" id="pwSave">Simpan</button>
+            </div>
+          </form>
+        </dialog>
+
+        <!-- ── first-run walkthrough ─────────────────────────────────── -->
+        <div class="tour" id="tour" hidden role="dialog" aria-modal="true" aria-labelledby="tourTitle">
+          <div class="tour-card">
+            <button class="icon-x tour-x" id="tourSkip" type="button" aria-label="Lewati panduan">&times;</button>
+            {TOUR.map((step, i) => (
+              <figure class="tour-step" data-step={i} hidden={i > 0}>
+                <img src={step.img} alt={step.title} width={step.w} height={step.h} loading="lazy" decoding="async" />
+                <figcaption>
+                  <h2 id={i === 0 ? "tourTitle" : undefined}>{step.title}</h2>
+                  <p>{step.body}</p>
+                </figcaption>
+              </figure>
+            ))}
+            <div class="tour-foot">
+              <div class="dots" id="tourDots">
+                {TOUR.map((_, i) => <span class={i === 0 ? "on" : ""} data-dot={i}></span>)}
+              </div>
+              <div class="tour-btns">
+                <button class="btn btn-ghost btn-sm" id="tourPrev" type="button" hidden>Kembali</button>
+                <button class="btn btn-sm" id="tourNext" type="button">Lanjut</button>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        {/* ── walkthrough + change password ── */}
+        <script is:inline define:vars={{ autoTour: showTour, tourLen: TOUR.length }}>
+          // ---- peek toggles (every [data-peek] sits next to its own input) ----
+          document.querySelectorAll("[data-peek]").forEach((btn) => {
+            btn.addEventListener("click", () => {
+              const input = btn.parentElement.querySelector("input");
+              const reveal = input.type === "password";
+              input.type = reveal ? "text" : "password";
+              btn.classList.toggle("showing", reveal);
+              btn.setAttribute("aria-pressed", String(reveal));
+              btn.setAttribute("aria-label", reveal ? "Sembunyikan kata sandi" : "Tampilkan kata sandi");
+              input.focus();
+            });
+          });
+
+          // ---- change password ----
+          const dlg = document.getElementById("pwDialog");
+          const pwForm = document.getElementById("pwForm");
+          const cur = document.getElementById("pwCur");
+          const next = document.getElementById("pwNew");
+          const conf = document.getElementById("pwConf");
+          const err = document.getElementById("pwErr");
+          const save = document.getElementById("pwSave");
+          const rules = document.querySelectorAll(".rules li");
+
+          const setRule = (name, ok) =>
+            document.querySelectorAll(`[data-rule="${name}"]`).forEach((li) => li.classList.toggle("met", ok));
+
+          const check = () => {
+            setRule("len", next.value.length >= 8);
+            setRule("diff", next.value.length > 0 && next.value !== cur.value);
+            setRule("match", conf.value.length > 0 && conf.value === next.value);
+          };
+          [cur, next, conf].forEach((i) => i.addEventListener("input", check));
+
+          const openPw = () => {
+            pwForm.reset();
+            err.hidden = true;
+            rules.forEach((li) => li.classList.remove("met"));
+            // Any revealed field goes back to dots before the box is shown again.
+            document.querySelectorAll("#pwDialog [data-peek]").forEach((b) => {
+              b.classList.remove("showing");
+              b.setAttribute("aria-pressed", "false");
+              b.parentElement.querySelector("input").type = "password";
+            });
+            dlg.showModal();
+            cur.focus();
+          };
+          document.getElementById("pwBtn")?.addEventListener("click", openPw);
+          document.querySelectorAll("[data-open-pw]").forEach((b) => b.addEventListener("click", openPw));
+          document.querySelectorAll("[data-close-pw]").forEach((b) => b.addEventListener("click", () => dlg.close()));
+
+          pwForm.addEventListener("submit", async (e) => {
+            e.preventDefault();
+            err.hidden = true;
+            // Say it here rather than spending a round-trip to be told the same.
+            if (next.value.length < 8) return showErr("Kata sandi baru minimal 8 karakter.");
+            if (next.value !== conf.value) return showErr("Konfirmasi kata sandi tidak cocok.");
+            if (next.value === cur.value) return showErr("Kata sandi baru harus berbeda dari yang lama.");
+
+            save.disabled = true;
+            save.innerHTML = '<span class="spinner" aria-hidden="true"></span><span>Menyimpan…</span>';
+            try {
+              const res = await fetch("/api/auth/password", {
+                method: "POST",
+                headers: { "content-type": "application/json" },
+                body: JSON.stringify({ current: cur.value, next: next.value, confirm: conf.value }),
+              });
+              const data = await res.json().catch(() => ({}));
+              if (!res.ok || !data.ok) throw new Error(data.error || "Gagal menyimpan.");
+              dlg.close();
+              document.getElementById("pwNudge")?.remove();
+              window.kirabToast?.("Kata sandi diperbarui");
+            } catch (e2) {
+              showErr(e2.message);
+            } finally {
+              save.disabled = false;
+              save.textContent = "Simpan";
+            }
+          });
+
+          function showErr(msg) {
+            err.textContent = msg;
+            err.hidden = false;
+          }
+
+          // ---- walkthrough ----
+          const tour = document.getElementById("tour");
+          const steps = [...tour.querySelectorAll(".tour-step")];
+          const dots = [...tour.querySelectorAll("[data-dot]")];
+          const prevBtn = document.getElementById("tourPrev");
+          const nextBtn = document.getElementById("tourNext");
+          let at = 0;
+          let marked = false;
+
+          const render = () => {
+            steps.forEach((f, i) => (f.hidden = i !== at));
+            dots.forEach((d, i) => d.classList.toggle("on", i === at));
+            prevBtn.hidden = at === 0;
+            nextBtn.textContent = at === tourLen - 1 ? "Selesai" : "Lanjut";
+          };
+          const openTour = () => { at = 0; render(); tour.hidden = false; nextBtn.focus(); };
+          // Finishing and skipping mean the same thing to the server: seen it,
+          // stop opening it. Sent once per page, and a failure is not worth an
+          // error in the admin's face — the worst case is it opens again.
+          const closeTour = () => {
+            tour.hidden = true;
+            if (marked) return;
+            marked = true;
+            fetch("/api/auth/onboarded", { method: "POST" }).catch(() => { marked = false; });
+          };
+
+          nextBtn.addEventListener("click", () => {
+            if (at === tourLen - 1) return closeTour();
+            at += 1;
+            render();
+          });
+          prevBtn.addEventListener("click", () => { at = Math.max(0, at - 1); render(); });
+          document.getElementById("tourSkip").addEventListener("click", closeTour);
+          tour.addEventListener("click", (e) => { if (e.target === tour) closeTour(); });
+          document.addEventListener("keydown", (e) => { if (e.key === "Escape" && !tour.hidden) closeTour(); });
+          // Reopening from the button is just reading it again — it does not
+          // need to re-tell the server anything.
+          document.getElementById("tourBtn")?.addEventListener("click", () => { at = 0; render(); tour.hidden = false; });
+
+          if (autoTour) openTour();
+        </script>
+      </>
+    )}
+
     <div class="toast" id="toast"></div>
 
     {session && (
@@ -564,6 +914,11 @@ const visitedTotal = guests.filter((g) => (g.visit_count ?? 0) > 0).length;
           toastEl.classList.add("show");
           clearTimeout(toastTimer);
           toastTimer = setTimeout(() => toastEl.classList.remove("show"), action ? 9000 : 2000);
+        };
+        // The password dialog lives in its own <script> block and needs the same
+        // confirmation strip; this is the seam between the two.
+        window.kirabToast = (msg, isErr) => {
+          toast(msg, isErr);
         };
 
         // ── view state: search + sort + pagination ──

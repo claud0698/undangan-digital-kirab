@@ -35,6 +35,13 @@ export type Admin = {
   password_hash: string;
 };
 
+/** The three self-service flags. Null everywhere means "never done it". */
+export type AdminState = {
+  password_changed_at: string | null;
+  last_login_at: string | null;
+  onboarded_at: string | null;
+};
+
 // ─── guests (users table) ──────────────────────────────────────────
 export async function listGuests(): Promise<Guest[]> {
   return (await sql`
@@ -147,6 +154,40 @@ export async function findAdminByUsername(username: string): Promise<Admin | nul
     select id, username, password_hash from admins where lower(username) = lower(${username})
   `) as Admin[];
   return rows[0] ?? null;
+}
+
+/** Flags used to decide whether to nudge about the password or run the tour. */
+export async function getAdminState(id: number): Promise<AdminState | null> {
+  const rows = (await sql`
+    select password_changed_at, last_login_at, onboarded_at from admins where id = ${id}
+  `) as AdminState[];
+  return rows[0] ?? null;
+}
+
+export async function getAdminPasswordHash(id: number): Promise<string | null> {
+  const rows = (await sql`select password_hash from admins where id = ${id}`) as { password_hash: string }[];
+  return rows[0]?.password_hash ?? null;
+}
+
+/**
+ * Replace an admin's password. Stamping password_changed_at is what stops the
+ * "you are still on the password you were given" nudge, so the two must move
+ * together — never write password_hash on its own.
+ */
+export async function setAdminPassword(id: number, passwordHash: string): Promise<void> {
+  await sql`
+    update admins set password_hash = ${passwordHash}, password_changed_at = now() where id = ${id}
+  `;
+}
+
+/** Stamp a successful sign-in. Called after the credentials check, never before. */
+export async function markAdminLogin(id: number): Promise<void> {
+  await sql`update admins set last_login_at = now() where id = ${id}`;
+}
+
+/** Finished or skipped the walkthrough — either way we stop opening it by itself. */
+export async function markAdminOnboarded(id: number): Promise<void> {
+  await sql`update admins set onboarded_at = now() where id = ${id}`;
 }
 
 // ─── login throttle ────────────────────────────────────────────────

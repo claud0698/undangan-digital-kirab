@@ -27,6 +27,18 @@ async function main() {
   // Usernames are case-insensitive: "Yanny" and "yanny" are the same account.
   await sql`create unique index if not exists admins_username_lower_key on admins (lower(username))`;
 
+  // Password self-service + first-run onboarding.
+  //   password_changed_at  null = still on the password whoever created the
+  //                        account handed over, so the tool nudges them to change it.
+  //   last_login_at        null = has never signed in.
+  //   onboarded_at         null = has not finished (or skipped) the walkthrough.
+  // All three are nullable on purpose: existing admins created before this
+  // migration read as "never changed / never logged in / never onboarded",
+  // which is exactly how they should be treated.
+  await sql`alter table admins add column if not exists password_changed_at timestamptz`;
+  await sql`alter table admins add column if not exists last_login_at       timestamptz`;
+  await sql`alter table admins add column if not exists onboarded_at        timestamptz`;
+
   // Guests / invitation recipients. One row per personalized link.
   await sql`
     create table if not exists users (

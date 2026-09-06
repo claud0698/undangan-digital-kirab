@@ -1,5 +1,5 @@
 import type { APIRoute } from "astro";
-import { findAdminByUsername, getLoginLock, recordLoginFail, resetLoginAttempts } from "~/lib/db";
+import { findAdminByUsername, getLoginLock, recordLoginFail, resetLoginAttempts, markAdminLogin } from "~/lib/db";
 import { verifyPassword, createSessionToken, setSessionCookie, dummyVerify } from "~/lib/auth";
 import { sameOrigin, getClientIp } from "~/lib/csrf";
 
@@ -26,6 +26,7 @@ export const POST: APIRoute = async ({ request, cookies, redirect }) => {
   }
 
   await resetLoginAttempts(ip);
+  await markAdminLogin(admin.id);
   setSessionCookie(cookies, createSessionToken(admin));
   return redirect("/admin", 303);
 };
