@@ -16,7 +16,7 @@ const { d } = Astro.props;
      which would read as "so-called". */
   .d-chinese {
     display: block;
-    font-family: 'Cormorant Garamond', serif;
+    font-family: var(--font-display);
     font-size: 12px;
     letter-spacing: 0.04em;
     color: var(--red);
@@ -25,7 +25,7 @@ const { d } = Astro.props;
   }
   .d-name {
     display: block;
-    font-family: 'Cormorant Garamond', serif;
+    font-family: var(--font-display);
     font-weight: 600;
     font-size: 15.5px;
     line-height: 1.28;
@@ -36,7 +36,7 @@ const { d } = Astro.props;
   }
   .d-city {
     display: block;
-    font-family: 'Cinzel', serif;
+    font-family: var(--font-cap);
     font-size: 8px;
     letter-spacing: 0.2em;
     text-transform: uppercase;

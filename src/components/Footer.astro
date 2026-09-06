@@ -18,7 +18,7 @@ const shareText = encodeURIComponent(
   <div class="section-han-roman">{lang === "id" ? "Bagikan Kepada Sahabat" : "Share with Friends"}</div>
   <div class="divider"><span class="line"></span><span class="dot"></span><span class="line"></span></div>
 
-  <p style="font-family:'Cormorant Garamond',serif;font-style:italic;font-size:15px;color:var(--ink);opacity:.8;line-height:1.6;max-width:340px;margin:0 auto">
+  <p style="font-family:var(--font-display);font-style:italic;font-size:15px;color:var(--ink);opacity:.8;line-height:1.6;max-width:340px;margin:0 auto">
     {lang === "id"
       ? "Mohon bantuan menyampaikan informasi ini kepada umat dan simpatisan lainnya."
       : "Kindly help relay this invitation to fellow devotees and friends."}
@@ -61,7 +61,7 @@ const shareText = encodeURIComponent(
   </div>
 
   <div class="signoff">— {invitation.organization.foundation} —</div>
-  <div style="font-family:'Cormorant Garamond',serif;font-style:italic;font-size:13px;color:var(--gold-pale);opacity:.7;margin-top:12px">
+  <div style="font-family:var(--font-display);font-style:italic;font-size:13px;color:var(--gold-pale);opacity:.7;margin-top:12px">
     {invitation.organization.name} · {invitation.organization.location} · Imlek 2577
   </div>
 </section>

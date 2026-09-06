@@ -159,7 +159,7 @@ const roster = ranks
   .sponsors .eyebrow { color: var(--red); }
 
   .lead {
-    font-family: var(--font-display, 'Cormorant Garamond', serif);
+    font-family: var(--font-display);
     font-style: italic;
     text-align: center;
     color: var(--ink);
@@ -223,7 +223,7 @@ const roster = ranks
     display: block;
     font-weight: 400;
     text-align: center;
-    font-family: 'Cinzel', serif;
+    font-family: var(--font-cap);
     font-size: 9px;
     letter-spacing: 0.35em;
     text-transform: uppercase;
@@ -262,7 +262,7 @@ const roster = ranks
     text-align: center;
   }
   .bank-label {
-    font-family: 'Cinzel', serif;
+    font-family: var(--font-cap);
     font-size: 9px;
     letter-spacing: 0.4em;
     text-transform: uppercase;
@@ -270,21 +270,21 @@ const roster = ranks
     margin-bottom: 4px;
   }
   .bank-name {
-    font-family: 'Cormorant Garamond', serif;
+    font-family: var(--font-display);
     font-weight: 600;
     font-size: 22px;
     color: var(--paper);
     line-height: 1;
   }
   .bank-no {
-    font-family: 'Cinzel', serif;
+    font-family: var(--font-cap);
     font-size: 22px;
     letter-spacing: 0.12em;
     color: var(--gold-pale);
     margin: 2px 0;
   }
   .bank-holder {
-    font-family: 'Cormorant Garamond', serif;
+    font-family: var(--font-display);
     font-style: italic;
     font-size: 13px;
     color: var(--paper);
@@ -296,7 +296,7 @@ const roster = ranks
     margin: 12px auto 14px;
     min-height: 46px;
     padding: 0 22px;
-    font-family: 'Cinzel', serif;
+    font-family: var(--font-cap);
     font-size: 12px;
     letter-spacing: 0.18em;
     text-transform: uppercase;
@@ -316,7 +316,7 @@ const roster = ranks
     margin-top: 12px;
     padding-top: 12px;
     border-top: 1px dashed rgba(212, 175, 96, 0.4);
-    font-family: 'Cormorant Garamond', serif;
+    font-family: var(--font-display);
     font-size: 13.5px;
     line-height: 1.5;
     color: var(--gold-pale);
@@ -335,7 +335,7 @@ const roster = ranks
   }
   .contact-heading {
     display: block;
-    font-family: 'Cinzel', serif;
+    font-family: var(--font-cap);
     font-size: 9px;
     letter-spacing: 0.35em;
     text-transform: uppercase;
@@ -357,7 +357,7 @@ const roster = ranks
     gap: 6px;
   }
   .contact-list .c-name {
-    font-family: 'Cormorant Garamond', serif;
+    font-family: var(--font-display);
     font-weight: 600;
     font-size: 17px;
     color: var(--red-deep);
@@ -370,7 +370,7 @@ const roster = ranks
     opacity: 0.65;
   }
   .contact-list a {
-    font-family: 'Cinzel', serif;
+    font-family: var(--font-cap);
     font-size: 14px;
     letter-spacing: 0.06em;
     /* was --gold: the same 2.36:1 as .d-note above, on the only conversion path
@@ -383,7 +383,7 @@ const roster = ranks
   }
   .contact-list a:hover { color: var(--red-bright); }
   .contact-list a.c-email {
-    font-family: 'Cormorant Garamond', serif;
+    font-family: var(--font-display);
     font-style: italic;
     font-size: 13px;
     letter-spacing: 0;
@@ -399,14 +399,14 @@ const roster = ranks
     text-align: center;
   }
   .paramita-han {
-    font-family: 'Noto Serif SC', serif;
+    font-family: var(--font-han);
     font-size: 16px;
     letter-spacing: 0.3em;
     color: var(--gold-ink);
     margin-bottom: 6px;
   }
   .paramita-title {
-    font-family: 'Cormorant Garamond', serif;
+    font-family: var(--font-display);
     font-weight: 600;
     font-size: 28px;
     color: var(--red-deep);
@@ -414,7 +414,7 @@ const roster = ranks
     margin-bottom: 1.2rem;
   }
   .paramita p {
-    font-family: 'Cormorant Garamond', serif;
+    font-family: var(--font-display);
     font-size: 16px;
     line-height: 1.6;
     color: var(--ink);
@@ -422,7 +422,7 @@ const roster = ranks
     margin: 0 auto 1rem;
   }
   .paramita blockquote {
-    font-family: 'Cormorant Garamond', serif;
+    font-family: var(--font-display);
     font-style: italic;
     font-size: 16px;
     line-height: 1.6;
@@ -434,7 +434,7 @@ const roster = ranks
   .footnote {
     margin: 2.4rem auto 0;
     text-align: center;
-    font-family: var(--font-display, 'Cormorant Garamond', serif);
+    font-family: var(--font-display);
     color: var(--ink);
     opacity: 0.8;
     font-size: 14px;

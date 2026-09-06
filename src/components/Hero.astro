@@ -89,14 +89,14 @@ const { lang } = Astro.props;
     text-align: center;
   }
   .signoff-salute {
-    font-family: 'Cormorant Garamond', serif;
+    font-family: var(--font-display);
     font-style: italic;
     font-size: 17px;
     color: var(--ink);
     opacity: 0.85;
   }
   .signoff-body {
-    font-family: 'Cormorant Garamond', serif;
+    font-family: var(--font-display);
     font-size: 15px;
     color: var(--ink);
     opacity: 0.7;
@@ -111,14 +111,14 @@ const { lang } = Astro.props;
   }
   .signoff-person { display: flex; flex-direction: column; gap: 4px; }
   .s-name {
-    font-family: 'Cormorant Garamond', serif;
+    font-family: var(--font-display);
     font-weight: 600;
     font-size: 19px;
     line-height: 1.25;
     color: var(--ink);
   }
   .s-role {
-    font-family: 'Cinzel', serif;
+    font-family: var(--font-cap);
     font-size: 10px;
     letter-spacing: 0.24em;
     text-transform: uppercase;

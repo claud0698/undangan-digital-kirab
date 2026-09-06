@@ -186,7 +186,7 @@ const visitedTotal = guests.filter((g) => (g.visit_count ?? 0) > 0).length;
       .cell[contenteditable] { outline: none; border-radius: 6px; padding: 4px 6px; min-height: 20px; cursor: text; }
       .cell[contenteditable]:hover { background: #1e1613; }
       .cell[contenteditable]:focus { background: #241a15; box-shadow: inset 0 0 0 1px var(--gold); }
-      .cell.slug { font-family: ui-monospace, SFMono-Regular, Menlo, monospace; font-size: 13px; color: var(--gold-bright); }
+      .cell.slug { font-family: var(--font-mono); font-size: 13px; color: var(--gold-bright); }
       .cat-select {
         background: #100c0a; border: 1px solid var(--line2); border-radius: 7px;
         padding: 6px 8px; outline: none; max-width: 100%;
