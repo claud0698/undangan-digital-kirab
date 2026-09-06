@@ -25,6 +25,16 @@
      things you can tap. 5.29:1 on --paper-2. */
   --jade: #1f6f5c;
   --jade-deep: #175445;
+
+  /* The three faces, and there are only three. Cormorant Garamond carries
+     every running word; Cinzel is for small caps labels and nothing else;
+     Noto Serif SC is loaded subset-only, for the Han characters.
+     Most rules still name these literally — these tokens exist because
+     several components already reference them, and an undefined var()
+     silently voids the whole declaration instead of failing loudly. */
+  --font-display: 'Cormorant Garamond', serif;
+  --font-cap: 'Cinzel', serif;
+  --font-han: 'Noto Serif SC', serif;
 }
 
 @theme {
