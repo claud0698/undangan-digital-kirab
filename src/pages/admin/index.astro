@@ -37,7 +37,7 @@ const TOUR = [
     body: "Isi nama, alamat, dan kategori, lalu tekan Tambah. Sebutan seperti Bapak atau Ibu boleh dikosongkan. Tautan pribadi tamu terisi otomatis dari namanya.",
   },
   {
-    img: "/admin-demo/3-tautan.webp", w: 1000, h: 662,
+    img: "/admin-demo/3-tautan.webp", w: 1000, h: 648,
     title: "2. Kirim tautannya",
     body: "Setiap tamu punya tautannya sendiri. Tekan Salin untuk menyalin, atau tombol hijau WhatsApp untuk langsung mengirimkannya beserta ucapan.",
   },
@@ -322,9 +322,11 @@ const visitedTotal = guests.filter((g) => openState(g) === "visited").length;
         .grid tbody td[data-label="Tautan Kustom"] { display: none; }
         .link-row a { display: none; }
 
-        /* the name leads the card */
-        .grid tbody td[data-label="Nama"]::before { display: none; }
-        .grid tbody td[data-label="Nama"] .cell { font-size: 18px; font-weight: 600; }
+        /* The name keeps its NAMA label like every other row, so its value
+           lines up in the same column as Bapak / Banjarmasin / Donatur instead
+           of starting at the card edge on its own. It still leads by weight
+           and size rather than by breaking the alignment. */
+        .grid tbody td[data-label="Nama"] .cell { font-size: 17px; font-weight: 600; }
 
         /* every control a thumb has to hit */
         .btn-icon { width: 44px; height: 44px; padding: 0; }
