@@ -4,6 +4,7 @@ export const prerender = false;
 import { getSession } from "~/lib/auth";
 import { listGuests, getAdminState, type Guest } from "~/lib/db";
 import { CATEGORIES, SALUTATIONS } from "~/lib/categories";
+import AdminStats from "~/components/AdminStats.astro";
 
 const session = getSession(Astro.cookies);
 const guests: Guest[] = session ? await listGuests() : [];
@@ -18,34 +19,37 @@ const loginError = Astro.url.searchParams.get("error");
 const adminState = session ? await getAdminState(session.id) : null;
 const showTour = !!session && !adminState?.onboarded_at;
 const passwordIsInitial = !!session && !adminState?.password_changed_at;
+// Asked to change it at sign-in. A prompt, not a lock — their current password
+// keeps working, and postponing just means being asked again next time.
+const mustChangePassword = !!session && adminState?.password_change_required === true;
 
 // The walkthrough. Images are of the tool itself, shot against invented guests
 // — never a real guest list, since public/ is served to anyone who asks.
 const TOUR = [
   {
-    img: "/admin-demo/1-ringkasan.webp", w: 1000, h: 844,
+    img: "/admin-demo/1-ringkasan.webp", w: 1000, h: 948,
     title: "Selamat datang di Panel Admin",
-    body: "Di sini Anda membuat undangan pribadi untuk setiap tamu. Satu tamu, satu tautan, dan Anda bisa melihat siapa saja yang sudah membukanya.",
+    body: "Di sini Anda membuat undangan pribadi untuk setiap tamu — satu tamu, satu tautan. Ringkasan di atas selalu menunjukkan berapa undangan sudah dibuat dan berapa yang sudah dibuka.",
   },
   {
-    img: "/admin-demo/2-tambah-tamu.webp", w: 1000, h: 910,
+    img: "/admin-demo/2-tambah-tamu.webp", w: 1000, h: 896,
     title: "1. Tambahkan tamu",
     body: "Isi nama, alamat, dan kategori, lalu tekan Tambah. Sebutan seperti Bapak atau Ibu boleh dikosongkan. Tautan pribadi tamu terisi otomatis dari namanya.",
   },
   {
-    img: "/admin-demo/3-tautan.webp", w: 1000, h: 655,
+    img: "/admin-demo/3-tautan.webp", w: 1000, h: 662,
     title: "2. Kirim tautannya",
     body: "Setiap tamu punya tautannya sendiri. Tekan Salin untuk menyalin, atau tombol hijau WhatsApp untuk langsung mengirimkannya beserta ucapan.",
   },
   {
-    img: "/admin-demo/4-status.webp", w: 1580, h: 1238,
+    img: "/admin-demo/4-status.webp", w: 1580, h: 1236,
     title: "3. Pantau yang sudah membuka",
     body: "Kolom Dibuka terisi sendiri. Abu-abu berarti belum dibuka, kuning berarti tautannya sudah dikunjungi, hijau berarti tamu menekan Buka Undangan. Angka di sebelahnya jumlah kunjungan.",
   },
   {
-    img: "/admin-demo/5-ubah-sandi.webp", w: 1000, h: 1024,
+    img: "/admin-demo/5-ubah-sandi.webp", w: 1000, h: 1220,
     title: "4. Ganti kata sandi Anda",
-    body: "Tekan Ubah Sandi di kanan atas. Kata sandi pertama Anda diberikan oleh pengurus — sebaiknya segera diganti dengan yang hanya Anda yang tahu.",
+    body: "Kata sandi pertama Anda dibuatkan pengurus, jadi kotak ini terbuka sendiri saat Anda masuk. Kata sandi lama tetap berlaku sampai Anda menggantinya — tekan Nanti saja bila sedang buru-buru, nanti ditanyakan lagi.",
   },
 ];
 
@@ -68,7 +72,10 @@ const seenTitle = (g: Guest) => {
   return t ? `Terakhir: ${fmtDate(t)}` : "Belum ada kunjungan";
 };
 const openedTotal = guests.filter((g) => (g.open_count ?? 0) > 0).length;
-const visitedTotal = guests.filter((g) => (g.visit_count ?? 0) > 0).length;
+// Exclusive of the opened ones, matching openState() and the AdminStats panel.
+// Counting opened guests as "dikunjungi" too would put two different numbers
+// under the same word on one screen.
+const visitedTotal = guests.filter((g) => openState(g) === "visited").length;
 ---
 
 <!doctype html>
@@ -377,6 +384,11 @@ const visitedTotal = guests.filter((g) => (g.visit_count ?? 0) > 0).length;
         width: 34px; height: 34px; border-radius: 8px; font-size: 24px; line-height: 1;
       }
       .icon-x:hover { color: var(--text); background: rgba(255,255,255,.06); }
+      .sheet-why {
+        margin: 0 0 12px; padding: 10px 12px; border-radius: 8px;
+        background: #241a10; border: 1px solid #4a3a1c; border-left: 3px solid var(--gold);
+        color: #e6d8bd; font-size: 13px; line-height: 1.5;
+      }
       .sheet-actions { display: flex; gap: 10px; justify-content: flex-end; margin-top: 18px; }
       .sheet-actions .btn { min-width: 96px; justify-content: center; display: inline-flex; align-items: center; gap: 8px; }
       .sheet-err {
@@ -518,6 +530,8 @@ const visitedTotal = guests.filter((g) => (g.visit_count ?? 0) > 0).length;
             </form>
           </div>
         </div>
+
+        <AdminStats guests={guests} />
 
         {passwordIsInitial && (
           <div class="nudge" id="pwNudge">
@@ -667,6 +681,12 @@ const visitedTotal = guests.filter((g) => (g.visit_count ?? 0) > 0).length;
         <dialog class="sheet" id="pwDialog" aria-labelledby="pwTitle">
           <form method="dialog" class="sheet-x"><button class="icon-x" aria-label="Tutup">&times;</button></form>
           <h2 id="pwTitle">Ubah Kata Sandi</h2>
+          {mustChangePassword && (
+            <p class="sheet-why">
+              Kata sandi Anda sekarang dibuatkan oleh pengurus, jadi orang lain pernah
+              melihatnya. Mohon ganti dengan kata sandi yang hanya Anda yang tahu.
+            </p>
+          )}
           <p class="sheet-sub">Masuk berikutnya pakai kata sandi baru ini. Username tetap <strong>{session.username}</strong>.</p>
 
           <form id="pwForm" novalidate>
@@ -708,7 +728,9 @@ const visitedTotal = guests.filter((g) => (g.visit_count ?? 0) > 0).length;
 
             <div class="sheet-err" id="pwErr" hidden></div>
             <div class="sheet-actions">
-              <button class="btn btn-ghost" type="button" data-close-pw>Batal</button>
+              <button class="btn btn-ghost" type="button" data-close-pw>
+                {mustChangePassword ? "Nanti saja" : "Batal"}
+              </button>
               <button class="btn" type="submit" id="pwSave">Simpan</button>
             </div>
           </form>
@@ -740,7 +762,7 @@ const visitedTotal = guests.filter((g) => (g.visit_count ?? 0) > 0).length;
         </div>
 
         {/* ── walkthrough + change password ── */}
-        <script is:inline define:vars={{ autoTour: showTour, tourLen: TOUR.length }}>
+        <script is:inline define:vars={{ autoTour: showTour, tourLen: TOUR.length, mustChange: mustChangePassword }}>
           // ---- peek toggles (every [data-peek] sits next to its own input) ----
           document.querySelectorAll("[data-peek]").forEach((btn) => {
             btn.addEventListener("click", () => {
@@ -844,7 +866,7 @@ const visitedTotal = guests.filter((g) => (g.visit_count ?? 0) > 0).length;
           // Finishing and skipping mean the same thing to the server: seen it,
           // stop opening it. Sent once per page, and a failure is not worth an
           // error in the admin's face — the worst case is it opens again.
-          const closeTour = () => {
+          let closeTour = () => {
             tour.hidden = true;
             if (marked) return;
             marked = true;
@@ -864,7 +886,17 @@ const visitedTotal = guests.filter((g) => (g.visit_count ?? 0) > 0).length;
           // need to re-tell the server anything.
           document.getElementById("tourBtn")?.addEventListener("click", () => { at = 0; render(); tour.hidden = false; });
 
-          if (autoTour) openTour();
+          // First sign-in shows the walkthrough, and the password request waits its
+          // turn rather than stacking a second box on top of the first.
+          if (autoTour) {
+            const after = closeTour;
+            closeTour = () => { after(); if (mustChange) setTimeout(openPw, 350); };
+            document.getElementById("tourSkip").onclick = closeTour;
+            nextBtn.onclick = () => { at === tourLen - 1 ? closeTour() : (at += 1, render()); };
+            openTour();
+          } else if (mustChange) {
+            openPw();
+          }
         </script>
       </>
     )}
@@ -997,7 +1029,8 @@ const visitedTotal = guests.filter((g) => (g.visit_count ?? 0) > 0).length;
         const refreshSummary = () => {
           let opened = 0, visited = 0;
           rows.querySelectorAll(".stat").forEach((s) => {
-            if (s.classList.contains("opened")) { opened++; visited++; }
+            // "visited" excludes the opened ones — same split as the panel above.
+            if (s.classList.contains("opened")) opened++;
             else if (s.classList.contains("visited")) visited++;
           });
           if (summaryEl) summaryEl.innerHTML = `<strong>${opened}</strong> dibuka · <strong>${visited}</strong> dikunjungi`;

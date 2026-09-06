@@ -39,6 +39,13 @@ async function main() {
   await sql`alter table admins add column if not exists last_login_at       timestamptz`;
   await sql`alter table admins add column if not exists onboarded_at        timestamptz`;
 
+  // While true, the change-password box opens by itself at every sign-in until
+  // the account actually changes it. It is a prompt, not a lock: the existing
+  // password keeps working and the tool stays usable if they postpone. Nobody
+  // gets locked out of the guest list in the middle of the event.
+  // Set per account — see scripts/require-password-change.mjs.
+  await sql`alter table admins add column if not exists password_change_required boolean not null default false`;
+
   // Guests / invitation recipients. One row per personalized link.
   await sql`
     create table if not exists users (

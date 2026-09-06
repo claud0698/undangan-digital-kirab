@@ -40,6 +40,8 @@ export type AdminState = {
   password_changed_at: string | null;
   last_login_at: string | null;
   onboarded_at: string | null;
+  /** True = the change-password box opens at each sign-in until they change it. */
+  password_change_required: boolean;
 };
 
 // ─── guests (users table) ──────────────────────────────────────────
@@ -159,7 +161,8 @@ export async function findAdminByUsername(username: string): Promise<Admin | nul
 /** Flags used to decide whether to nudge about the password or run the tour. */
 export async function getAdminState(id: number): Promise<AdminState | null> {
   const rows = (await sql`
-    select password_changed_at, last_login_at, onboarded_at from admins where id = ${id}
+    select password_changed_at, last_login_at, onboarded_at, password_change_required
+    from admins where id = ${id}
   `) as AdminState[];
   return rows[0] ?? null;
 }
@@ -175,10 +178,16 @@ export async function getAdminPasswordHash(id: number): Promise<string | null> {
  * together — never write password_hash on its own.
  */
 export async function setAdminPassword(id: number, passwordHash: string): Promise<void> {
+  // Changing the password is the only thing that stops the prompt — the flag
+  // clears here and nowhere else, so "Nanti saja" postpones but never dismisses.
   await sql`
-    update admins set password_hash = ${passwordHash}, password_changed_at = now() where id = ${id}
+    update admins set password_hash = ${passwordHash}, password_changed_at = now(),
+                      password_change_required = false
+    where id = ${id}
   `;
 }
+
+
 
 /** Stamp a successful sign-in. Called after the credentials check, never before. */
 export async function markAdminLogin(id: number): Promise<void> {

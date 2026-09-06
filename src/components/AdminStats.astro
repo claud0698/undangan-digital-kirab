@@ -1,0 +1,126 @@
+---
+import type { Guest } from "~/lib/db";
+
+interface Props { guests: Guest[]; }
+const { guests } = Astro.props;
+
+// The same three states as the guest table (see /api/track + CoverGate):
+// opened wins over visited, so every guest lands in exactly one bucket and the
+// three counts always add up to the total.
+type OpenState = "opened" | "visited" | "none";
+const openState = (g: Guest): OpenState =>
+  (g.open_count ?? 0) > 0 ? "opened" : (g.visit_count ?? 0) > 0 ? "visited" : "none";
+
+const total = guests.length;
+const opened = guests.filter((g) => openState(g) === "opened").length;
+const visited = guests.filter((g) => openState(g) === "visited").length;
+const none = total - opened - visited;
+const openedPct = total ? Math.round((opened / total) * 100) : 0;
+
+const barAlt = `Dari ${total} undangan: ${opened} sudah dibuka, ${visited} baru dikunjungi, ${none} belum dibuka.`;
+---
+
+<section class="stats" aria-labelledby="statsTitle">
+  <h2 id="statsTitle">Ringkasan Undangan</h2>
+
+  {total === 0 ? (
+    <p class="stats-empty">Belum ada undangan. Ringkasan muncul setelah tamu pertama ditambahkan.</p>
+  ) : (
+    <>
+      <dl class="cards">
+        <div class="card">
+          <dt>Total undangan</dt>
+          <dd class="num">{total}</dd>
+          <dd class="note">dibuat</dd>
+        </div>
+        <div class="card">
+          <dt>Sudah dibuka</dt>
+          <dd class="num v-opened">{opened}</dd>
+          <dd class="note">{openedPct}% dari total</dd>
+        </div>
+        <div class="card">
+          <dt>Baru dikunjungi</dt>
+          <dd class="num v-visited">{visited}</dd>
+          <dd class="note">belum ditekan Buka</dd>
+        </div>
+        <div class="card">
+          <dt>Belum dibuka</dt>
+          <dd class="num v-none">{none}</dd>
+          <dd class="note">tanpa kunjungan</dd>
+        </div>
+      </dl>
+
+      <!-- The segments carry no meaning on their own: the legend repeats every
+           colour as a word plus its number, and the bar has a text alternative. -->
+      <div class="bar" role="img" aria-label={barAlt}>
+        {opened > 0 && <span class="seg s-opened" style={`flex-grow:${opened}`}></span>}
+        {visited > 0 && <span class="seg s-visited" style={`flex-grow:${visited}`}></span>}
+        {none > 0 && <span class="seg s-none" style={`flex-grow:${none}`}></span>}
+      </div>
+      <ul class="legend">
+        <li><span class="dot s-opened" aria-hidden="true"></span>Dibuka <b>{opened}</b></li>
+        <li><span class="dot s-visited" aria-hidden="true"></span>Dikunjungi <b>{visited}</b></li>
+        <li><span class="dot s-none" aria-hidden="true"></span>Belum dibuka <b>{none}</b></li>
+      </ul>
+    </>
+  )}
+</section>
+
+<style>
+  .stats {
+    background: var(--panel); border: 1px solid var(--line);
+    border-radius: 12px; padding: 16px 14px; margin-bottom: 18px;
+  }
+  .stats h2 {
+    margin: 0 0 14px; font-size: 13px; font-weight: 600;
+    text-transform: uppercase; letter-spacing: .08em; color: var(--gold-bright);
+  }
+  .stats-empty { margin: 0; color: var(--muted); font-size: 13px; }
+
+  /* Same fluid idiom as the add form: a column drops to the next line by itself
+     once it can no longer hold its minimum, so no phone breakpoints are needed.
+     1-up at 320px, 2-up at 360px, 4-up across the 1180px wrap. */
+  .cards {
+    display: grid; grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+    gap: 10px; margin: 0;
+  }
+  .card {
+    background: #100c0a; border: 1px solid var(--line);
+    border-radius: 10px; padding: 11px 12px; min-width: 0;
+  }
+  .card dt { font-size: 12px; color: var(--muted); letter-spacing: .02em; overflow-wrap: anywhere; }
+  .card dd { margin: 0; }
+  .card .num {
+    font-size: 26px; line-height: 1.15; font-weight: 700;
+    font-variant-numeric: tabular-nums; margin-top: 4px; color: var(--text);
+  }
+  .card .note { font-size: 12px; color: var(--muted); margin-top: 2px; overflow-wrap: anywhere; }
+  /* Value colours mirror the status dots in the guest table. */
+  .v-opened { color: #7fc79b; }
+  .v-visited { color: var(--gold-bright); }
+  .v-none { color: var(--muted); }
+
+  .bar {
+    display: flex; height: 12px; margin-top: 16px;
+    border-radius: 999px; overflow: hidden; background: #100c0a;
+    border: 1px solid var(--line);
+  }
+  .seg { flex-basis: 0; min-width: 3px; }  /* a lone guest still leaves a mark */
+  .s-opened { background: var(--ok); }
+  .s-visited { background: var(--gold); }
+  .s-none { background: #5a4a3c; }
+
+  .legend {
+    display: flex; flex-wrap: wrap; gap: 6px 16px;
+    list-style: none; margin: 10px 0 0; padding: 0;
+    font-size: 12.5px; color: var(--muted);
+  }
+  .legend li { display: flex; align-items: center; gap: 7px; }
+  .legend b { color: var(--text); font-variant-numeric: tabular-nums; }
+  .dot { width: 9px; height: 9px; border-radius: 50%; flex: 0 0 auto; }
+
+  @media (min-width: 700px) {
+    .stats { padding: 18px 18px 16px; }
+    .card .num { font-size: 30px; }
+  }
+</style>
