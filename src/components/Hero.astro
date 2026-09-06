@@ -41,6 +41,25 @@ const { lang } = Astro.props;
         </p>
       </>
     )}
+
+    {/* The letter had no sign-off — it simply stopped after the invitation.
+        An undangan closes by saying who is inviting you. Senior name first. */}
+    <div class="signoff">
+      <div class="signoff-salute">
+        {lang === "id" ? "Hormat kami," : "Respectfully,"}
+      </div>
+      <div class="signoff-body">
+        {lang === "id" ? "Panitia Kirab Budaya & Ruwat Bumi 2026" : "The Kirab Budaya & Ruwat Bumi 2026 Committee"}
+      </div>
+      <div class="signoff-names">
+        {invitation.committee.leadership.map((p) => (
+          <div class="signoff-person">
+            <span class="s-name">{p.name}</span>
+            <span class="s-role">{p.role}</span>
+          </div>
+        ))}
+      </div>
+    </div>
   </div>
 </section>
 
@@ -60,3 +79,57 @@ const { lang } = Astro.props;
     </p>
   </div>
 </div>
+
+<style>
+  .signoff {
+    max-width: 460px;
+    margin: 2.4rem auto 0;
+    padding-top: 1.6rem;
+    border-top: 1px solid rgba(180, 133, 54, 0.35);
+    text-align: center;
+  }
+  .signoff-salute {
+    font-family: 'Cormorant Garamond', serif;
+    font-style: italic;
+    font-size: 17px;
+    color: var(--ink);
+    opacity: 0.85;
+  }
+  .signoff-body {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 15px;
+    color: var(--ink);
+    opacity: 0.7;
+    margin-top: 2px;
+  }
+  /* Two names side by side once there is room; stacked on a phone so neither
+     is squeezed into a column too narrow for the honorific. */
+  .signoff-names {
+    display: grid;
+    gap: 22px;
+    margin-top: 1.6rem;
+  }
+  .signoff-person { display: flex; flex-direction: column; gap: 4px; }
+  .s-name {
+    font-family: 'Cormorant Garamond', serif;
+    font-weight: 600;
+    font-size: 19px;
+    line-height: 1.25;
+    color: var(--ink);
+  }
+  .s-role {
+    font-family: 'Cinzel', serif;
+    font-size: 10px;
+    letter-spacing: 0.24em;
+    text-transform: uppercase;
+    color: var(--gold-ink);
+  }
+
+  @media (min-width: 560px) {
+    .signoff-names { grid-template-columns: 1fr 1fr; gap: 18px 24px; }
+  }
+  @media (min-width: 720px) {
+    .s-name { font-size: 21px; }
+    .s-role { font-size: 11px; }
+  }
+</style>

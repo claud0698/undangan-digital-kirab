@@ -196,6 +196,13 @@ export const invitation = {
   // ─── susunan panitia ──────────────────────────────────────────
   committee: {
     penanggungJawab: "Suhu Benny Susanto",
+    // Shown at the close of the invitation letter. The proposal lists Suhu
+    // Benny as penanggung jawab and as Koord. Persembahyangan; the committee
+    // asked for his standing title here instead. Senior name first.
+    leadership: [
+      { role: "Pembina",       name: "Suhu Benny Susanto" },
+      { role: "Ketua Panitia", name: "Bp. Fiter Lie" },
+    ],
     dewanKehormatan: [
       { name: "Bp. Juanto Kencana Jaya",                location: "Jakarta" },
       { name: "Bp. Lie Kok Tie",                        location: "Jakarta" },
