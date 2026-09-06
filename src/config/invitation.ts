@@ -196,11 +196,12 @@ export const invitation = {
   // ─── susunan panitia ──────────────────────────────────────────
   committee: {
     penanggungJawab: "Suhu Benny Susanto",
-    // Shown at the close of the invitation letter. The proposal lists Suhu
-    // Benny as penanggung jawab and as Koord. Persembahyangan; the committee
-    // asked for his standing title here instead. Senior name first.
+    // Shown at the close of the invitation letter, senior name first.
+    // PROPOSAL v2 calls Suhu Benny "Penanggung Jawab" (and separately
+    // "Kord. Persembahyangan"); the committee gave "Ketua Pembina" as the
+    // title to publish. Deliberate — do not "correct" it back to the document.
     leadership: [
-      { role: "Pembina",       name: "Suhu Benny Susanto" },
+      { role: "Ketua Pembina", name: "Suhu Benny Susanto" },
       { role: "Ketua Panitia", name: "Bp. Fiter Lie" },
     ],
     // Proposal v2's own order, which puts the Walikota first — never sorted.
