@@ -203,17 +203,26 @@ export const invitation = {
       { role: "Pembina",       name: "Suhu Benny Susanto" },
       { role: "Ketua Panitia", name: "Bp. Fiter Lie" },
     ],
+    // Proposal v2's own order, which puts the Walikota first — never sorted.
+    // The last two are not in v2 but were on the site before it was checked
+    // against the document; kept at the committee's instruction so that nobody
+    // is dropped. If v2 removed them deliberately, delete these two lines.
     dewanKehormatan: [
-      { name: "Bp. Juanto Kencana Jaya",                location: "Jakarta" },
-      { name: "Bp. Lie Kok Tie",                        location: "Jakarta" },
-      { name: "Bp. Kwee Ebie",                          location: "Jakarta" },
-      { name: "Suhu Atjai",                             location: "Cikoleang" },
+      { name: "Bp. Drs. H. Sachrudin",                    location: "Walikota Tangerang" },
+      { name: "Bp. H. Maryono Hasan",                     location: "Wk. Walikota Tangerang" },
       { name: "Y.M. Dharmarakkhita Sthavira / Suhu Riki", location: "Lampung" },
-      { name: "Bp. Na Beng Ti",                         location: "Tangerang" },
-      { name: "Bp. Keng Sun",                           location: "Tanjung Kait" },
-      { name: "Bp. Liaw Kim Hiung",                     location: "Jakarta" },
-      { name: "Bp. Sianto Lim",                         location: "Sentul" },
-      { name: "Bp. Benny Nova",                         location: "Jakarta" },
+      { name: "Bp. Budi Kurniawan / Ahun",                location: "Jakarta" },
+      { name: "Bp. Juanto Kencana Jaya",                  location: "Jakarta" },
+      { name: "Bp. Keng Sun",                             location: "Tanjung Kait" },
+      { name: "Bp. Kwee Ebie",                            location: "Jakarta" },
+      { name: "Suhu Atjai",                               location: "Cikoleang" },
+      { name: "Bp. Na Beng Ti",                           location: "Tangerang" },
+      { name: "Bp. Jen Jung",                             location: "Jakarta" },
+      { name: "Bp. Sianto Lim",                           location: "Sentul" },
+      { name: "Bp. Karnadi / Ku Nyong Khoi",              location: "Tangerang" },
+      { name: "Bp. Benny Nova",                           location: "Jakarta" },
+      { name: "Bp. Lie Kok Tie",                          location: "Jakarta" },
+      { name: "Bp. Liaw Kim Hiung",                       location: "Jakarta" },
     ],
     inti: [
       { role: "Ketua Panitia",          name: "Bp. Fiter Lie" },
