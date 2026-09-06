@@ -60,6 +60,21 @@ const { lang } = Astro.props;
         ))}
       </div>
     </div>
+
+    {/* Dewan Kehormatan — the proposal's order, never sorted. These are people
+        whose standing is the point, so they get names and cities and nothing
+        else: no roles, no ranking. */}
+    <div class="dewan">
+      <div class="dewan-label">{lang === "id" ? "Dewan Kehormatan" : "Honorary Council"}</div>
+      <ul class="dewan-list" role="list">
+        {invitation.committee.dewanKehormatan.map((m) => (
+          <li>
+            <span class="d-nama">{m.name}</span>
+            <span class="d-kota">{m.location}</span>
+          </li>
+        ))}
+      </ul>
+    </div>
   </div>
 </section>
 
@@ -125,8 +140,49 @@ const { lang } = Astro.props;
     color: var(--gold-ink);
   }
 
+  .dewan {
+    max-width: 460px;
+    margin: 2.2rem auto 0;
+    padding-top: 1.5rem;
+    border-top: 1px solid rgba(180, 133, 54, 0.35);
+    text-align: center;
+  }
+  .dewan-label {
+    font-family: 'Cinzel', serif;
+    font-size: 10px;
+    letter-spacing: 0.3em;
+    text-transform: uppercase;
+    color: var(--gold-ink);
+    margin-bottom: 1.1rem;
+  }
+  .dewan-list {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: grid;
+    gap: 14px;
+    text-align: left;
+  }
+  .dewan-list li { display: flex; flex-direction: column; gap: 1px; }
+  .d-nama {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 16px;
+    line-height: 1.25;
+    color: var(--ink);
+    overflow-wrap: anywhere;
+  }
+  .d-kota {
+    font-family: 'Cinzel', serif;
+    font-size: 9px;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: var(--red);
+    opacity: 0.8;
+  }
+
   @media (min-width: 560px) {
     .signoff-names { grid-template-columns: 1fr 1fr; gap: 18px 24px; }
+    .dewan-list { grid-template-columns: 1fr 1fr; gap: 16px 24px; }
   }
   @media (min-width: 720px) {
     .s-name { font-size: 21px; }
