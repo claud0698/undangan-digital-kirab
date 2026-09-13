@@ -1,6 +1,7 @@
 ---
 import "~/styles/global.css";
 import Analytics from "@vercel/analytics/astro";
+import SpeedInsights from "@vercel/speed-insights/astro";
 import { invitation } from "~/config/invitation";
 import { type Lang, pick } from "~/i18n";
 
@@ -102,6 +103,7 @@ const ldEvent = {
   <body>
     <slot />
     <Analytics />
+    <SpeedInsights />
     <script>
       // Reveal each [data-reveal] block as it scrolls into view (once).
       const els = document.querySelectorAll<HTMLElement>("[data-reveal]");
