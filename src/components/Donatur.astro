@@ -347,8 +347,8 @@ const initial = (name: string) => {
       // second a beat behind), always taking the next two names in the arranged
       // order. The screen is then a sliding window over the order, so nobody can
       // appear twice at once and everyone comes round before anyone repeats.
-      const BEAT = 3200;
-      const LAG = 260;
+      const BEAT = 6000;
+      const LAG = 450;
       let next = cells.length % N;
       let line = 0;
       let timer: number | undefined;
