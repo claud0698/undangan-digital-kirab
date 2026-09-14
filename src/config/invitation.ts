@@ -46,7 +46,8 @@ export type SponsorLogo = {
  * the generation character 芳 (Fong) — not a nickname, so render it plainly with no
  * quotation marks. `city` follows the Tangerang klenteng convention of inscribing a
  * donor's place of origin beside their name, as on Boen Tek Bio's own 19th-century
- * bells and censers. Order below is the committee's; do not sort it.
+ * bells and censers. Order below is the ledger's and stays canonical (screen readers,
+ * no-script); the visible roll shuffles it per visit, guest's own name first.
  */
 export type SponsorDonor = { name: string; chineseName?: string; city?: string };
 
@@ -428,8 +429,9 @@ export const invitation = {
     { name: "Andry Suryadi W & Keluarga",                city: "Tangerang" },
     { name: "Benny Nova & Lany Nova" },
     { name: "Toko Asen Snack Jawaringan" },
+    { name: "Osin Nata Lih" },
     { name: "Marsan & Eni" },
-    { name: "Alm. Hauw Hin Bih & Lien Nio",              city: "Cikupa" },
+    { name: "Keluarga Hauw Hin Bih & Lien Nio",          city: "Cikupa" },
     { name: "Laurent Wang & Vincent Ong" },
     { name: "Sukarto & Keluarga" },
     { name: "Hendra Setiadi Thjia & Keluarga" },
@@ -439,8 +441,12 @@ export const invitation = {
     { name: "Lo Cin Ying" },
     { name: "Lo Jing Ming / Andri" },
     { name: "Tono Chang" },
+    { name: "Atak Borneo Prima Utama Jaya" },
     { name: "Rudi Gunawan / Ate & Keluarga",             city: "Lampung" },
     { name: "Jilly & Family" },
+    { name: "Lilian" },
+    { name: "Ibu Farica" },
+    { name: "Ibu Cicil" },
     { name: "Yongcen & Family" },
     { name: "Djemi Tejo Sukmono & Janty Setiawan" },
     { name: "Bun Khiok Hok" },
@@ -454,6 +460,8 @@ export const invitation = {
     { name: "Claudya" },
     { name: "Halim Susanto",                             city: "Palembang" },
     { name: "Ko Bebeng & Keluarga" },
+    { name: "Ibu Mei Mei" },
+    { name: "Anthony Lesmana & Keluarga",                city: "Depok" },
   ] satisfies SponsorDonor[],
 
   share: {

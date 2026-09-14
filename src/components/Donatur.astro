@@ -5,27 +5,22 @@ import DonorName from "./DonorName.astro";
 interface Props { lang: Lang; }
 const { lang } = Astro.props;
 
-// Order is the committee's own — never sort this. Re-ordering a merit roll to make
-// it tidy would silently demote someone.
+// The config order is the ledger's and stays canonical: it is what the screen-reader
+// and no-script list read. The visible roll shuffles it once per visit (see script),
+// so no name is permanently first or last.
 const donors = invitation.sponsorDonors;
 const N = donors.length;
 
-// Eight cells in a 2 x 4 grid, each cycling through its own run of names. Ring
-// indexing ((p * ROWS + i) % N) keeps the last page from being ragged; at most
-// ROWS-1 names repeat once per pass. Short lists collapse to one page, i.e. a
-// plain static list, with no special-casing in the template.
-const ROWS = N >= 16 ? 8 : N;   // 2 columns x 4 rows
-const PAGES = Math.ceil(N / ROWS);
-const rows = Array.from({ length: ROWS }, (_, i) =>
-  Array.from({ length: PAGES }, (_, p) => donors[(p * ROWS + i) % N]),
-);
+// Eight cells in a 2 x 4 grid. Every donor card is rendered once into a <template>;
+// the script clones them into the cells and turns one line (two cells) at a time.
+const CELLS = Math.min(N, 8);
 
-// Initial for the seal, skipping honorifics and the memorial prefix so the letter
-// belongs to the person rather than to "Bp." or "Alm.".
-const SKIP = /^(bp|bpk|bapak|ibu|mr|mrs|ms|sdr|sdri|ko|alm|almh)\.?$/i;
+// Initial for the seal, skipping honorifics and the family prefix so the letter
+// belongs to the person rather than to "Bp." or "Keluarga".
+const SKIP = /^(bp|bpk|bapak|ibu|mr|mrs|ms|sdr|sdri|ko|alm|almh|kel|keluarga)\.?$/i;
 const initial = (name: string) => {
   const word = name.split(/[\s/]+/).find((w) => /[A-Za-z]/.test(w) && !SKIP.test(w)) ?? name;
-  return (word.match(/[A-Za-z]/)?.[0] ?? "\u00b7").toUpperCase();
+  return (word.match(/[A-Za-z]/)?.[0] ?? "·").toUpperCase();
 };
 ---
 {N > 0 && (
@@ -42,43 +37,45 @@ const initial = (name: string) => {
         : "With deep respect we thank the families whose generosity made this celebration possible."}
     </p>
 
-    {/* One name at a time. Every donor is in the DOM; the script stacks them in a
-        single cell and fades between them. With JS off or reduced motion on, the
-        stack simply renders as the full list. */}
-    <div class="roll" data-roll data-pages={PAGES}>
-      {rows.map((names, ri) => (
-        <div class="row" style={`--i:${ri}`}>
-          {names.map((d, p) => (
-            <article class:list={["card", p === 0 && "is-on"]} data-name={d.name}>
-              <span class="seal" aria-hidden="true">{initial(d.name)}</span>
-              <div class="card-body"><DonorName d={d} /></div>
-            </article>
-          ))}
+    {/* Decorative rolling view. Server-rendered with the first names so the grid has
+        its shape before the script fills it; hidden entirely when script is off. */}
+    <div class="roll" data-roll>
+      {donors.slice(0, CELLS).map((d, i) => (
+        <div class="cell" style={`--i:${i}`}>
+          <article class="card is-on" data-name={d.name}>
+            <span class="seal" aria-hidden="true">{initial(d.name)}</span>
+            <div class="card-body"><DonorName d={d} /></div>
+          </article>
         </div>
       ))}
     </div>
 
-    {/* Canonical roll: complete, in the committee's order, and static, so nothing
-        ever moves under a screen-reader cursor. It is also the no-script view —
-        the rolling stack emits ROWS x PAGES cards, which for 44 donors wraps four
-        families onto a second card each, and a merit roll must not name anyone
-        twice. */}
+    <template data-roll-pool>
+      {donors.map((d) => (
+        <article class="card" data-name={d.name}>
+          <span class="seal" aria-hidden="true">{initial(d.name)}</span>
+          <div class="card-body"><DonorName d={d} /></div>
+        </article>
+      ))}
+    </template>
+
+    {/* Canonical roll: complete, in ledger order, and static, so nothing ever moves
+        under a screen-reader cursor. It is also the no-script view. */}
     <ul class="donor-sr" role="list" data-roll-all hidden>
       {donors.map((d) => <li><DonorName d={d} /></li>)}
     </ul>
 
     <p class="roll-note">
       {lang === "id"
-        ? "Nama disusun sesuai urutan penerimaan, tanpa maksud pemeringkatan."
-        : "Names appear in the order received, with no ranking implied."}
+        ? "Nama ditampilkan bergantian dalam urutan acak, tanpa maksud pemeringkatan."
+        : "Names rotate in random order, with no ranking implied."}
     </p>
   </section>
 )}
 
 <noscript>
   <style>
-    /* No script: the rolling stack would show every page at once, repeating four
-       families. Show the canonical list instead, laid out to read properly. */
+    /* No script: show the canonical list instead of the rolling grid. */
     .donatur .roll { display: none !important; }
     .donatur .donor-sr[hidden] {
       display: grid !important;
@@ -117,6 +114,7 @@ const initial = (name: string) => {
   }
 
   .roll {
+    position: relative;
     max-width: 460px;
     margin: 0 auto;
     display: grid;
@@ -129,8 +127,8 @@ const initial = (name: string) => {
     align-items: center;
     gap: 10px;
     text-align: left;
-    /* stretch to the cell so seals align across a row regardless of how many
-       lines each entry has */
+    /* stretch to the cell so seals align across a line regardless of how many
+       lines of text each entry has */
     height: 100%;
   }
 
@@ -150,17 +148,21 @@ const initial = (name: string) => {
 
   .card-body { min-width: 0; }
 
-  /* Each row stacks its own names in one grid cell, so a row is always as tall as
-     the tallest name it will ever show and never jumps between a one-line entry and
-     a three-line one. Hidden cards must keep participating in layout, which is why
-     display:none would be wrong here. */
-  .row { display: grid; gap: 16px; }
+  /* Outgoing and incoming cards share one grid area, so they cross-fade in place.
+     --cell-h is the tallest donor card at the current width (measured by the
+     script), so a cell never jumps between a one-line name and a three-line one. */
+  .cell { display: grid; }
+  .roll.is-rolling .cell { min-height: var(--cell-h, auto); }
 
-  /* ── rolling mode ──
-     Cards drift in from the right and settle at their row's resting indent, so the
-     column reads as scattered rather than as a rigid stack. --x is the resting
-     offset, applied in both states so only the drift animates. */
-  .roll.is-rolling .row { gap: 0; }
+  /* A hidden cell holding every card, used only to measure --cell-h. */
+  .probe {
+    position: absolute;
+    inset: 0 auto auto 0;
+    visibility: hidden;
+    pointer-events: none;
+  }
+
+  /* ── rolling mode ── */
   .roll.is-rolling .card {
     grid-area: 1 / 1;
     opacity: 0;
@@ -170,9 +172,8 @@ const initial = (name: string) => {
     transition: opacity 900ms cubic-bezier(0.4, 0, 0.2, 1), transform 950ms cubic-bezier(0.4, 0, 0.2, 1);
   }
   /* Transitions read their timing from the destination state, so the leaving card
-     runs 0→900ms and the arriving one begins at 780ms, a slight overlap that
-     reads as a dissolve rather than a hard cut. Sequenced, not overlapped —
-     two serif names crossfading through each other at half opacity is a smear. */
+     runs 0→900ms and the arriving one begins at 780ms: a dissolve, not a smear of
+     two serif names crossing at half opacity. */
   .roll.is-rolling .card.is-on {
     opacity: 1;
     transform: none;
@@ -180,9 +181,11 @@ const initial = (name: string) => {
     user-select: auto;
     transition-delay: 780ms;
   }
+  /* The first fill on load appears without the fade. */
+  .roll.is-rolling .card.is-instant { transition: none; }
 
   /* The names still change for reduced-motion users — that is the point of the
-     section — but they cross-fade in place with no travel and no cascade. */
+     section — but they cross-fade in place with no travel. */
   @media (prefers-reduced-motion: reduce) {
     .roll.is-rolling .card {
       transform: none;
@@ -193,6 +196,7 @@ const initial = (name: string) => {
       transform: none;
       transition-delay: 700ms !important;
     }
+    .roll.is-rolling .card.is-instant { transition: none !important; }
   }
 
   .donor-sr {
@@ -236,107 +240,175 @@ const initial = (name: string) => {
 
 <script>
   const roll = document.querySelector<HTMLElement>("[data-roll]");
+  const pool = document.querySelector<HTMLTemplateElement>("[data-roll-pool]");
   const srList = document.querySelector<HTMLElement>("[data-roll-all]");
-  const pages = Number(roll?.dataset.pages ?? 1);
 
-  if (roll && srList && pages > 1) {
-    const GAP_MIN = 2900;     // irregular beat — a fixed interval reads as a metronome
-    const GAP_MAX = 5800;
-    const gap = () => GAP_MIN + Math.random() * (GAP_MAX - GAP_MIN);
-    const rows = Array.from(roll.querySelectorAll<HTMLElement>(".row")).map((el) =>
-      Array.from(el.querySelectorAll<HTMLElement>(".card")),
+  // Words that say who someone is rather than which person: honorifics, family
+  // and company markers, and the generic names on the shared sponsor/donor links.
+  const STOP = new Set([
+    "bapak", "ibu", "bp", "bpk", "pak", "bu", "mr", "mrs", "ms", "miss", "ko", "koh", "ci", "cik",
+    "sdr", "sdri", "saudara", "saudari", "tn", "ny", "nn", "alm", "almh", "keluarga", "kel", "family",
+    "beserta", "dan", "and", "the", "pt", "cv", "tk", "toko", "ud", "group", "suhu", "dr", "prof",
+    "romo", "ym", "umat", "sponsor", "donatur", "tamu", "vip", "yth",
+  ]);
+  const fold = (s: string) => s.normalize("NFKD").replace(/[̀-ͯ]/g, "").toLowerCase();
+  const wordsOf = (s: string) =>
+    fold(s).split(/[^\p{L}\p{N}]+/u).filter((w) => w.length >= 2 && !STOP.has(w));
+  const escape = (w: string) => w.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
+
+  const shuffle = <T,>(a: T[]) => {
+    for (let i = a.length - 1; i > 0; i--) {
+      const j = Math.floor(Math.random() * (i + 1));
+      [a[i], a[j]] = [a[j], a[i]];
+    }
+    return a;
+  };
+
+  // Guest's own name first. Each word of the invitation name (?to=) is matched as a
+  // whole word against every donor, so "Bapak Michael" brings up both Michaels and
+  // "Bapak/Ibu Lo Ce Min" brings Lo Ce Min first, then the other Lo family names.
+  // More words matched ranks higher; ties and everyone else are shuffled.
+  const arrange = (names: string[], guest: string) => {
+    const patterns = [...new Set(wordsOf(guest))].map(
+      (w) => new RegExp(`(?:^|[^\\p{L}\\p{N}])${escape(w)}(?![\\p{L}\\p{N}])`, "u"),
     );
+    const scored = shuffle(names.map((name, i) => ({
+      i,
+      score: patterns.filter((re) => re.test(fold(name))).length,
+    })));
+    return scored.sort((a, b) => b.score - a.score).map((s) => s.i);
+  };
 
-    // One row turns at a time — both cells in it — with the rows picked at random.
-    // A short memory keeps the same row from coming up twice running, and the two
-    // cells are offset by a beat so the row dissolves rather than blinking.
+  if (roll && pool && srList) {
+    const cards = Array.from(pool.content.querySelectorAll<HTMLElement>(".card"));
+    const cells = Array.from(roll.querySelectorAll<HTMLElement>(".cell"));
+    const N = cards.length;
     const COLS = 2;
-    const lines = Array.from({ length: Math.ceil(rows.length / COLS) }, (_, l) =>
-      Array.from({ length: COLS }, (_, k) => l * COLS + k).filter((i) => i < rows.length),
-    );
-    const at = new Array(rows.length).fill(0);
-    const timers: (number | undefined)[] = new Array(
-      Math.ceil(rows.length / COLS),
-    ).fill(undefined);
-    let onScreen = false;
-    let held = false;
-    let observed = false;
+    const LINES = Math.ceil(cells.length / COLS);
+    const params = new URLSearchParams(location.search);
+    const order = arrange(cards.map((c) => c.dataset.name ?? ""), params.get("to") || params.get("nama") || "");
 
-    // Ring indexing means the tail page wraps back onto the head, so a handful of
-    // names sit in two different cells' pools. Without this guard a random pick
-    // could show the same person twice at once.
-    const nameOf = (card?: HTMLElement) => card?.dataset.name ?? "";
-    const visible = new Set<string>();
-    rows.forEach((cards, i) => visible.add(nameOf(cards[at[i]])));
-
-    const advance = (idx: number) => {
-      const cards = rows[idx];
-      const prev = at[idx];
-      visible.delete(nameOf(cards[prev]));
-      const free = cards
-        .map((_, i) => i)
-        .filter((i) => i !== prev && !visible.has(nameOf(cards[i])));
-      if (free.length) {
-        const next = free[Math.floor(Math.random() * free.length)];
-        cards[prev]?.classList.remove("is-on");
-        cards[next]?.classList.add("is-on");
-        at[idx] = next;
-      }
-      visible.add(nameOf(cards[at[idx]]));
-    };
-
-    // Each row runs its own clock on its own random interval, so the rows drift
-    // out of phase instead of taking turns on one shared beat. Within a row the
-    // second cell lags the first, so the row dissolves rather than blinking.
-    const lagTimers: (number | undefined)[] = new Array(lines.length).fill(undefined);
-    const tick = (l: number) => {
-      lines[l].forEach((idx, k) => {
-        if (k === 0) advance(idx);
-        else lagTimers[l] = window.setTimeout(() => advance(idx), 260);
-      });
-      timers[l] = window.setTimeout(() => tick(l), gap());
-    };
-
-    const shouldRun = () => onScreen && !held && !document.hidden;
-    const stop = () => {
-      timers.forEach((t, l) => { window.clearTimeout(t); timers[l] = undefined; });
-      lagTimers.forEach((t, l) => { window.clearTimeout(t); lagTimers[l] = undefined; });
-    };
-    const sync = () => {
-      if (!shouldRun()) { stop(); return; }
-      timers.forEach((t, l) => {
-        if (t === undefined) timers[l] = window.setTimeout(() => tick(l), gap());
-      });
-    };
-
-    // The rolling column is decoration; the sr-only list beside it is the real roll,
-    // complete and in the committee's order, so nothing moves under a SR cursor.
-    // aria-hidden must be the string "true" — toggleAttribute would set "", which
-    // ARIA reads as undefined, i.e. not hidden at all.
+    // The rolling grid is decoration; the sr-only list is the real roll.
+    // aria-hidden must be the string "true" — toggleAttribute would set "".
     roll.classList.add("is-rolling");
     roll.setAttribute("aria-hidden", "true");
     srList.hidden = false;
 
-    new IntersectionObserver((es) => { observed = true; onScreen = es[0].isIntersecting; sync(); },
-      { threshold: 0.2 }).observe(roll);
+    const put = (cell: HTMLElement, donor: number, instant: boolean) => {
+      const incoming = cards[donor].cloneNode(true) as HTMLElement;
+      const outgoing = Array.from(cell.children) as HTMLElement[];
+      if (instant) {
+        incoming.classList.add("is-on", "is-instant");
+        cell.replaceChildren(incoming);
+        requestAnimationFrame(() => requestAnimationFrame(() => incoming.classList.remove("is-instant")));
+        return;
+      }
+      cell.append(incoming);
+      void incoming.offsetWidth; // commit the hidden state so the fade runs
+      outgoing.forEach((c) => c.classList.remove("is-on"));
+      incoming.classList.add("is-on");
+      window.setTimeout(() => outgoing.forEach((c) => c.remove()), 2000);
+    };
 
-    document.addEventListener("visibilitychange", sync);
+    // First screen: the first eight of the arranged order, in reading order.
+    const fillFirst = () => cells.forEach((cell, k) => put(cell, order[k % N], true));
+    fillFirst();
+    let restart = () => {};
 
-    // No hover pause: the roll fills most of the section, so a cursor resting over
-    // it would freeze the display indefinitely and read as broken. Focus still
-    // pauses, and it stops when scrolled away or the tab is hidden.
-    roll.addEventListener("focusin", () => { held = true; sync(); });
-    roll.addEventListener("focusout", () => { held = false; sync(); });
+    // Height: stack every card in one hidden cell at the live cell width.
+    const measure = () => {
+      // A shallow clone keeps Astro's scoping attribute, so the .cell/.probe rules apply.
+      const probe = cells[0].cloneNode(false) as HTMLElement;
+      probe.classList.add("probe");
+      probe.style.width = `${cells[0].getBoundingClientRect().width}px`;
+      probe.style.minHeight = "0";
+      cards.forEach((c) => {
+        const clone = c.cloneNode(true) as HTMLElement;
+        clone.classList.add("is-on", "is-instant");
+        probe.append(clone);
+      });
+      roll.append(probe);
+      roll.style.setProperty("--cell-h", `${probe.getBoundingClientRect().height}px`);
+      probe.remove();
+    };
+    measure();
+    let lastWidth = roll.clientWidth;
+    let resizeTimer: number | undefined;
+    window.addEventListener("resize", () => {
+      window.clearTimeout(resizeTimer);
+      resizeTimer = window.setTimeout(() => {
+        if (roll.clientWidth !== lastWidth) { lastWidth = roll.clientWidth; measure(); }
+      }, 150);
+    });
+    document.fonts?.ready.then(measure);
 
-    sync();
+    if (N > cells.length) {
+      // Lines turn in order, top to bottom, both names in a line together (the
+      // second a beat behind), always taking the next two names in the arranged
+      // order. The screen is then a sliding window over the order, so nobody can
+      // appear twice at once and everyone comes round before anyone repeats.
+      const BEAT = 3200;
+      const LAG = 260;
+      let next = cells.length % N;
+      let line = 0;
+      let timer: number | undefined;
+      const lagTimers = new Set<number>();
+      let onScreen = false;
+      let held = false;
+      let observed = false;
 
-    // Safety net for a browser that never delivers an IntersectionObserver entry.
-    // It must not simply force onScreen: the roll sits far below the fold, so at
-    // 2.5s it is legitimately off-screen on every load, and forcing it there ran
-    // sixteen cards the whole time the guest was still reading the cover. Only
-    // step in if the observer has said nothing at all.
-    window.setTimeout(() => {
-      if (!observed && !held) { onScreen = true; sync(); }
-    }, 4000);
+      const tick = () => {
+        const [first, second] = [line * COLS, line * COLS + 1];
+        put(cells[first], order[next], false);
+        next = (next + 1) % N;
+        if (cells[second]) {
+          const donor = order[next];
+          next = (next + 1) % N;
+          const t = window.setTimeout(() => { lagTimers.delete(t); put(cells[second], donor, false); }, LAG);
+          lagTimers.add(t);
+        }
+        line = (line + 1) % LINES;
+        timer = window.setTimeout(tick, BEAT);
+      };
+
+      const shouldRun = () => onScreen && !held && !document.hidden;
+      const sync = () => {
+        if (!shouldRun()) {
+          window.clearTimeout(timer); timer = undefined;
+          return;
+        }
+        if (timer === undefined) timer = window.setTimeout(tick, BEAT);
+      };
+
+      new IntersectionObserver((es) => { observed = true; onScreen = es[0].isIntersecting; sync(); },
+        { threshold: 0.2 }).observe(roll);
+      document.addEventListener("visibilitychange", sync);
+
+      // No hover pause: the roll fills most of the section, so a resting cursor
+      // would freeze it indefinitely. Focus pauses; scrolling away or hiding the
+      // tab stops it.
+      roll.addEventListener("focusin", () => { held = true; sync(); });
+      roll.addEventListener("focusout", () => { held = false; sync(); });
+
+      restart = () => {
+        window.clearTimeout(timer); timer = undefined;
+        lagTimers.forEach((t) => window.clearTimeout(t)); lagTimers.clear();
+        next = cells.length % N;
+        line = 0;
+        fillFirst();
+        sync();
+      };
+
+      // Safety net for a browser that never delivers an IntersectionObserver entry.
+      window.setTimeout(() => {
+        if (!observed && !held) { onScreen = true; sync(); }
+      }, 4000);
+    }
+
+    // Opening the invitation starts the roll from its first screen — the guest's
+    // own name first — however long the page sat behind the cover, and so does
+    // coming back to the page from the browser's back/forward cache.
+    document.getElementById("openBtn")?.addEventListener("click", () => restart());
+    window.addEventListener("pageshow", (e) => { if (e.persisted) restart(); });
   }
 </script>
