@@ -176,12 +176,16 @@ const visitedTotal = guests.filter((g) => openState(g) === "visited").length;
       /* ── dashboard header ── */
       .top { display: flex; align-items: flex-start; justify-content: space-between; gap: 12px; margin-bottom: 18px; }
       .toolbar { display: flex; flex-wrap: wrap; gap: 10px; align-items: center; margin-bottom: 16px; }
-      .search { flex: 1; min-width: 180px; }
+      .search { flex: 1; min-width: 180px; position: relative; }
       .search input {
-        width: 100%; padding: 10px 12px; background: var(--panel); border: 1px solid var(--line2);
+        width: 100%; padding: 10px 12px 10px 38px; background: var(--panel); border: 1px solid var(--line2);
         border-radius: 8px; outline: none;
       }
       .search input:focus { border-color: var(--gold); }
+      .search .search-icon {
+        position: absolute; left: 12px; top: 50%; transform: translateY(-50%);
+        width: 16px; height: 16px; color: var(--muted); pointer-events: none;
+      }
       .sort-select {
         padding: 10px 12px; background: var(--panel); border: 1px solid var(--line2);
         border-radius: 8px; outline: none; cursor: pointer;
@@ -367,11 +371,10 @@ const visitedTotal = guests.filter((g) => openState(g) === "visited").length;
 
         /* ── phone: a card per guest, not a transcribed table row ──
            Ten stacked label/value pairs made one guest 537px tall, so a page of
-           100 was ~53,000px of scrolling, and the guest's name carried no more
-           weight than "Diaudit oleh". Keep what a volunteer acts on; the rest
-           stays in the DOM for search and CSV, just not shouting. */
+           100 was ~53,000px of scrolling. Keep what a volunteer acts on; the rest
+           stays in the DOM for search and CSV, just not shouting. "Diaudit oleh"
+           stays visible so it's clear which admin made the invitation. */
         .grid tbody td[data-label="Ditambah"],
-        .grid tbody td[data-label="Diaudit oleh"],
         .grid tbody td[data-label="Tautan Kustom"] { display: none; }
         .link-row a { display: none; }
 
@@ -673,7 +676,12 @@ const visitedTotal = guests.filter((g) => openState(g) === "visited").length;
         </form>
 
         <div class="toolbar">
-          <div class="search"><input id="search" placeholder="Cari nama / alamat / kategori…" aria-label="Cari" /></div>
+          <div class="search">
+            <svg class="search-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+              <circle cx="11" cy="11" r="7" /><line x1="21" y1="21" x2="16.65" y2="16.65" />
+            </svg>
+            <input id="search" placeholder="Cari nama / alamat / kategori…" aria-label="Cari" />
+          </div>
           <select id="catFilter" class="sort-select" aria-label="Filter kategori">
             <option value="">Semua Kategori</option>
             {CATEGORIES.map((c) => <option value={c}>{c}</option>)}
