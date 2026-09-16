@@ -25,3 +25,6 @@ donatur-klasifikasi.csv
 
 # 8MB photo of the physical banner, kept for cross-checking the logo wall
 reference/
+
+# Temporary scratch data
+scratch/

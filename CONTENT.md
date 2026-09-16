@@ -94,39 +94,39 @@ Signed: **Fiter Lie** (Ketua Panitia), **Lukas Susanto** (Sekretaris)
 **Penanggung Jawab:** Suhu Benny Susanto
 
 **Dewan Kehormatan:**
-1. Bp. Juanto Kencana Jaya — Jakarta
-2. Bp. Lie Kok Tie — Jakarta
-3. Bp. Kwee Ebie — Jakarta
+1. Bpk. Juanto Kencana Jaya — Jakarta
+2. Bpk. Lie Kok Tie — Jakarta
+3. Bpk. Kwee Ebie — Jakarta
 4. Suhu Atjai — Cikoleang
 5. Y.M. Dharmarakkhita Sthavira / Suhu Riki — Lampung
-6. Bp. Na Beng Ti — Tangerang
-7. Bp. Keng Sun — Tanjung Kait
-8. Bp. Liaw Kim Hiung — Jakarta
-9. Bp. Sianto Lim — Sentul
-10. Bp. Benny Nova — Jakarta
+6. Bpk. Na Beng Ti — Tangerang
+7. Bpk. Keng Sun — Tanjung Kait
+8. Bpk. Liaw Kim Hiung — Jakarta
+9. Bpk. Sianto Lim — Sentul
+10. Bpk. Benny Nova — Jakarta
 
 **Inti:**
 | Posisi | Nama |
 |---|---|
-| Ketua Panitia | Bp. Fiter Lie |
-| Wakil 1 | Bp. Andrie |
-| Wakil 2 | Bp. Effen Wijaya / Eddy |
-| Sekretaris 1 | Bp. Lukas Susanto |
-| Sekretaris 2 | Bp. Freddy |
+| Ketua Panitia | Bpk. Fiter Lie |
+| Wakil 1 | Bpk. Andrie |
+| Wakil 2 | Bpk. Effen Wijaya / Eddy |
+| Sekretaris 1 | Bpk. Lukas Susanto |
+| Sekretaris 2 | Bpk. Freddy |
 | Bendahara 1 | Ibu Oeij Ailie |
 | Bendahara 2 | Sdri. Liliany Candra |
 | Kord. Persembahyangan | Suhu Benny Susanto |
 
 **Koordinator Bidang:**
-- **Penerimaan Kimsin:** Ibu Herlie · Bp. Sianto Lim · Ibu Ayin · Bp. Karnadi · Bp. Yuidi Haidiman · Bp. Zhong Yong Pao · Bp. Willy · Bp. Jen Jung · Bp. Wendy · Ibu San San · Ibu Ai Cen
-- **Joli / Kiauw:** Bp. Arifin · Bp. Sanjaya · Bp. Alvin · Bp. Charles · Bp. Santoso · Bp. Agus · Bp. Ali Kurniawan · Bp. Adit
+- **Penerimaan Kimsin:** Ibu Herlie · Bpk. Sianto Lim · Ibu Ayin · Bpk. Karnadi · Bpk. Yuidi Haidiman · Bpk. Zhong Yong Pao · Bpk. Willy · Bpk. Jen Jung · Bpk. Wendy · Ibu San San · Ibu Ai Cen
+- **Joli / Kiauw:** Bpk. Arifin · Bpk. Sanjaya · Bpk. Alvin · Bpk. Charles · Bpk. Santoso · Bpk. Agus · Bpk. Ali Kurniawan · Bpk. Adit
 - **Konsumsi:** Ibu Yenny / Aing · Ibu Cide · Ibu Herlie · Ibu-Ibu Tjie Thien Ta Sen Bio
-- **Perlengkapan:** Bp. Dedy Susanto · Kevin · Hasan · Agus · Chandra · Hani · Enro · Simpatisan
+- **Perlengkapan:** Bpk. Dedy Susanto · Kevin · Hasan · Agus · Chandra · Hani · Enro · Simpatisan
 - **Keamanan:** Kapolsek Neglasari · Bimas Neglasari · Babinsa Neglasari · Ketua RW 02 · Ketua RT 02 · Ketua ORARI Lokal Tangerang
-- **Acara, Seni & Budaya:** Ibu Tan Ai Cen · Bp. Yuidi Hardiman · Bp. Dedi HLT (Liong & Barongsai)
-- **Akomodasi & Transportasi:** Bp. Efendi Lukias · Bp. Vendy Susanto · Bp. Asien
-- **Humas, Umum & Birokrasi:** Bp. Willy · Bp. Tommy
-- **Dokumentasi & Promosi:** Bp. Dwi Pundarika
+- **Acara, Seni & Budaya:** Ibu Tan Ai Cen · Bpk. Yuidi Hardiman · Bpk. Dedi HLT (Liong & Barongsai)
+- **Akomodasi & Transportasi:** Bpk. Efendi Lukias · Bpk. Vendy Susanto · Bpk. Asien
+- **Humas, Umum & Birokrasi:** Bpk. Willy · Bpk. Tommy
+- **Dokumentasi & Promosi:** Bpk. Dwi Pundarika
 - **P3K:** dr. Lily Suryadi
 
 ## 9 · Penawaran Dukungan Sponsorship

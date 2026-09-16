@@ -1,0 +1,223 @@
+================================================================================
+BAGIAN 1: BARIS TAMBAHAN GOOGLE SPREADSHEET (BARIS 80–82)
+================================================================================
+Petunjuk:
+Salin 3 baris di bawah ini, lalu klik sel A80 di Google Spreadsheet dan tekan Paste (Ctrl+V / Cmd+V).
+Format sudah berupa Tab-Separated Values (TSV) sehingga otomatis terbagi rapi ke masing-masing kolom A sampai L.
+
+80	Bapak	Fitri Hadi Sentosa (Abaw)	PMN	Tamu VIP		fitri-hadi-sentosa		https://undangan-digital-kirab.liefisca.com/undangan/fitri-hadi-sentosa		TRUE	
+81	Jendral	Teguh Pudjo Rumekso	PMN	Tamu VIP		jendral-teguh-pudjo-rumekso		https://undangan-digital-kirab.liefisca.com/undangan/jendral-teguh-pudjo-rumekso		TRUE	
+82	Bapak	Tony Setiawan Tjokro	Banjarmasin	Donatur	Donasi Perorangan	tony		https://undangan-digital-kirab.liefisca.com/undangan/tony		TRUE	
+
+
+================================================================================
+BAGIAN 2: DAFTAR 12 UNDANGAN DIGITAL LENGKAP (AKUN FITERLIE)
+================================================================================
+
+1. Fitri Hadi Sentosa (Abaw)
+   Sebutan  : Bapak
+   Alamat   : PMN
+   Kategori : Tamu VIP
+   Link     : https://undangan-digital-kirab.liefisca.com/undangan/fitri-hadi-sentosa
+
+2. Jendral Teguh Pudjo Rumekso
+   Sebutan  : Jendral
+   Alamat   : PMN
+   Kategori : Tamu VIP
+   Link     : https://undangan-digital-kirab.liefisca.com/undangan/jendral-teguh-pudjo-rumekso
+
+3. Mrs. Nina
+   Sebutan  : Mrs.
+   Alamat   : Jakarta
+   Kategori : Donatur
+   Link     : https://undangan-digital-kirab.liefisca.com/undangan/nina
+
+4. Bapak Alwi
+   Sebutan  : Bapak
+   Alamat   : Ditempat
+   Kategori : Sponsor
+   Link     : https://undangan-digital-kirab.liefisca.com/undangan/alwi
+
+5. Ibu Lie Dian
+   Sebutan  : Ibu
+   Alamat   : Jakarta
+   Kategori : Sponsor
+   Link     : https://undangan-digital-kirab.liefisca.com/undangan/lie-dian
+
+6. Bapak Kwan Ping
+   Sebutan  : Bapak
+   Alamat   : Ditempat
+   Kategori : Sponsor
+   Link     : https://undangan-digital-kirab.liefisca.com/undangan/kwan-ping
+
+7. PT Maju Makmur Prima
+   Sebutan  : —
+   Alamat   : Lampung
+   Kategori : Sponsor
+   Link     : https://undangan-digital-kirab.liefisca.com/undangan/maju-makmur-prima
+
+8. Bapak Tono Chang
+   Sebutan  : Bapak
+   Alamat   : Ditempat
+   Kategori : Donatur
+   Link     : https://undangan-digital-kirab.liefisca.com/undangan/tono-chang
+
+9. PT. Borneo Prima Utama Jaya (Bpk. Atak)
+   Sebutan  : Bapak/Ibu
+   Alamat   : Ditempat
+   Kategori : Donatur
+   Link     : https://undangan-digital-kirab.liefisca.com/undangan/atak-borneo-prima-utama-jaya
+
+10. Bapak Tony Setiawan Tjokro
+    Sebutan  : Bapak
+    Alamat   : Banjarmasin
+    Kategori : Donatur
+    Link     : https://undangan-digital-kirab.liefisca.com/undangan/tony
+
+11. Bapak Bun Khiok Hok
+    Sebutan  : Bapak
+    Alamat   : Ditempat
+    Kategori : Donatur
+    Link     : https://undangan-digital-kirab.liefisca.com/undangan/bun-khiok-hok
+
+12. Bapak Rudy Gunawan (Ate)
+    Sebutan  : Bapak
+    Alamat   : Lampung
+    Kategori : Donatur
+    Link     : https://undangan-digital-kirab.liefisca.com/undangan/rudy-gunawan-ate-keluarga
+
+
+================================================================================
+BAGIAN 3: TEMPLATE PESAN WHATSAPP SIAP KIRIM (12 TAMU)
+================================================================================
+
+--- [1] Fitri Hadi Sentosa (Abaw) ---
+Yth. Bapak Fitri Hadi Sentosa (Abaw) 🙏
+
+Dengan penuh sukacita, kami mengundang Anda ke *Kirab Budaya & Ruwat Bumi 2026* — Tjie Thien Ta Sen Bio, Tangerang.
+
+Silakan buka undangan digital Anda di:
+https://undangan-digital-kirab.liefisca.com/undangan/fitri-hadi-sentosa
+
+Suatu kehormatan atas kehadiran Anda. Terima kasih. 🏮
+
+
+--- [2] Jendral Teguh Pudjo Rumekso ---
+Yth. Jendral Teguh Pudjo Rumekso 🙏
+
+Dengan penuh sukacita, kami mengundang Anda ke *Kirab Budaya & Ruwat Bumi 2026* — Tjie Thien Ta Sen Bio, Tangerang.
+
+Silakan buka undangan digital Anda di:
+https://undangan-digital-kirab.liefisca.com/undangan/jendral-teguh-pudjo-rumekso
+
+Suatu kehormatan atas kehadiran Anda. Terima kasih. 🏮
+
+
+--- [3] Mrs. Nina ---
+Yth. Mrs. Nina 🙏
+
+Dengan penuh sukacita, kami mengundang Anda ke *Kirab Budaya & Ruwat Bumi 2026* — Tjie Thien Ta Sen Bio, Tangerang.
+
+Silakan buka undangan digital Anda di:
+https://undangan-digital-kirab.liefisca.com/undangan/nina
+
+Suatu kehormatan atas kehadiran Anda. Terima kasih. 🏮
+
+
+--- [4] Bapak Alwi ---
+Yth. Bapak Alwi 🙏
+
+Dengan penuh sukacita, kami mengundang Anda ke *Kirab Budaya & Ruwat Bumi 2026* — Tjie Thien Ta Sen Bio, Tangerang.
+
+Silakan buka undangan digital Anda di:
+https://undangan-digital-kirab.liefisca.com/undangan/alwi
+
+Suatu kehormatan atas kehadiran Anda. Terima kasih. 🏮
+
+
+--- [5] Ibu Lie Dian ---
+Yth. Ibu Lie Dian 🙏
+
+Dengan penuh sukacita, kami mengundang Anda ke *Kirab Budaya & Ruwat Bumi 2026* — Tjie Thien Ta Sen Bio, Tangerang.
+
+Silakan buka undangan digital Anda di:
+https://undangan-digital-kirab.liefisca.com/undangan/lie-dian
+
+Suatu kehormatan atas kehadiran Anda. Terima kasih. 🏮
+
+
+--- [6] Bapak Kwan Ping ---
+Yth. Bapak Kwan Ping 🙏
+
+Dengan penuh sukacita, kami mengundang Anda ke *Kirab Budaya & Ruwat Bumi 2026* — Tjie Thien Ta Sen Bio, Tangerang.
+
+Silakan buka undangan digital Anda di:
+https://undangan-digital-kirab.liefisca.com/undangan/kwan-ping
+
+Suatu kehormatan atas kehadiran Anda. Terima kasih. 🏮
+
+
+--- [7] PT Maju Makmur Prima ---
+Yth. Pimpinan PT Maju Makmur Prima 🙏
+
+Dengan penuh sukacita, kami mengundang Anda ke *Kirab Budaya & Ruwat Bumi 2026* — Tjie Thien Ta Sen Bio, Tangerang.
+
+Silakan buka undangan digital Anda di:
+https://undangan-digital-kirab.liefisca.com/undangan/maju-makmur-prima
+
+Suatu kehormatan atas kehadiran Anda. Terima kasih. 🏮
+
+
+--- [8] Bapak Tono Chang ---
+Yth. Bapak Tono Chang 🙏
+
+Dengan penuh sukacita, kami mengundang Anda ke *Kirab Budaya & Ruwat Bumi 2026* — Tjie Thien Ta Sen Bio, Tangerang.
+
+Silakan buka undangan digital Anda di:
+https://undangan-digital-kirab.liefisca.com/undangan/tono-chang
+
+Suatu kehormatan atas kehadiran Anda. Terima kasih. 🏮
+
+
+--- [9] PT. Borneo Prima Utama Jaya (Bpk. Atak) ---
+Yth. Bapak Atak / Pimpinan PT. Borneo Prima Utama Jaya 🙏
+
+Dengan penuh sukacita, kami mengundang Anda ke *Kirab Budaya & Ruwat Bumi 2026* — Tjie Thien Ta Sen Bio, Tangerang.
+
+Silakan buka undangan digital Anda di:
+https://undangan-digital-kirab.liefisca.com/undangan/atak-borneo-prima-utama-jaya
+
+Suatu kehormatan atas kehadiran Anda. Terima kasih. 🏮
+
+
+--- [10] Bapak Tony Setiawan Tjokro ---
+Yth. Bapak Tony Setiawan Tjokro 🙏
+
+Dengan penuh sukacita, kami mengundang Anda ke *Kirab Budaya & Ruwat Bumi 2026* — Tjie Thien Ta Sen Bio, Tangerang.
+
+Silakan buka undangan digital Anda di:
+https://undangan-digital-kirab.liefisca.com/undangan/tony
+
+Suatu kehormatan atas kehadiran Anda. Terima kasih. 🏮
+
+
+--- [11] Bapak Bun Khiok Hok ---
+Yth. Bapak Bun Khiok Hok 🙏
+
+Dengan penuh sukacita, kami mengundang Anda ke *Kirab Budaya & Ruwat Bumi 2026* — Tjie Thien Ta Sen Bio, Tangerang.
+
+Silakan buka undangan digital Anda di:
+https://undangan-digital-kirab.liefisca.com/undangan/bun-khiok-hok
+
+Suatu kehormatan atas kehadiran Anda. Terima kasih. 🏮
+
+
+--- [12] Bapak Rudy Gunawan (Ate) ---
+Yth. Bapak Rudy Gunawan (Ate) 🙏
+
+Dengan penuh sukacita, kami mengundang Anda ke *Kirab Budaya & Ruwat Bumi 2026* — Tjie Thien Ta Sen Bio, Tangerang.
+
+Silakan buka undangan digital Anda di:
+https://undangan-digital-kirab.liefisca.com/undangan/rudy-gunawan-ate-keluarga
+
+Suatu kehormatan atas kehadiran Anda. Terima kasih. 🏮

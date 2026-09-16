@@ -20,6 +20,7 @@ export type Guest = {
   created_at: string;
   updated_at: string;
   audited_by?: string | null; // username of the admin who last created/edited (display only)
+  created_by_username?: string | null; // username of the admin who created the guest, for the "created by" filter
   // Open-tracking (see /api/track). Present on listGuests(); absent elsewhere.
   visit_count?: number;
   open_count?: number;
@@ -50,7 +51,7 @@ export async function listGuests(): Promise<Guest[]> {
     select u.id, u.salutation, u.name, u.address, u.category, u.slug, u.created_at, u.updated_at,
            u.visit_count, u.open_count,
            u.first_visited_at, u.last_visited_at, u.first_opened_at, u.last_opened_at,
-           coalesce(ua.username, ca.username) as audited_by
+           coalesce(ua.username, ca.username) as audited_by, ca.username as created_by_username
     from users u
     left join admins ua on ua.id = u.updated_by
     left join admins ca on ca.id = u.created_by

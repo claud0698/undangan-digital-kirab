@@ -9,6 +9,7 @@ export const CATEGORIES = [
   "Sponsor",
   "Donatur",
   "Tamu VIP",
+  "Tamu",
   "Keluarga",
   "Umum",
 ] as const;

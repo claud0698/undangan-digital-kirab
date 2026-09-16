@@ -203,14 +203,14 @@ export const invitation = {
     // title to publish. Deliberate — do not "correct" it back to the document.
     leadership: [
       { role: "Ketua Pembina", name: "Suhu Benny Susanto" },
-      { role: "Ketua Panitia", name: "Bp. Fiter Lie" },
+      { role: "Ketua Panitia", name: "Bpk. Fiter Lie" },
     ],
     inti: [
-      { role: "Ketua Panitia",          name: "Bp. Fiter Lie" },
-      { role: "Wakil Ketua 1",          name: "Bp. Andrie" },
-      { role: "Wakil Ketua 2",          name: "Bp. Effen Wijaya / Eddy" },
-      { role: "Sekretaris 1",           name: "Bp. Lukas Susanto" },
-      { role: "Sekretaris 2",           name: "Bp. Freddy" },
+      { role: "Ketua Panitia",          name: "Bpk. Fiter Lie" },
+      { role: "Wakil Ketua 1",          name: "Bpk. Andrie" },
+      { role: "Wakil Ketua 2",          name: "Bpk. Effen Wijaya / Eddy" },
+      { role: "Sekretaris 1",           name: "Bpk. Lukas Susanto" },
+      { role: "Sekretaris 2",           name: "Bpk. Freddy" },
       { role: "Bendahara 1",            name: "Ibu Oeij Ailie" },
       { role: "Bendahara 2",            name: "Sdri. Liliany Candra" },
       { role: "Koord. Persembahyangan", name: "Suhu Benny Susanto" },
@@ -219,20 +219,20 @@ export const invitation = {
       {
         title: { id: "Penerimaan Kiem Sin", en: "Kiem Sin Reception" },
         members: [
-          { name: "Ibu Herlie" },     { name: "Bp. Sianto Lim" },
-          { name: "Ibu Ayin" },       { name: "Bp. Karnadi" },
-          { name: "Bp. Yuidi Haidiman" }, { name: "Bp. Zhong Yong Pao" },
-          { name: "Bp. Willy" },      { name: "Bp. Jen Jung" },
-          { name: "Bp. Wendy" },      { name: "Ibu San San" },
+          { name: "Ibu Herlie" },     { name: "Bpk. Sianto Lim" },
+          { name: "Ibu Ayin" },       { name: "Bpk. Karnadi" },
+          { name: "Bpk. Yuidi Haidiman" }, { name: "Bpk. Zhong Yong Pao" },
+          { name: "Bpk. Willy" },      { name: "Bpk. Jen Jung" },
+          { name: "Bpk. Wendy" },      { name: "Ibu San San" },
           { name: "Ibu Ai Cen" },
         ],
       },
       {
         title: { id: "Kio / Joli", en: "Kio / Joli" },
         members: [
-          { name: "Bp. Arifin" }, { name: "Bp. Sanjaya" }, { name: "Bp. Alvin" },
-          { name: "Bp. Charles" }, { name: "Bp. Santoso" }, { name: "Bp. Agus" },
-          { name: "Bp. Ali Kurniawan" }, { name: "Bp. Adit" },
+          { name: "Bpk. Arifin" }, { name: "Bpk. Sanjaya" }, { name: "Bpk. Alvin" },
+          { name: "Bpk. Charles" }, { name: "Bpk. Santoso" }, { name: "Bpk. Agus" },
+          { name: "Bpk. Ali Kurniawan" }, { name: "Bpk. Adit" },
         ],
       },
       {
@@ -245,7 +245,7 @@ export const invitation = {
       {
         title: { id: "Perlengkapan", en: "Logistics" },
         members: [
-          { name: "Bp. Dedy Susanto" }, { name: "Kevin" }, { name: "Hasan" },
+          { name: "Bpk. Dedy Susanto" }, { name: "Kevin" }, { name: "Hasan" },
           { name: "Agus" }, { name: "Chandra" }, { name: "Hani" }, { name: "Enro" },
           { name: "Simpatisan" },
         ],
@@ -262,25 +262,25 @@ export const invitation = {
         title: { id: "Acara, Seni, & Budaya", en: "Programme, Arts & Culture" },
         members: [
           { name: "Ibu Tan Ai Cen" },
-          { name: "Bp. Yuidi Hardiman" },
-          { name: "Bp. Dedi HLT (Liong & Barongsai)" },
+          { name: "Bpk. Yuidi Hardiman" },
+          { name: "Bpk. Dedi HLT (Liong & Barongsai)" },
         ],
       },
       {
         title: { id: "Akomodasi & Transportasi", en: "Accommodation & Transport" },
         members: [
-          { name: "Bp. Efendi Lukias" }, { name: "Bp. Vendy Susanto" }, { name: "Bp. Asien" },
+          { name: "Bpk. Efendi Lukias" }, { name: "Bpk. Vendy Susanto" }, { name: "Bpk. Asien" },
         ],
       },
       {
         title: { id: "Humas, Umum & Birokrasi", en: "Public Relations & Administration" },
         members: [
-          { name: "Bp. Willy" }, { name: "Bp. Tommy" },
+          { name: "Bpk. Willy" }, { name: "Bpk. Tommy" },
         ],
       },
       {
         title: { id: "Dokumentasi & Promosi", en: "Documentation & Promotion" },
-        members: [{ name: "Bp. Dwi Pundarika" }],
+        members: [{ name: "Bpk. Dwi Pundarika" }],
       },
       {
         title: { id: "P3K", en: "First Aid" },
@@ -423,8 +423,8 @@ export const invitation = {
     { name: "Yap Yun Fui",                               city: "Bayur" },
     { name: "Lo Cing Cung" },
     { name: "Tonny Setiawan" },
-    { name: "Bp. Frans" },
-    { name: "Bp. Suryono" },
+    { name: "Bpk. Frans" },
+    { name: "Bpk. Suryono" },
     { name: "Lily" },
     { name: "Andry Suryadi W & Keluarga",                city: "Tangerang" },
     { name: "Benny Nova & Lany Nova" },
@@ -462,6 +462,8 @@ export const invitation = {
     { name: "Ko Bebeng & Keluarga" },
     { name: "Ibu Mei Mei" },
     { name: "Anthony Lesmana & Keluarga",                city: "Depok" },
+    { name: "Bella S." },
+    { name: "Yosie" },
   ] satisfies SponsorDonor[],
 
   share: {

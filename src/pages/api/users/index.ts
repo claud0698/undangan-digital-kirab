@@ -40,7 +40,7 @@ export const POST: APIRoute = async ({ request, cookies }) => {
     const slug = await uniqueSlug(requested, name);
     try {
       const guest = await createGuest({ salutation: salutation || null, name, address, category, slug, createdBy: session.id });
-      return json({ guest: { ...guest, audited_by: session.username } }, 201);
+      return json({ guest: { ...guest, audited_by: session.username, created_by_username: session.username } }, 201);
     } catch (e) {
       if (isUniqueViolation(e) && attempt < 4) continue;
       return json({ error: "Gagal menyimpan tamu." }, 500);

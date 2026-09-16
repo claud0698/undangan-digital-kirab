@@ -16,7 +16,7 @@ const N = donors.length;
 const CELLS = Math.min(N, 8);
 
 // Initial for the seal, skipping honorifics and the family prefix so the letter
-// belongs to the person rather than to "Bp." or "Keluarga".
+// belongs to the person rather than to "Bpk." or "Keluarga".
 const SKIP = /^(bp|bpk|bapak|ibu|mr|mrs|ms|sdr|sdri|ko|alm|almh|kel|keluarga)\.?$/i;
 const initial = (name: string) => {
   const word = name.split(/[\s/]+/).find((w) => /[A-Za-z]/.test(w) && !SKIP.test(w)) ?? name;

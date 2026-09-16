@@ -40,9 +40,11 @@ export const PATCH: APIRoute = async ({ params, request, cookies }) => {
     // on collision, gets an incrementing suffix (andriwijaya, andriwijaya1, …);
     // an emptied slug is regenerated from the guest's name — it never becomes null.
     const raw = String(patch.slug ?? "");
-    const cleaned = raw.toLowerCase().replace(/[^a-z0-9-]+/g, "");
-    if (raw && !isValidSlug(cleaned))
+    const cleaned = raw.toLowerCase().trim().replace(/^https?:\/\/[^/]+/i, "").replace(/^\/+/, "").replace(/[\s_]+/g, "-").replace(/[^a-z0-9-]+/g, "").replace(/^-+|-+$/g, "");
+    if (raw && !cleaned)
       return json({ error: "Tautan kustom tidak valid (huruf kecil, angka, tanda hubung)." }, 400);
+    if (cleaned && !isValidSlug(cleaned))
+      return json({ error: "Tautan kustom tidak valid (huruf kecil, angka, tanda hubung, maks 64 karakter)." }, 400);
     const nameForSlug = patch.name ?? (await getGuestById(id))?.name ?? "";
     patch.slug = await uniqueSlug(cleaned, nameForSlug, id);
   }

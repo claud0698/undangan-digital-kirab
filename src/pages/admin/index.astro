@@ -54,6 +54,7 @@ const TOUR = [
 ];
 
 const prettyLink = (g: Pick<Guest, "slug">) => (g.slug ? `${site}/undangan/${g.slug}` : "");
+const myUsername = session?.username ?? "";
 const fmtDate = (iso: string) =>
   new Intl.DateTimeFormat("id-ID", {
     day: "numeric", month: "short", year: "numeric",
@@ -71,6 +72,9 @@ const seenTitle = (g: Guest) => {
   const t = lastSeen(g);
   return t ? `Terakhir: ${fmtDate(t)}` : "Belum ada kunjungan";
 };
+const creators = [
+  ...new Set([myUsername, ...guests.map((g) => g.created_by_username)].filter((u): u is string => !!u)),
+].sort((a, b) => a.localeCompare(b, "id"));
 const openedTotal = guests.filter((g) => (g.open_count ?? 0) > 0).length;
 // Exclusive of the opened ones, matching openState() and the AdminStats panel.
 // Counting opened guests as "dikunjungi" too would put two different numbers
@@ -114,6 +118,7 @@ const visitedTotal = guests.filter((g) => openState(g) === "visited").length;
       .btn:disabled { opacity: .5; cursor: default; }
       .btn-ghost { background: transparent; color: var(--muted); border: 1px solid var(--line2); }
       .btn-ghost:hover { color: var(--text); border-color: var(--gold); }
+      .btn-ghost[aria-pressed="true"] { background: var(--gold); color: #1a1209; border-color: var(--gold); }
       .btn-sm { padding: 6px 10px; font-size: 13px; border-radius: 6px; }
       .btn-danger { color: #e8a99a; border-color: #4a2a24; }
       .btn-danger:hover { color: #fff; background: var(--red); border-color: var(--red); }
@@ -215,7 +220,7 @@ const visitedTotal = guests.filter((g) => openState(g) === "visited").length;
       .add .hint code { overflow-wrap: anywhere; word-break: break-all; }
       /* button fills its own cell and bottom-aligns with the inputs via the
          hidden spacer label above it */
-      .add .btn { width: 100%; }
+      .add .btn { width: 100%; display: inline-flex; align-items: center; justify-content: center; gap: 9px; }
       .add .btn-field .field-title { visibility: hidden; }
 
       /* ── grid (table on desktop) ── */
@@ -229,10 +234,58 @@ const visitedTotal = guests.filter((g) => openState(g) === "visited").length;
       }
       .grid tbody td { padding: 9px 12px; border-bottom: 1px solid var(--line); vertical-align: middle; }
       .grid tbody tr:last-child td { border-bottom: 0; }
-      .cell[contenteditable] { outline: none; border-radius: 6px; padding: 4px 6px; min-height: 20px; cursor: text; }
-      .cell[contenteditable]:hover { background: #1e1613; }
-      .cell[contenteditable]:focus { background: #241a15; box-shadow: inset 0 0 0 1px var(--gold); }
-      .cell.slug { font-family: var(--font-mono); font-size: 13px; color: var(--gold-bright); }
+      .cell[contenteditable] {
+        position: relative;
+        outline: none;
+        border-radius: 6px;
+        padding: 5px 8px;
+        padding-right: 22px;
+        min-height: 30px;
+        cursor: text;
+        border: 1px solid var(--line2);
+        background: rgba(18, 13, 10, 0.45);
+        transition: border-color .15s ease, background .15s ease, box-shadow .15s ease;
+        word-break: break-word;
+      }
+      .cell[contenteditable]:hover {
+        background: #1f1511;
+        border-color: rgba(212, 175, 55, 0.55);
+      }
+      .cell[contenteditable]:focus {
+        background: #251a14;
+        border-color: var(--gold);
+        box-shadow: 0 0 0 2px rgba(212, 175, 55, 0.25);
+      }
+      .cell[contenteditable]::after {
+        content: "";
+        position: absolute;
+        right: 6px;
+        top: 50%;
+        transform: translateY(-50%);
+        width: 11px;
+        height: 11px;
+        opacity: 0.35;
+        pointer-events: none;
+        transition: opacity .15s ease;
+        background-color: var(--muted);
+        -webkit-mask: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='currentColor' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M17 3a2.828 2.828 0 1 1 4 4L7.5 20.5 2 22l1.5-5.5L17 3z'/%3E%3C/svg%3E") no-repeat center / contain;
+        mask: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='currentColor' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M17 3a2.828 2.828 0 1 1 4 4L7.5 20.5 2 22l1.5-5.5L17 3z'/%3E%3C/svg%3E") no-repeat center / contain;
+      }
+      .cell[contenteditable]:hover::after {
+        opacity: 0.85;
+        background-color: var(--gold);
+      }
+      .cell[contenteditable]:focus::after {
+        opacity: 0;
+      }
+      .cell[contenteditable]:empty::before {
+        content: attr(data-placeholder);
+        color: #736152;
+        font-style: italic;
+        font-size: 13px;
+        pointer-events: none;
+      }
+      .cell.slug { font-family: var(--font-mono); font-size: 13px; color: var(--gold-bright); letter-spacing: -0.01em; }
       .cat-select {
         background: #100c0a; border: 1px solid var(--line2); border-radius: 7px;
         padding: 6px 8px; outline: none; max-width: 100%;
@@ -337,6 +390,7 @@ const visitedTotal = guests.filter((g) => openState(g) === "visited").length;
           min-height: 44px; padding: 10px 12px;
           background: #100c0a; border: 1px solid var(--line2); border-radius: 8px;
         }
+        .cell[contenteditable]::after { display: none; }
         .cell[contenteditable]:focus { border-color: var(--gold); }
         .link-row .btn { flex: 1 1 auto; text-align: center; }
 
@@ -631,6 +685,11 @@ const visitedTotal = guests.filter((g) => openState(g) === "visited").length;
             <option value="nama-desc">Urut: Nama Z–A</option>
             <option value="kategori">Urut: Kategori</option>
           </select>
+          <select id="creatorFilter" class="sort-select" aria-label="Filter dibuat oleh">
+            <option value="">Semua Admin</option>
+            {creators.map((c) => <option value={c}>{c}</option>)}
+          </select>
+          <button class="btn btn-ghost btn-sm" id="mineBtn" type="button" aria-pressed="false">Punya Saya</button>
           <div class="count"><span id="count">{guests.length}</span> tamu</div>
           <div class="summary" id="summary"><strong>{openedTotal}</strong> dibuka · <strong>{visitedTotal}</strong> dikunjungi</div>
         </div>
@@ -639,38 +698,38 @@ const visitedTotal = guests.filter((g) => openState(g) === "visited").length;
         <table class="grid">
           <thead>
             <tr>
-              <th style="width:9%;">Sebutan</th>
-              <th style="width:10%;">Nama</th>
-              <th style="width:10%;">Alamat</th>
+              <th style="width:8%;">Sebutan ✎</th>
+              <th style="width:11%;">Nama ✎</th>
+              <th style="width:10%;">Alamat ✎</th>
               <th style="width:11%;">Kategori</th>
-              <th style="width:9%;">Tautan Kustom</th>
-              <th style="width:17%;">Tautan Undangan</th>
+              <th style="width:12%;">Tautan Kustom ✎</th>
+              <th style="width:16%;">Tautan Undangan</th>
               <th style="width:11%;">Dibuka</th>
-              <th style="width:9%;">Ditambah</th>
-              <th style="width:8%;">Diaudit oleh</th>
+              <th style="width:8%;">Ditambah</th>
+              <th style="width:7%;">Diaudit oleh</th>
               <th style="width:6%;"></th>
             </tr>
           </thead>
           <tbody id="rows">
             {guests.map((g) => (
               <tr data-id={g.id} data-name={g.name} data-salutation={g.salutation ?? ""}
-                  data-address={g.address ?? ""} data-slug={g.slug ?? ""}>
+                  data-address={g.address ?? ""} data-slug={g.slug ?? ""} data-created-by={g.created_by_username ?? ""}>
                 <td data-label="Sebutan">
-                  <div class="cell" contenteditable="plaintext-only" spellcheck="false" autocapitalize="words" data-field="salutation">{g.salutation ?? ""}</div>
+                  <div class="cell" contenteditable="plaintext-only" spellcheck="false" autocapitalize="words" data-field="salutation" data-placeholder="+ Sebutan" title="Klik untuk mengedit sebutan">{g.salutation ?? ""}</div>
                 </td>
                 <td data-label="Nama">
-                  <div class="cell" contenteditable="plaintext-only" spellcheck="false" autocapitalize="words" data-field="name">{g.name}</div>
+                  <div class="cell" contenteditable="plaintext-only" spellcheck="false" autocapitalize="words" data-field="name" data-placeholder="Nama tamu..." title="Klik untuk mengedit nama">{g.name}</div>
                 </td>
                 <td data-label="Alamat">
-                  <div class="cell" contenteditable="plaintext-only" spellcheck="false" autocapitalize="words" data-field="address">{g.address ?? ""}</div>
+                  <div class="cell" contenteditable="plaintext-only" spellcheck="false" autocapitalize="words" data-field="address" data-placeholder="Alamat..." title="Klik untuk mengedit alamat">{g.address ?? ""}</div>
                 </td>
                 <td data-label="Kategori">
-                  <select class="cat-select" data-field="category">
+                  <select class="cat-select" data-field="category" title="Ubah kategori">
                     {CATEGORIES.map((c) => <option value={c} selected={c === g.category}>{c}</option>)}
                   </select>
                 </td>
                 <td data-label="Tautan Kustom">
-                  <div class="cell slug" contenteditable="plaintext-only" spellcheck="false" autocapitalize="words" data-field="slug">{g.slug ?? ""}</div>
+                  <div class="cell slug" contenteditable="plaintext-only" spellcheck="false" autocapitalize="none" data-field="slug" data-placeholder="tautan-kustom" title="Klik untuk mengedit tautan kustom (misal: /claudio-aditya)">{g.slug ?? ""}</div>
                 </td>
                 <td data-label="Tautan">
                   <div class="link-col">
@@ -946,7 +1005,7 @@ const visitedTotal = guests.filter((g) => openState(g) === "visited").length;
     <div class="toast" id="toast"></div>
 
     {session && (
-      <script is:inline define:vars={{ site, CATEGORIES }}>
+      <script is:inline define:vars={{ site, CATEGORIES, myUsername }}>
         const rows = document.getElementById("rows");
         const countEl = document.getElementById("count");
         const emptyState = document.getElementById("emptyState");
@@ -1000,7 +1059,7 @@ const visitedTotal = guests.filter((g) => openState(g) === "visited").length;
         // actually reach the bottom of beats one big list.
         const PAGE_SIZE = window.matchMedia("(max-width: 1024px)").matches ? 25 : 100;
         const pager = document.getElementById("pager");
-        let query = "", sortBy = "terbaru", catFilter = "", page = 1;
+        let query = "", sortBy = "terbaru", catFilter = "", creatorFilter = "", page = 1;
 
         const byName = (a, b) => (a.dataset.name || "").localeCompare(b.dataset.name || "", "id", { sensitivity: "base" });
         const byId = (a, b) => Number(a.dataset.id) - Number(b.dataset.id);
@@ -1033,7 +1092,8 @@ const visitedTotal = guests.filter((g) => openState(g) === "visited").length;
           const all = Array.from(rows.children);
           const visible = sortRows(all.filter((tr) =>
             haystack(tr).includes(query) &&
-            (!catFilter || (tr.querySelector(".cat-select")?.value === catFilter))
+            (!catFilter || (tr.querySelector(".cat-select")?.value === catFilter)) &&
+            (!creatorFilter || tr.dataset.createdBy === creatorFilter)
           ));
           const hidden = all.filter((tr) => !visible.includes(tr));
           visible.forEach((tr) => rows.appendChild(tr));            // reorder to sorted order
@@ -1088,18 +1148,19 @@ const visitedTotal = guests.filter((g) => openState(g) === "visited").length;
           tr.dataset.salutation = g.salutation || "";
           tr.dataset.address = g.address || "";
           tr.dataset.slug = g.slug || "";
-          const editCell = (field, val, label, cls) =>
-            `<td data-label="${label}"><div class="cell ${cls || ""}" contenteditable="plaintext-only" spellcheck="false" autocapitalize="words" data-field="${field}">${escapeHtml(val)}</div></td>`;
+          tr.dataset.createdBy = g.created_by_username || "";
+          const editCell = (field, val, label, cls, ph, title) =>
+            `<td data-label="${label}"><div class="cell ${cls || ""}" contenteditable="plaintext-only" spellcheck="false" autocapitalize="${field === "slug" ? "none" : "words"}" data-field="${field}" data-placeholder="${ph || ""}" title="${title || "Klik untuk mengedit"}">${escapeHtml(val || "")}</div></td>`;
           const pretty = prettyLink(g);
           const visits = g.visit_count ?? 0, opens = g.open_count ?? 0;
           const state = opens > 0 ? "opened" : visits > 0 ? "visited" : "none";
           const stateLabel = state === "opened" ? "Dibuka" : state === "visited" ? "Dikunjungi" : "Belum dibuka";
           tr.innerHTML =
-            editCell("salutation", g.salutation, "Sebutan") +
-            editCell("name", g.name, "Nama") +
-            editCell("address", g.address, "Alamat") +
-            `<td data-label="Kategori"><select class="cat-select" data-field="category">${catOptions(g.category)}</select></td>` +
-            editCell("slug", g.slug, "Tautan Kustom", "slug") +
+            editCell("salutation", g.salutation, "Sebutan", "", "+ Sebutan", "Klik untuk mengedit sebutan") +
+            editCell("name", g.name, "Nama", "", "Nama tamu...", "Klik untuk mengedit nama") +
+            editCell("address", g.address, "Alamat", "", "Alamat...", "Klik untuk mengedit alamat") +
+            `<td data-label="Kategori"><select class="cat-select" data-field="category" title="Ubah kategori">${catOptions(g.category)}</select></td>` +
+            editCell("slug", g.slug, "Tautan Kustom", "slug", "tautan-kustom", "Klik untuk mengedit tautan kustom (misal: /claudio-aditya)") +
             `<td data-label="Tautan"><div class="link-col">` +
               `<div class="link-row" data-pretty-row${pretty ? "" : ' style="display:none"'}><a href="${escapeHtml(pretty)}" target="_blank" rel="noopener" data-link-pretty>${escapeHtml(pretty)}</a><button class="btn btn-ghost btn-sm" data-copy>Salin</button><button class="btn btn-icon btn-wa" data-wa aria-label="Bagikan via WhatsApp" title="Bagikan via WhatsApp"><svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M17.47 14.38c-.29-.15-1.72-.85-1.99-.94-.27-.1-.46-.15-.66.15-.19.29-.75.94-.92 1.13-.17.19-.34.22-.63.07-.29-.15-1.23-.45-2.34-1.44-.87-.77-1.45-1.72-1.62-2.01-.17-.29-.02-.45.13-.6.13-.13.29-.34.44-.51.15-.17.19-.29.29-.48.1-.19.05-.36-.02-.51-.07-.15-.66-1.58-.9-2.16-.24-.57-.48-.49-.66-.5h-.56c-.19 0-.51.07-.77.36-.27.29-1.01.99-1.01 2.41 0 1.42 1.04 2.79 1.18 2.98.15.19 2.04 3.12 4.95 4.38.69.3 1.23.48 1.65.61.69.22 1.32.19 1.82.12.56-.09 1.72-.7 1.96-1.38.24-.68.24-1.26.17-1.38-.07-.12-.26-.19-.55-.34zM12.04 21.5h-.01a9.4 9.4 0 01-4.8-1.32l-.34-.2-3.57.94.95-3.48-.22-.36a9.38 9.38 0 01-1.44-5.02c0-5.2 4.24-9.43 9.45-9.43 2.52 0 4.89.98 6.67 2.77a9.36 9.36 0 012.76 6.67c0 5.2-4.24 9.43-9.44 9.43zm8.04-17.47A11.32 11.32 0 0012.04 1C5.79 1 .7 6.08.7 12.33c0 1.99.52 3.94 1.51 5.66L.6 23.4l5.55-1.46a11.3 11.3 0 005.89 1.62h.01c6.25 0 11.34-5.08 11.34-11.33 0-3.03-1.18-5.87-3.31-8.01z"/></svg></button></div>` +
             `</div></td>` +
@@ -1123,7 +1184,9 @@ const visitedTotal = guests.filter((g) => openState(g) === "visited").length;
             return toast("Nama, alamat, dan kategori wajib diisi.", true);
           }
           const btn = addForm.querySelector("button");
+          const btnLabel = btn.innerHTML;
           btn.disabled = true;
+          btn.innerHTML = '<span class="spinner" aria-hidden="true"></span><span>Menambahkan…</span>';
           try {
             const res = await fetch("/api/users", {
               method: "POST", headers: { "content-type": "application/json" }, body: JSON.stringify(data),
@@ -1141,6 +1204,7 @@ const visitedTotal = guests.filter((g) => openState(g) === "visited").length;
             toast("Gagal: " + err.message, true);
           } finally {
             btn.disabled = false;
+            btn.innerHTML = btnLabel;
           }
         });
 
@@ -1172,13 +1236,20 @@ const visitedTotal = guests.filter((g) => openState(g) === "visited").length;
           const baseline = cell.dataset.baseline ?? "";
           if (value === baseline) return;
 
-          if (field === "slug") value = value.toLowerCase().replace(/[^a-z0-9-]+/g, ""); // keep dashes (match API)
+          if (field === "slug") {
+            value = value.toLowerCase()
+              .replace(/^https?:\/\/[^/]+/i, "")
+              .replace(/^\/+/, "")
+              .replace(/[\s_]+/g, "-")
+              .replace(/[^a-z0-9-]+/g, "")
+              .replace(/^-+|-+$/g, "");
+            cell.textContent = value;
+          }
           if ((field === "name" || field === "address") && !value) {
             toast(field + " tidak boleh kosong", true);
             cell.textContent = baseline;
             return;
           }
-          if (field === "slug" && value) cell.textContent = value; // reflect normalization
           await save(tr, cell, field, value, baseline);
         });
 
@@ -1203,7 +1274,30 @@ const visitedTotal = guests.filter((g) => openState(g) === "visited").length;
             tr.dataset.salutation = g.salutation || "";
             tr.dataset.address = g.address || "";
             tr.dataset.slug = g.slug || "";
-            if (el.dataset) el.dataset.baseline = value;
+            tr.dataset.createdBy = g.created_by_username || tr.dataset.createdBy || "";
+
+            // Sync all editable cells to canonical values from backend
+            const slugCell = tr.querySelector('.cell[data-field="slug"]');
+            if (slugCell) {
+              slugCell.textContent = g.slug || "";
+              slugCell.dataset.baseline = g.slug || "";
+            }
+            const nameCell = tr.querySelector('.cell[data-field="name"]');
+            if (nameCell) {
+              nameCell.textContent = g.name || "";
+              nameCell.dataset.baseline = g.name || "";
+            }
+            const salCell = tr.querySelector('.cell[data-field="salutation"]');
+            if (salCell) {
+              salCell.textContent = g.salutation || "";
+              salCell.dataset.baseline = g.salutation || "";
+            }
+            const addrCell = tr.querySelector('.cell[data-field="address"]');
+            if (addrCell) {
+              addrCell.textContent = g.address || "";
+              addrCell.dataset.baseline = g.address || "";
+            }
+
             refreshLink(tr);
             const auditCell = tr.querySelector("[data-audit]");
             if (auditCell && g.audited_by) auditCell.textContent = g.audited_by;
@@ -1297,6 +1391,20 @@ const visitedTotal = guests.filter((g) => openState(g) === "visited").length;
         });
         document.getElementById("catFilter").addEventListener("change", (e) => {
           catFilter = e.target.value; page = 1; applyView();
+        });
+        const creatorSelect = document.getElementById("creatorFilter");
+        const mineBtn = document.getElementById("mineBtn");
+        creatorSelect.addEventListener("change", (e) => {
+          creatorFilter = e.target.value;
+          mineBtn.setAttribute("aria-pressed", String(creatorFilter === myUsername));
+          page = 1; applyView();
+        });
+        mineBtn.addEventListener("click", () => {
+          const mine = mineBtn.getAttribute("aria-pressed") !== "true";
+          creatorFilter = mine ? myUsername : "";
+          creatorSelect.value = creatorFilter;
+          mineBtn.setAttribute("aria-pressed", String(mine));
+          page = 1; applyView();
         });
         pager.addEventListener("click", (e) => {
           const btn = e.target.closest("[data-page]");
