@@ -1242,9 +1242,10 @@ const visitedTotal = guests.filter((g) => openState(g) === "visited").length;
           const field = cell.dataset.field;
           let value = cell.textContent.trim();
           const baseline = cell.dataset.baseline ?? "";
-          if (value === baseline) return;
 
           if (field === "slug") {
+            // Normalize before comparing to baseline, so an edit that only changes
+            // case/whitespace (normalizing back to the same slug) doesn't PATCH.
             value = value.toLowerCase()
               .replace(/^https?:\/\/[^/]+/i, "")
               .replace(/^\/+/, "")
@@ -1253,6 +1254,7 @@ const visitedTotal = guests.filter((g) => openState(g) === "visited").length;
               .replace(/^-+|-+$/g, "");
             cell.textContent = value;
           }
+          if (value === baseline) return;
           if ((field === "name" || field === "address") && !value) {
             toast(field + " tidak boleh kosong", true);
             cell.textContent = baseline;

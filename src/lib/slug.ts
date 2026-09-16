@@ -16,3 +16,20 @@ export function slugify(input: string): string {
 export function isValidSlug(slug: string): boolean {
   return /^[a-z0-9-]{1,64}$/.test(slug) && !RESERVED_SLUGS.has(slug);
 }
+
+/**
+ * Normalize a user-typed custom slug (possibly a pasted URL): strip protocol/host,
+ * leading slashes, collapse whitespace/underscores to dashes, drop anything else.
+ * Mirrored in the admin page's inline `focusout` handler for the same field — that
+ * script is `is:inline` and can't import this module, so keep both in sync by hand.
+ */
+export function normalizeSlugInput(raw: string): string {
+  return raw
+    .toLowerCase()
+    .trim()
+    .replace(/^https?:\/\/[^/]+/i, "")
+    .replace(/^\/+/, "")
+    .replace(/[\s_]+/g, "-")
+    .replace(/[^a-z0-9-]+/g, "")
+    .replace(/^-+|-+$/g, "");
+}

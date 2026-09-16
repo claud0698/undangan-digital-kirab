@@ -3,7 +3,7 @@ import { updateGuest, deleteGuest, getGuestById, uniqueSlug } from "~/lib/db";
 import { getLiveSession } from "~/lib/auth";
 import { sameOrigin } from "~/lib/csrf";
 import { isValidCategory } from "~/lib/categories";
-import { isValidSlug } from "~/lib/slug";
+import { isValidSlug, normalizeSlugInput } from "~/lib/slug";
 
 export const prerender = false;
 
@@ -40,7 +40,7 @@ export const PATCH: APIRoute = async ({ params, request, cookies }) => {
     // on collision, gets an incrementing suffix (andriwijaya, andriwijaya1, …);
     // an emptied slug is regenerated from the guest's name — it never becomes null.
     const raw = String(patch.slug ?? "");
-    const cleaned = raw.toLowerCase().trim().replace(/^https?:\/\/[^/]+/i, "").replace(/^\/+/, "").replace(/[\s_]+/g, "-").replace(/[^a-z0-9-]+/g, "").replace(/^-+|-+$/g, "");
+    const cleaned = normalizeSlugInput(raw);
     if (raw && !cleaned)
       return json({ error: "Tautan kustom tidak valid (huruf kecil, angka, tanda hubung)." }, 400);
     if (cleaned && !isValidSlug(cleaned))
