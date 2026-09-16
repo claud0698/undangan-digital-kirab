@@ -372,7 +372,7 @@ const visitedTotal = guests.filter((g) => openState(g) === "visited").length;
         /* ── phone: a card per guest, not a transcribed table row ──
            Ten stacked label/value pairs made one guest 537px tall, so a page of
            100 was ~53,000px of scrolling. Keep what a volunteer acts on; the rest
-           stays in the DOM for search and CSV, just not shouting. "Diaudit oleh"
+           stays in the DOM for search and CSV, just not shouting. "Diubah oleh"
            stays visible so it's clear which admin made the invitation. */
         .grid tbody td[data-label="Ditambah"],
         .grid tbody td[data-label="Tautan Kustom"] { display: none; }
@@ -714,7 +714,7 @@ const visitedTotal = guests.filter((g) => openState(g) === "visited").length;
               <th style="width:16%;">Tautan Undangan</th>
               <th style="width:11%;">Dibuka</th>
               <th style="width:8%;">Ditambah</th>
-              <th style="width:7%;">Diaudit oleh</th>
+              <th style="width:7%;">Diubah oleh</th>
               <th style="width:6%;"></th>
             </tr>
           </thead>
@@ -758,7 +758,7 @@ const visitedTotal = guests.filter((g) => openState(g) === "visited").length;
                   </div>
                 </td>
                 <td data-label="Ditambah" class="date-cell">{fmtDate(g.created_at)}</td>
-                <td data-label="Diaudit oleh" class="date-cell" data-audit>{g.audited_by ?? "—"}</td>
+                <td data-label="Diubah oleh" class="date-cell" data-audit>{g.audited_by ?? "—"}</td>
                 <td data-label="Aksi">
                   <div class="row-actions">
                     <button class="btn btn-ghost btn-icon btn-danger" data-del aria-label="Hapus tamu" title="Hapus">
@@ -1174,7 +1174,7 @@ const visitedTotal = guests.filter((g) => openState(g) === "visited").length;
             `</div></td>` +
             `<td data-label="Dibuka"><div class="stat ${state}" data-stat data-visits="${visits}" data-opens="${opens}"><span class="dot"></span><span class="lbl">${stateLabel}</span><span class="nums">👁 ${visits} · 📂 ${opens}</span></div></td>` +
             `<td data-label="Ditambah" class="date-cell">${escapeHtml(fmtDate(g.created_at))}</td>` +
-            `<td data-label="Diaudit oleh" class="date-cell" data-audit>${escapeHtml(g.audited_by || "—")}</td>` +
+            `<td data-label="Diubah oleh" class="date-cell" data-audit>${escapeHtml(g.audited_by || "—")}</td>` +
             `<td data-label="Aksi"><div class="row-actions"><button class="btn btn-ghost btn-icon btn-danger" data-del aria-label="Hapus tamu" title="Hapus"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 6h18M8 6V4a1 1 0 0 1 1-1h6a1 1 0 0 1 1 1v2m2 0v14a1 1 0 0 1-1 1H6a1 1 0 0 1-1-1V6"/><line x1="10" y1="11" x2="10" y2="17"/><line x1="14" y1="11" x2="14" y2="17"/></svg></button></div></td>`;
           return tr;
         };
