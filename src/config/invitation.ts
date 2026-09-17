@@ -3,6 +3,8 @@
  * Source: PROPOSAL DANA KIRAB 2026 v2.pdf (Tjie Thien Ta Sen Bio / 齊天大聖廟, Tangerang).
  */
 
+import sponsorDonorsData from "./sponsor-donors.json";
+
 export type Bilingual = { id: string; en: string };
 
 export type ScheduleItem = Bilingual & { time?: string; children?: ScheduleItem[] };
@@ -412,61 +414,9 @@ export const invitation = {
   // 1Uk9_vhpLmVPuSjG-nnPpzPqgKKjV3qlD), rows classified as a personal gift with no
   // company logo. Ledger order preserved. Bookkeeping prefixes (A.n, Dana dari)
   // stripped; nothing else guessed at. Needs proofreading aloud by the committee.
-  sponsorDonors: [
-    { name: "Quency Nathaniel Kertasasmita",             chineseName: "Cang Fong Ling" },
-    { name: "Gloria Nathaniel Kertasasmita",             chineseName: "Cang Fong Cen" },
-    { name: "Rudy Setiawan & Keluarga",                  city: "Magelang" },
-    { name: "Tommy & Keluarga" },
-    { name: "Ibu Yatie" },
-    { name: "Ibu Phang Ki Moy",                          city: "Bogor" },
-    { name: "Umat Buddha" },
-    { name: "Thong Sin Nio" },
-    { name: "Lo Ce Min" },
-    { name: "Yap Yun Fui",                               city: "Bayur" },
-    { name: "Lo Cing Cung" },
-    { name: "Tonny Setiawan" },
-    { name: "Bpk. Frans" },
-    { name: "Bpk. Suryono" },
-    { name: "Lily" },
-    { name: "Andry Suryadi W & Keluarga",                city: "Tangerang" },
-    { name: "Benny Nova & Lany Nova" },
-    { name: "Toko Asen Snack Jawaringan" },
-    { name: "Osin Nata Lih" },
-    { name: "Marsan & Eni" },
-    { name: "Keluarga Hauw Hin Bih & Lien Nio",          city: "Cikupa" },
-    { name: "Laurent Wang & Vincent Ong" },
-    { name: "Sukarto & Keluarga" },
-    { name: "Hendra Setiadi Thjia & Keluarga" },
-    { name: "Chia Thiam Hua & Keluarga" },
-    { name: "Rudy Lisven" },
-    { name: "Thedy Oentoro" },
-    { name: "Lo Cin Ying" },
-    { name: "Lo Jing Ming / Andri" },
-    { name: "Tono Chang" },
-    { name: "Atak (Borneo Prima Utama Jaya)" },
-    { name: "Rudi Gunawan / Ate & Keluarga",             city: "Lampung" },
-    { name: "Jilly & Family" },
-    { name: "Lilian" },
-    { name: "Ibu Farica" },
-    { name: "Ibu Cicil" },
-    { name: "Yongcen & Family" },
-    { name: "Djemi Tejo Sukmono & Janty Setiawan" },
-    { name: "Bun Khiok Hok" },
-    { name: "Liauw Denny & Keluarga" },
-    { name: "Mr. Alwi" },
-    { name: "Mr. Kwan Ping" },
-    { name: "Ria" },
-    { name: "Ibu Lie Dian",                              city: "Jakarta" },
-    { name: "Mrs. Nina",                                 city: "Jakarta" },
-    { name: "Rita Iskandar" },
-    { name: "Claudya" },
-    { name: "Halim Susanto",                             city: "Palembang" },
-    { name: "Ko Bebeng & Keluarga" },
-    { name: "Ibu Mei Mei" },
-    { name: "Anthony Lesmana & Keluarga",                city: "Depok" },
-    { name: "Bella S." },
-    { name: "Yosie" },
-  ] satisfies SponsorDonor[],
+  // Kept in ./sponsor-donors.json so the committee can edit the roll without
+  // touching TypeScript.
+  sponsorDonors: sponsorDonorsData satisfies SponsorDonor[],
 
   share: {
     siteUrl: "https://undangan-digital-kirab.liefisca.com",
