@@ -50,7 +50,7 @@ Digital invitation website and guest management system for **Kirab Budaya & Ruwa
 Defined in `.env` (see `.env.example`):
 - `DATABASE_URL` — Neon Postgres pooled connection string (server-side only)
 - `SESSION_SECRET` — Cryptographic secret for signing admin session cookies
-- `PUBLIC_SCROLL_SPEED` — Auto-scroll drift speed on cover in px/second (default: `40`)
+- `PUBLIC_SCROLL_SPEED` — Auto-scroll drift speed on cover in px/second (default: `52`)
 
 ## Git & Contributor Guidelines
 
