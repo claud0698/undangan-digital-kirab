@@ -22,7 +22,7 @@ const ranks = [1, 2, 3, 4, 6, 5] as const;   // institutions before media
 // deliberately unlabelled: several sponsors gave on different terms, and
 // naming the bands would publish who gave what.
 const groupLabel: Partial<Record<(typeof ranks)[number], { id: string; en: string }>> = {
-  6: { id: "Didukung Oleh", en: "Supported By" },
+  6: { id: "Didukung oleh", en: "Supported By" },
   5: { id: "Mitra Pendukung", en: "Media Partners" },
 };
 
@@ -72,7 +72,7 @@ const roster = ranks
       {lang === "id" ? (
         <Fragment>
           Tertarik menjadi bagian dari acara ini?<br />
-          Bagi Bapak/Ibu/Saudara/i, Umat, dan para Donatur yang ingin berpartisipasi, dana dapat disalurkan melalui:
+          Bagi Bapak/Ibu/Saudara/i, umat, dan para donatur yang ingin berpartisipasi, dana dapat disalurkan melalui:
         </Fragment>
       ) : (
         <Fragment>
@@ -93,10 +93,10 @@ const roster = ranks
         data-done={lang === "id" ? "Tersalin ✓" : "Copied ✓"}>
         {lang === "id" ? "Salin No. Rekening" : "Copy Account Number"}
       </button>
-      <span class="bank-holder">a/n. Yayasan Wihara Dhamma Budhi Bhakti</span>
+      <span class="bank-holder">a.n. Yayasan Wihara Dhamma Budhi Bhakti</span>
       <span class="bank-note">
         {lang === "id" ? (
-          <Fragment>Mohon tambahkan <strong>72</strong> di akhir nominal transfer (cth: Rp&nbsp;500.072) — mengikuti 72 lilin dan 72 macam buah persembahan. Kode ini membantu kami mencatat dana Bapak/Ibu dan mencantumkan nama pada 功德芳名.</Fragment>
+          <Fragment>Mohon tambahkan <strong>72</strong> di akhir nominal transfer (contoh: Rp&nbsp;500.072) — mengikuti 72 lilin dan 72 macam buah persembahan. Kode ini membantu kami mencatat dana Bapak/Ibu dan mencantumkan nama pada 功德芳名.</Fragment>
         ) : (
           <Fragment>Please add <strong>72</strong> to the end of your transfer amount (e.g. Rp&nbsp;500,072) — echoing the 72 candles and 72 kinds of fruit offered. It lets us trace your gift and place your name on the roll of merit.</Fragment>
         )}
@@ -107,7 +107,7 @@ const roster = ranks
       <span class="contact-heading">{lang === "id" ? "Informasi & Konfirmasi Dana" : "Donation Info & Confirmation"}</span>
       <ul class="contact-list" role="list">
         <li>
-          <span class="c-name">Liliany Candra <em>· {lang === "id" ? "Wk. Bendahara" : "Vice Treasurer"}</em></span>
+          <span class="c-name">Liliany Candra <em>· {lang === "id" ? "Wakil Bendahara" : "Vice Treasurer"}</em></span>
           <a href="https://wa.me/6281369757888" target="_blank" rel="noopener">+62 813-6975-7888</a>
         </li>
         <li>
@@ -119,7 +119,7 @@ const roster = ranks
     </div>
 
     <div class="contact-group">
-      <span class="contact-heading">{lang === "id" ? "PIC Pengiriman Data / Gambar Sponsor" : "PIC for Sponsor Data / Artwork"}</span>
+      <span class="contact-heading">{lang === "id" ? "Narahubung Materi Sponsor & Logo" : "PIC for Sponsor Data / Artwork"}</span>
       <ul class="contact-list" role="list">
         <li>
           <span class="c-name">Lukas Susanto</span>
@@ -135,18 +135,18 @@ const roster = ranks
     <div class="paramita-title">Dana Paramita</div>
     <p>
       {lang === "id"
-        ? "Sekecil apapun dana, sumbangsih dan dukungan yang diberikan oleh para donatur akan sangat bermanfaat bagi kami semua di hari Sejit Tjie Thien Ta Sen Bio yang ke-43 tahun."
+        ? "Sekecil apa pun dana, sumbangsih, dan dukungan yang diberikan para donatur akan sangat bermanfaat bagi kelangsungan perayaan Sejit YMS Tjie Thien Ta Sen & HUT ke-43 Tjie Thien Ta Sen Bio."
         : "No matter how small, every contribution and support given by our donors will be deeply meaningful for us all on the 43rd anniversary of Tjie Thien Ta Sen Bio."}
     </p>
     <p>
       {lang === "id"
-        ? "Tujuan mulia ini akan terselenggara berkat kebajikan para donatur dan simpatisan."
+        ? "Acara mulia ini dapat terselenggara berkat kebajikan para donatur dan simpatisan."
         : "This noble purpose is made possible through the virtue of our donors and well-wishers."}
     </p>
     <blockquote>
       {lang === "id"
-        ? "“ Partisipasi Bapak/Ibu/Sdr/i sangat berguna untuk melestarikan Budaya Tionghoa dan Tjie Thien Ta Sen Bio Tangerang ”"
-        : "“ Your participation is invaluable in preserving Chinese culture and Tjie Thien Ta Sen Bio Tangerang ”"}
+        ? "“Partisipasi Bapak/Ibu/Saudara/i sangat berharga dalam melestarikan budaya Tionghoa serta mendukung keberlangsungan Tjie Thien Ta Sen Bio Tangerang.”"
+        : "“Your participation is invaluable in preserving Chinese culture and Tjie Thien Ta Sen Bio Tangerang.”"}
     </blockquote>
   </div>
 </section>

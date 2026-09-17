@@ -1345,9 +1345,12 @@ const visitedTotal = guests.filter((g) => openState(g) === "visited").length;
             const greet = [tr.dataset.salutation, tr.dataset.name].map((s) => (s || "").trim()).filter(Boolean).join(" ") || "Bapak/Ibu";
             const msg =
               `Yth. ${greet} 🙏\n\n` +
-              `Dengan penuh sukacita, kami mengundang Anda ke *Kirab Budaya & Ruwat Bumi 2026* — Tjie Thien Ta Sen Bio, Tangerang.\n\n` +
-              `Silakan buka undangan digital Anda di:\n${url}\n\n` +
-              `Suatu kehormatan atas kehadiran Anda. Terima kasih. 🏮`;
+              `Dengan penuh sukacita, kami mengundang Bapak/Ibu/Saudara/i ke perayaan akbar:\n` +
+              `*Kirab Budaya & Ruwat Bumi 2026*\n` +
+              `Tjie Thien Ta Sen Bio, Tangerang\n\n` +
+              `🗓️ 23–27 September 2026 (Puncak: Minggu, 27 September)\n\n` +
+              `Silakan buka tautan undangan digital Anda di:\n${url}\n\n` +
+              `Merupakan suatu kehormatan dan kebahagiaan bagi kami atas kehadiran serta doa restu Bapak/Ibu/Saudara/i sekalian. Terima kasih. 🏮🙏`;
             window.open(`https://wa.me/?text=${encodeURIComponent(msg)}`, "_blank", "noopener");
           }
           if (e.target.closest("[data-del]")) {

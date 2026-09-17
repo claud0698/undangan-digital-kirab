@@ -75,7 +75,7 @@ export const invitation = {
     en: "Cultural Procession & Earth Blessing 2026",
   },
   eventTagline: {
-    id: "Memperingati Sejit YMS Tjie Thien Ta Sen & HUT Tjie Thien Ta Sen Bio Ke-43 Tahun",
+    id: "Memperingati Sejit YMS Tjie Thien Ta Sen & HUT ke-43 Tjie Thien Ta Sen Bio",
     en: "Commemorating the Birthday of YMS Tjie Thien Ta Sen & the 43rd Anniversary of Tjie Thien Ta Sen Bio",
   },
 
@@ -96,23 +96,23 @@ export const invitation = {
 
   // ─── opening copy from the proposal ───────────────────────────
   greeting: { id: "Salam Kebajikan", en: "Greetings of Virtue" },
-  honorific: { id: "Dengan Hormat,", en: "Respectfully," },
+  honorific: { id: "Dengan hormat,", en: "Respectfully," },
   opening: {
-    id: "Dalam rangka menyambut Sejit YMS Tjie Thien Ta Sen & HUT Tjie Thien Ta Sen Bio Ke-43 Tahun, kami akan menyelenggarakan Kirab Budaya & Ruwat Bumi 2026. Sebagai penghormatan dan ungkapan rasa terima kasih kami kepada YMS Tjie Thien Ta Sen sebagai dewa pemberi berkah dan pembimbing yang kita yakini selalu memberikan kesehatan, keselamatan, perlindungan, dan kemakmuran bagi kita semua.",
+    id: "Dalam rangka menyambut Sejit YMS Tjie Thien Ta Sen & HUT ke-43 Tjie Thien Ta Sen Bio, kami menyelenggarakan Kirab Budaya & Ruwat Bumi 2026 sebagai wujud penghormatan serta rasa syukur kepada YMS Tjie Thien Ta Sen—Maha Dewa Pemberi Berkah dan Pembimbing yang senantiasa melimpahkan kesehatan, keselamatan, perlindungan, dan kemakmuran bagi kita semua.",
     en: "In welcoming the Birthday of YMS TJIE THIEN TA SEN & the 43rd Anniversary of Tjie Thien Ta Sen Bio, we will hold the Cultural Procession & Earth Blessing 2026 — a tribute and expression of gratitude to YMS TJIE THIEN TA SEN, the deity of blessing and guidance who continually grants health, safety, protection, and prosperity to us all.",
   },
   // Written for the WhatsApp preview card, not sliced from the letter above:
   // the card gets ~160 characters, and the opening prose was ending mid-word.
   preview: {
-    id: "23–27 September 2026 · Puncak Kirab 7 km Minggu 27 Sept pukul 14.00 · Tjie Thien Ta Sen Bio, Kota Tangerang. Sejit Agung, sekali dalam 7 tahun.",
+    id: "23–27 September 2026 · Puncak Kirab 7 km Minggu, 27 Sept pukul 14.00 · Tjie Thien Ta Sen Bio, Kota Tangerang. Sejit Agung, sekali dalam 7 tahun.",
     en: "23–27 September 2026 · 7 km procession Sunday 27 Sept, 2pm · Tjie Thien Ta Sen Bio, Kota Tangerang. The Great Sejit, once every seven years.",
   },
   invite: {
-    id: "Demi kelancaran dan suksesnya acara ini, kami mengharapkan kehadiran dan partisipasi Bapak/Ibu sekalian dalam acara ini.",
+    id: "Demi kelancaran dan kesuksesan acara ini, kami sangat mengharapkan kehadiran serta partisipasi Bapak/Ibu sekalian.",
     en: "For the smooth and joyful conduct of this event, we sincerely hope for your presence and participation.",
   },
   closing: {
-    id: "Hormat Kami, Panitia Kirab Budaya & Ruwat Bumi 2026 — Tjie Thien Ta Sen Bio Tangerang.",
+    id: "Hormat kami, Panitia Kirab Budaya & Ruwat Bumi 2026 — Tjie Thien Ta Sen Bio Tangerang.",
     en: "Sincerely, the Cultural Procession & Earth Blessing 2026 Committee — Tjie Thien Ta Sen Bio Tangerang.",
   },
 
@@ -122,9 +122,9 @@ export const invitation = {
     en: "The cultural procession preserves tradition and local wisdom — bearing historical, social, and educational value. Beyond entertainment, it strengthens cultural identity and the bonds of community.",
   },
   goals: [
-    { id: "Menyelenggarakan kirab budaya yang sakral & meriah",                        en: "Holding a procession that is both sacred and festive" },
-    { id: "Melestarikan dan memperkenalkan keanekaragaman budaya nusantara kepada masyarakat luas", en: "Preserving and introducing the cultural diversity of the archipelago" },
-    { id: "Membangun hubungan & kolaborasi yang baik antara panitia dengan para sponsor & donatur", en: "Building strong collaboration between organizers, sponsors, and donors" },
+    { id: "Menyelenggarakan kirab budaya yang sakral dan meriah",                      en: "Holding a procession that is both sacred and festive" },
+    { id: "Melestarikan dan memperkenalkan keanekaragaman budaya Nusantara kepada masyarakat luas", en: "Preserving and introducing the cultural diversity of the archipelago" },
+    { id: "Membangun hubungan dan kolaborasi yang baik antara panitia dan para sponsor serta donatur", en: "Building strong collaboration between organizers, sponsors, and donors" },
     { id: "Menggalang dana secara kreatif dan transparan",                             en: "Raising funds creatively and transparently" },
   ],
 
@@ -164,9 +164,9 @@ export const invitation = {
         { time: "09.00 – 17.00", id: "梁皇寶懺 Liang Huang Bao Chan — Ritual Pertobatan Kaisar Liang (Lt. 3)", en: "梁皇寶懺 Liang Huang Bao Chan — Emperor Liang Repentance Ritual (3rd Floor)" },
         { time: "12.00 – 20.00", id: "Cia Peng An",                          en: "Cia Peng An", children: [
           { time: "18.00 – 20.00", id: "Pentas Seni Barongsai (Tuan Rumah)",   en: "Barongsai Performance (Host)" },
-          { time: "19.00 – 20.00", id: "Pemasangan 72 Lilin & Persembahan 72 macam buah oleh umat", en: "Lighting of 72 Candles & Offering of 72 Fruit Varieties by Devotees" },
+          { time: "19.00 – 20.00", id: "Pemasangan 72 Lilin & Persembahan 72 Macam Buah oleh Umat", en: "Lighting of 72 Candles & Offering of 72 Fruit Varieties by Devotees" },
         ] },
-        { time: "22.00 – 24.00", id: "Sembahyang Bersama & Pembagian Wisit + Minyak Obat", en: "Communal Prayer & Distribution of Wisit + Medicinal Oil" },
+        { time: "22.00 – 24.00", id: "Sembahyang Bersama serta Pembagian Wisit dan Minyak Obat", en: "Communal Prayer & Distribution of Wisit + Medicinal Oil" },
       ],
     },
     {
@@ -177,7 +177,7 @@ export const invitation = {
       items: [
         { time: "09.00 – 17.00", id: "梁皇寶懺 Liang Huang Bao Chan — Ritual Pertobatan Kaisar Liang (Lt. 3)", en: "梁皇寶懺 Liang Huang Bao Chan — Emperor Liang Repentance Ritual (3rd Floor)" },
         { time: "12.00 – 20.00", id: "Cia Peng An",                             en: "Cia Peng An" },
-        { time: "08.00 – 20.00", id: "Penerimaan Kiem Sin / Sen Siang & Kio / Joli (Lt. 2)", en: "Reception of Kiem Sin / Sen Siang & Kio / Joli (2nd Floor)" },
+        { time: "08.00 – 20.00", id: "Penerimaan Kiem Sin / Sen Siang serta Kio / Joli (Lt. 2)", en: "Reception of Kiem Sin / Sen Siang & Kio / Joli (2nd Floor)" },
       ],
     },
     {
@@ -190,7 +190,7 @@ export const invitation = {
         { time: "11.00 – 12.00", id: "San Kung",                                          en: "San Kung" },
         { time: "08.00 – 10.00", id: "Ritual persiapan kirab",                            en: "Procession Preparation Ritual" },
         { time: "08.00 – 20.00", id: "Cia Peng An",                                       en: "Cia Peng An" },
-        { time: "08.00 – 12.00", id: "Penyerahan Kiem Sin / Sen Siang ditempatkan di Kio / Joli masing-masing", en: "Placement of Kiem Sin / Sen Siang into respective Kio / Joli" },
+        { time: "08.00 – 12.00", id: "Penempatan Kiem Sin / Sen Siang ke Kio / Joli masing-masing", en: "Placement of Kiem Sin / Sen Siang into respective Kio / Joli" },
         { time: "14.00 – 18.00", id: "Pelepasan Kirab Budaya & Ruwat Bumi 2026",          en: "Procession Send-off — Kirab Budaya & Ruwat Bumi 2026" },
       ],
     },
@@ -261,7 +261,7 @@ export const invitation = {
         ],
       },
       {
-        title: { id: "Acara, Seni, & Budaya", en: "Programme, Arts & Culture" },
+        title: { id: "Acara, Seni, dan Budaya", en: "Programme, Arts & Culture" },
         members: [
           { name: "Ibu Tan Ai Cen" },
           { name: "Bpk. Yuidi Hardiman" },
@@ -275,7 +275,7 @@ export const invitation = {
         ],
       },
       {
-        title: { id: "Humas, Umum & Birokrasi", en: "Public Relations & Administration" },
+        title: { id: "Humas, Umum, dan Birokrasi", en: "Public Relations & Administration" },
         members: [
           { name: "Bpk. Willy" }, { name: "Bpk. Tommy" },
         ],
@@ -300,13 +300,13 @@ export const invitation = {
     {
       rank: "01",
       name: { id: "Sponsor Utama", en: "Principal Sponsor" },
-      contribution: { id: "Kontribusi di atas Rp 20.000.000++", en: "Contribution above Rp 20,000,000++" },
+      contribution: { id: "Kontribusi di atas Rp 20.000.000", en: "Contribution above Rp 20,000,000++" },
       perks: [
         { id: "1 halaman penuh (full color) di bagian depan",        en: "Full-page color ad on the front section" },
         { id: "Logo pada cover belakang",                            en: "Logo on the back cover" },
         { id: "Penyebutan nama dalam acara",                         en: "Name mention during the event" },
       ],
-      badge: { id: "Hanya 3 sponsor — 1 depan & 2 belakang", en: "Only 3 sponsors — 1 front & 2 back" },
+      badge: { id: "Terbatas untuk 3 sponsor (1 depan & 2 belakang)", en: "Only 3 sponsors — 1 front & 2 back" },
     },
     {
       rank: "02",
@@ -324,7 +324,7 @@ export const invitation = {
       perks: [
         { id: "½ halaman (hitam putih / full color) — Rp 10.000.000", en: "½ page (B/W / full color) — Rp 10,000,000" },
         { id: "¼ halaman (hitam putih / warna terbatas) — Rp 5.000.000", en: "¼ page (B/W / limited color) — Rp 5,000,000" },
-        { id: "1/8 halaman (hitam putih / warna terbatas) — Rp 2.500.000", en: "1/8 page (B/W / limited color) — Rp 2,500,000" },
+        { id: "⅛ halaman (hitam putih / warna terbatas) — Rp 2.500.000", en: "1/8 page (B/W / limited color) — Rp 2,500,000" },
       ],
     },
     {
@@ -337,7 +337,7 @@ export const invitation = {
     },
   ] satisfies SponsorTier[],
   sponsorNote: {
-    id: "Semua sponsor & donatur akan dicetak dalam 1 spanduk dan dipasang selama acara berlangsung.",
+    id: "Nama seluruh sponsor dan donatur akan dicantumkan pada spanduk utama dan dipasang selama acara berlangsung.",
     en: "All sponsors and donors will be printed on a single banner displayed throughout the event.",
   },
 

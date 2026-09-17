@@ -40,7 +40,7 @@ export const t = {
     backToTop: { id: "Kembali ke atas", en: "Back to top" },
   },
   cover: {
-    eyebrow: { id: "The Honorable Are Cordially Invited", en: "The Honorable Are Cordially Invited" },
+    eyebrow: { id: "Undangan Terhormat", en: "The Honorable Are Cordially Invited" },
     button: { id: "Buka Undangan", en: "Open Invitation" },
     note: {
       id: "Mohon maaf bila ada kesalahan dalam penulisan nama/alamat.",

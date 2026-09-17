@@ -5,7 +5,7 @@ interface Props { lang: Lang; }
 const { lang } = Astro.props;
 const shareText = encodeURIComponent(
   `${lang === "id"
-    ? "Mari hadiri Kirab Budaya & Ruwat Bumi 2026 — Sejit YMS Tjie Thien Ta Sen & HUT Tjie Thien Ta Sen Bio Ke-43. Sejit Agung yang hanya digelar sekali dalam 7 tahun. 23–27 September 2026, puncak Kirab 7 km Minggu 27 September pukul 14.00 di Tjie Thien Ta Sen Bio, Kota Tangerang. Selengkapnya: "
+    ? "Mari hadiri Kirab Budaya & Ruwat Bumi 2026 — Sejit YMS Tjie Thien Ta Sen & HUT ke-43 Tjie Thien Ta Sen Bio. Perayaan agung yang hanya digelar sekali dalam 7 tahun. 23–27 September 2026, puncak Kirab 7 km pada Minggu, 27 September pukul 14.00 di Tjie Thien Ta Sen Bio, Kota Tangerang. Selengkapnya: "
     : "Join Kirab Budaya & Ruwat Bumi 2026 — Tjie Thien Ta Sen Bio's 43rd Anniversary, 23–27 September 2026. More: "}`
 );
 ---
@@ -20,7 +20,7 @@ const shareText = encodeURIComponent(
 
   <p style="font-family:var(--font-display);font-style:italic;font-size:15px;color:var(--ink);opacity:.8;line-height:1.6;max-width:340px;margin:0 auto">
     {lang === "id"
-      ? "Mohon bantuan menyampaikan informasi ini kepada umat dan simpatisan lainnya."
+      ? "Mohon bantuan untuk meneruskan undangan ini kepada keluarga, rekan umat, dan simpatisan."
       : "Kindly help relay this invitation to fellow devotees and friends."}
   </p>
 
@@ -31,7 +31,7 @@ const shareText = encodeURIComponent(
     </a>
     <button class="share-btn" id="shareCopy">
       <svg viewBox="0 0 24 24"><path d="M16 1H4c-1.1 0-2 .9-2 2v14h2V3h12V1m3 4H8c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h11c1.1 0 2-.9 2-2V7c0-1.1-.9-2-2-2m0 16H8V7h11v14z"/></svg>
-      <span id="copyLabel">{lang === "id" ? "Salin Link" : "Copy Link"}</span>
+      <span id="copyLabel">{lang === "id" ? "Salin Tautan" : "Copy Link"}</span>
     </button>
   </div>
 </section>
@@ -41,7 +41,7 @@ const shareText = encodeURIComponent(
   <div class="seal">福</div>
   <div class="han">慈 悲 喜 捨</div>
   <div class="han-roman">{lang === "id"
-    ? "Cinta Kasih, Welas Asih, Suka Cita, Pelepasan"
+    ? "Cinta Kasih, Welas Asih, Sukacita, Keseimbangan Batin"
     : "Loving-kindness, Compassion, Joy, Equanimity"}</div>
   <h3>
     Sukhi Hontu · Amithofo<br />
@@ -66,7 +66,7 @@ const shareText = encodeURIComponent(
   </div>
 </section>
 
-<script is:inline define:vars={{ shareText, copiedLabel: lang === "id" ? "Tersalin ✓" : "Copied ✓", copyDefault: lang === "id" ? "Salin Link" : "Copy Link" }}>
+<script is:inline define:vars={{ shareText, copiedLabel: lang === "id" ? "Tersalin ✓" : "Copied ✓", copyDefault: lang === "id" ? "Salin Tautan" : "Copy Link" }}>
   const shareWA = document.getElementById("shareWA");
   const shareCopy = document.getElementById("shareCopy");
   const copyLabel = document.getElementById("copyLabel");

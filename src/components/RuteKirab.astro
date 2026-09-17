@@ -13,7 +13,7 @@ const { lang } = Astro.props;
 
   <p class="lead">
     {lang === "id"
-      ? "Rute Kirab Budaya & Ruwat Bumi 2026 Tjie Thien Ta Sen Bio, mengelilingi Kota Tangerang."
+      ? "Rute Kirab Budaya & Ruwat Bumi 2026 Tjie Thien Ta Sen Bio yang mengelilingi Kota Tangerang."
       : "The route of the Kirab Budaya & Ruwat Bumi 2026 of Tjie Thien Ta Sen Bio, circling Kota Tangerang."}
   </p>
 
@@ -33,7 +33,7 @@ const { lang } = Astro.props;
         : "Map of the Kirab Budaya & Ruwat Bumi 2026 route around Kota Tangerang"}
       loading="lazy" decoding="async"
     />
-    <span class="zoom-hint">{lang === "id" ? "Ketuk untuk perbesar" : "Tap to enlarge"}</span>
+    <span class="zoom-hint">{lang === "id" ? "Ketuk untuk memperbesar" : "Tap to enlarge"}</span>
   </a>
 
   <a href={invitation.venue.mapsUrl} target="_blank" rel="noopener" class="map-btn">
