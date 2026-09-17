@@ -33,10 +33,8 @@ A. SUDAH DIPINDAH KE SPONSOR  (5)  - tinggal butuh nilainya
   1. Ichitan  (merek minuman)
        di spanduk : baris sponsor
        di ledger  : TIDAK ADA
-       status     : SUDAH DIKONFIRMASI SEBAGAI SPONSOR (05-09-2026).
-                    Yang masih kurang hanya nilainya. Saat ini tampil
-                    di ukuran terkecil; mohon dikabari nilainya agar
-                    ukurannya bisa disesuaikan.
+       status     : SELESAI (17-09-2026). Dikonfirmasi Rp 20 juta (Rank 1 / Sponsor Utama),
+                    tampil pada ukuran terbesar.
 
   2. Toko Mas Andika Mas  (Pasar Muara Karang, Jakarta Utara)
        di spanduk : baris sponsor
@@ -56,8 +54,11 @@ A. SUDAH DIPINDAH KE SPONSOR  (5)  - tinggal butuh nilainya
   5. Vajrayana Buddhist Indonesia
        di spanduk : baris sponsor (bukan baris instansi)
        di ledger  : TIDAK ADA
-       pertanyaan : organisasi Buddhis - tetap disebut mitra,
-                    atau dimasukkan sebagai sponsor?
+       status     : SELESAI (17-09-2026). Dikonfirmasi sebagai sponsor Rp 10 juta
+                    (Rank 2 / Sponsor Madya).
+
+  6. Explift Elevator & Escalator
+       status     : SELESAI (17-09-2026). Dikonfirmasi Rp 5 juta (Rank 3 / Sponsor Pendukung).
 
 ======================================================================
 B. SUDAH BENAR SEBAGAI "MITRA PENDUKUNG"  (9)

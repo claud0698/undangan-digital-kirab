@@ -347,6 +347,7 @@ export const invitation = {
     { slug: "bangun-jaya-group-v2",              name: "Bangun Jaya Group",                                      rank: 1 },
     { slug: "dextone-avian-v2",                  name: "Dextone · Abrasive · Provioz · Veloz",                   rank: 1 },
     { slug: "new-armada-v2",                     name: "New Armada · PT Bumen Redja Abadi · Armada Auto Tara · PT Armada Perkasa Mobilindo", rank: 1 },
+    { slug: "ichitan",                        name: "Ichitan",                                                rank: 1 },
 
     { slug: "dominique-jewellery-v2",            name: "Dominique Jewellery",                                    rank: 2 },
     { slug: "handphone-tiam-v2",                 name: "Handphone Tiam",                                         rank: 2 },
@@ -354,6 +355,7 @@ export const invitation = {
     { slug: "putra-jaya-v2",                     name: "Putra Jaya",                                             rank: 2 },
     { slug: "gibrig-indonesia-bersih-v2",        name: "PT Gibrig Indonesia Bersih · Aneka Plastindo · Sushi Abe",rank: 2 },
     { slug: "cap-panda-v2",                      name: "Cap Panda",                                              rank: 2 },
+    { slug: "vajrayana-buddhist-indonesia",   name: "Vajrayana Buddhist Indonesia",                           rank: 2 },
 
     { slug: "kalimasadha-nusantara-v2",          name: "Kalimasadha Nusantara",                                  rank: 3 },
     { slug: "aldana-mitrasarana-kita-v2",        name: "PT Aldana Mitrasarana Kita",                             rank: 3 },
@@ -364,6 +366,8 @@ export const invitation = {
     { slug: "surya-jaya-v2",                     name: "Surya Jaya",                                             rank: 3 },
     { slug: "palais-contruction-v2",             name: "Palais Contruction · Tjoetji Sepatoe",                   rank: 3 },
     { slug: "global-copier-v2",                  name: "Global Copier",                                          rank: 3 },
+    { slug: "explift",                        name: "Explift Elevator & Escalator",                           rank: 3 },
+    { slug: "crystalin",                      name: "Crystalin",                                              rank: 3 },
 
     { slug: "megajaya-masterbatch",           name: "PT Megajaya Masterbatch",                                rank: 4 },
     { slug: "yuro-sport",                     name: "Toko Yuro Sport",                                        rank: 4 },
@@ -386,23 +390,21 @@ export const invitation = {
     { slug: "mandiri-kasih",                  name: "Mandiri Kasih",                                          rank: 4 },
     { slug: "universitas-buddhi-dharma",      name: "Universitas Buddhi Dharma",                              rank: 6 },
 
-    // Received 31 Aug as PDF. Eight of these nine are not in the treasurer's
-    // ledger as of 22 Aug, so no contribution bracket is known for them; they sit
-    // in rank 5, which asserts nothing about what was paid. Re-rank once the
-    // committee confirms. Nara JW Lawfirm is the ledger's "Lawyer Nara Jw" —
-    // a firm, not a person, so it moves off the donor roll and onto the wall.
-    { slug: "ichitan",                        name: "Ichitan",                                                rank: 4 },
-    { slug: "vajrayana-buddhist-indonesia",   name: "Vajrayana Buddhist Indonesia",                           rank: 4 },
+    // Received 31 Aug as PDF / early Sep. Confirmed amounts:
+    // Ichitan (20jt, rank 1), Vajrayana Buddhist Indonesia (10jt, rank 2), Explift (5jt, rank 3), Crystalin (5jt, rank 3).
+    // Remaining rank 4 sponsors (Andika Mas, MB, Nara JW, Konslet, Sinar Utama Plasindo) at Rp 2,5jt tier.
     { slug: "andika-mas",                     name: "Toko Mas Andika Mas",                                    rank: 4 },
     { slug: "menembus-batas",                 name: "MB Menembus Batas",                                      rank: 4 },
+    { slug: "konslet",                        name: "Konslet",                                                rank: 4 },
+    { slug: "sinar-utama-plasindo",           name: "PT Sinar Utama Plasindo",                                rank: 4 },
+    { slug: "nara-jw-lawfirm",                name: "Nara JW Lawfirm",                                        rank: 4 },
     { slug: "tng-tv",                         name: "TNG TV",                                                 rank: 5 },
     { slug: "disbudpar-kota-tangerang",       name: "Disbudpar Kota Tangerang",                               rank: 6 },
     { slug: "bakorsiskom-polsekta",           name: "Bakorsiskom Polsekta Tangerang",                         rank: 6 },
     { slug: "kota-tangerang",                 name: "Kota Tangerang",                                         rank: 6 },
     { slug: "wonderful-indonesia",            name: "Wonderful Indonesia",                                    rank: 6 },
     { slug: "polda-metro-jaya",               name: "Polda Metro Jaya",                                       rank: 6 },
-    { slug: "nara-jw-lawfirm",                name: "Nara JW Lawfirm",                                        rank: 4 },
-    { slug: "explift",                        name: "Explift Elevator & Escalator",                           rank: 4 },
+    { slug: "kodim-0506-tangerang",           name: "Kodim 0506 Tangerang",                                   rank: 6 },
   ] satisfies SponsorLogo[],
 
   // ─── donatur tanpa logo (teks / gulungan) ─────────────────────
