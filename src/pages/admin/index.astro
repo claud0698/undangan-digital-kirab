@@ -1056,7 +1056,7 @@ const visitedTotal = guests.filter((g) => openState(g) === "visited").length;
           clearTimeout(toastTimer);
           toastTimer = setTimeout(() => toastEl.classList.remove("show"), action ? 15000 : 2000);
         };
-        // The password dialog lives in its own <script> block and needs the same
+        // The password dialog lives in its own script block and needs the same
         // confirmation strip; this is the seam between the two.
         window.kirabToast = (msg, isErr) => {
           toast(msg, isErr);

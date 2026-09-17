@@ -102,8 +102,8 @@ export const invitation = {
   // Written for the WhatsApp preview card, not sliced from the letter above:
   // the card gets ~160 characters, and the opening prose was ending mid-word.
   preview: {
-    id: "23–27 September 2026 · Puncak Kirab 5,8 km Minggu 27 Sept pukul 14.00 · Tjie Thien Ta Sen Bio, Kota Tangerang. Sejit Agung, sekali dalam 7 tahun.",
-    en: "23–27 September 2026 · 5.8 km procession Sunday 27 Sept, 2pm · Tjie Thien Ta Sen Bio, Kota Tangerang. The Great Sejit, once every seven years.",
+    id: "23–27 September 2026 · Puncak Kirab 7 km Minggu 27 Sept pukul 14.00 · Tjie Thien Ta Sen Bio, Kota Tangerang. Sejit Agung, sekali dalam 7 tahun.",
+    en: "23–27 September 2026 · 7 km procession Sunday 27 Sept, 2pm · Tjie Thien Ta Sen Bio, Kota Tangerang. The Great Sejit, once every seven years.",
   },
   invite: {
     id: "Demi kelancaran dan suksesnya acara ini, kami mengharapkan kehadiran dan partisipasi Bapak/Ibu sekalian dalam acara ini.",
